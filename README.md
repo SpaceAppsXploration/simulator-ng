@@ -1,6 +1,9 @@
 simulator
 =========
 
+
+## Installation
+
 py3.3-tornado server
 
 This is a Python3 [Tornado](https://github.com/tornadoweb/tornado) Web Server to run [sockjs](https://github.com/sockjs/sockjs-client) with [sockjs-tornado](https://github.com/mrjoes/sockjs-tornado)
@@ -26,6 +29,7 @@ Clone repository: `git clone https://github.com/SpaceAppsXploration/simulator-ng
 `cd simulator-ng/static`
 
 `npm install
+
 bower install`
 
 Start local server, in simulator-ng directory:
