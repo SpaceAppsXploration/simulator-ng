@@ -1,6 +1,6 @@
 module.exports = function(config) {
 	config.set({
-		basePath: '/static',
+		basePath: '../',
 		frameworks: ['ng-scenario'],
 		files: [
 			'test/e2e/**/*.js'

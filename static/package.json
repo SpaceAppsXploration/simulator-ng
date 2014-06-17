@@ -27,6 +27,6 @@
 		"karma-phantomjs-launcher": "~0.1.0",
 		"karma": ">=0.10.4",
 		"karma-ng-scenario": "~0.1.0",
-		"sockjs-client": "latest"
+        "sockjs-client": "latest"
 	}
 }
