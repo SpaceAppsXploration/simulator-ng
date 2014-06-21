@@ -1,5 +1,5 @@
-simulator
-=========
+simulator-ng
+===========
 
 
 ## Installation

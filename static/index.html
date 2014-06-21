@@ -5,28 +5,39 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <script src="/static/old/js/vendors/jquery.min.js"></script>
-        <script src="/static/old/js/vendors/sockjs-0.3.4.min.js"></script>
-        <script src="/static/old/js/designing.js"></script>
-        <script src="/static/old/js/socketing.js"></script>
-        <script src="/static/old/js/domflow.js"></script>
-        <script src="/static/old/js/vendors/crel/crel.min.js"></script>
-        <script src="/static/old/js/vendors/json.human.js/src/json.human.js"></script>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" media="screen">
-        <link href="/static/old/css/responsive.css" rel="stylesheet" type="text/css">
-        <link href="/static/old/css/targets.css"rel="stylesheet" type="text/css">
-        <link href="/static/old/css/style.css" rel="stylesheet" type="text/css">
+        <script src="/static/app/js/vendors/jquery.min.js"></script>
+        <script src="/static/app/js/vendors/sockjs-0.3.4.min.js"></script>
 
-        <link rel="stylesheet" type="text/css"  href="/static/app/css/app.css" />
+        <script src="/static/app/js/flow/domflow.js"></script>
+        <script src="/static/app/js/vendors/crel/crel.min.js"></script>
+        <script src="/static/app/js/vendors/json.human.js/src/json.human.js"></script>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" media="screen">
+        <link href="/static/app/css/targets.css"rel="stylesheet" type="text/css">
+        <link href="/static/app/css/style.css" rel="stylesheet" type="text/css">
+
 
 	</head>
-	<body >
-		<h1>Chronos with AngularJS + RequireJS</h1>
-		<ul class="menu">
-			<li><a href="#/view1">View 1</a></li>
-			<li><a href="#/view2">View 2</a></li>
-		</ul>
-		<div ng-view></div>
-		<script data-main="/static/app/js/main" src="/static/bower_components/requirejs/require.js"></script>
+	<body ng-controller="establishSocket"> <!-- establish socket connection -->
+
+        <div class="row">
+          <div class="col-sm-12">
+            <ul class="menu">
+                <li><a href="#/start">Start</a></li>
+                <li><a href="#/mission">Mission</a></li>
+                <li><a href="#/payloads">Payloads</a></li>
+                <li><a href="#/bus">Bus</a></li>
+                <li><a href="#/results">Results</a></li>
+		    </ul>
+          </div>
+        </div>
+
+		<div ng-view>
+            <!-- Hook for ng templates -->
+		</div>
+
+
+
+    <script data-main="/static/app/js/main" src="/static/bower_components/requirejs/require.js"></script>
 	</body>
+
 </html>

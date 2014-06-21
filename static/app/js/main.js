@@ -3,7 +3,8 @@ require.config({
 		angular: '../../bower_components/angular/angular',
 		angularRoute: '../../bower_components/angular-route/angular-route',
 		angularMocks: '../../bower_components/angular-mocks/angular-mocks',
-		text: '../../bower_components/requirejs-text/text'
+		text: '../../bower_components/requirejs-text/text',
+        sockjsClient: '../../bower_components/sockjs-client/lib/all'
 	},
 	shim: {
 		'angular' : {'exports' : 'angular'},
@@ -28,6 +29,7 @@ require( [
 ], function(angular, app, routes) {
 	'use strict';
 	var $html = angular.element(document.getElementsByTagName('html')[0]);
+
 
 	angular.element().ready(function() {
 		angular.resumeBootstrap([app['name']]);

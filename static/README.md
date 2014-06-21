@@ -1,5 +1,7 @@
 # About
 
+Cloned from [Angular.js + Require.js](https://github.com/tnajdek/angular-requirejs-seed)
+
 This is a fork of [Angular Seed](https://github.com/angular/angular-seed) but with changes needed for requireJS support.
 
 * AngularJS 1.2.1

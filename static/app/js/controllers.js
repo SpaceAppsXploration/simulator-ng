@@ -1,11 +1,86 @@
+/**!
+*
+* Controllers
+* Templates Logic
+*
+* Copyright(c) 2014 Lorenzo <tunedconsulting@gmail.com>
+* MIT Licensed
+*
+*/
+
 define(['angular', 'services'], function (angular) {
 	'use strict';
 
-	/* Controllers */
-	
 	return angular.module('myApp.controllers', ['myApp.services'])
-		// Sample controller where service is being used
-		.controller('MyCtrl1', ['$scope', 'version', function ($scope, version) {
+		// controllers where Services are being used
+        .controller('establishSocket', ['$scope', 'socketService', function ($scope, socketService) {
+            // socketService creates socket
+            $scope.sock_open = true;
+            console.log('STATUS: ' + $scope.sock_open);
+            var toServer = function(query, obj){
+                return socketService.send({"query": query, "object": obj });
+            };
+            $scope.toServer = toServer
+		}])
+		.controller('Start', ['$scope', '$rootScope', 'Designing', 'socketService', function ($scope, $rootScope, Designing, socketService) {
+            $rootScope.Model = Designing;
+            $scope.Page = {};
+
+            $scope.retrieveT = function(obj) {
+                $rootScope.Model.destination = obj;
+                $scope.Page.selected = obj;
+
+                //console.log($rootScope.Model.destination);
+                //console.log($scope.Page.selected);
+
+            };
+
+            // controller waits for socket to open in rootScope
+            $rootScope.$on('socket', function(event, value) {
+                //console.log(event, value);
+                if (value === 1) {
+                    socketService.send({"query": "get_physics", "object": ""});
+                    socketService.send({"query": "get_target", "object": ""});
+                }
+                else console.log('now closed, cannot trigger');
+            });
+            $rootScope.$on('target', function(event, value) {
+                //console.log(event, value);
+                $rootScope.Model.setDestination(value);
+
+                $rootScope.$apply();
+            });
+            $rootScope.$on('targets', function(event, values) {
+                //console.log(event, value);
+                var earth = values.filter(function( obj ) {
+                        return obj.slug == 'earth';
+                });
+                var targets = values.filter(function( obj ) {
+                        return obj.use_in_sim == true;
+                });
+                $rootScope.Model.setDestination(earth[0]);
+                $scope.Page.selected = earth[0];
+                console.log($rootScope.Model.destination);
+                $scope.Page.targets = targets;
+                console.log($scope.Page.targets);
+                $scope.$apply();
+            });
+            $rootScope.$on('physics', function(event, value) {
+                console.log(event, value);
+                $scope.Page.physics = value;
+                $scope.$apply();
+            });
+		}])
+        .controller('Mission', ['$scope', 'version', function ($scope, version) {
+			$scope.scopedAppVersion = version;
+		}])
+        .controller('Payloads', ['$scope', 'version', function ($scope, version) {
+			$scope.scopedAppVersion = version;
+		}])
+        .controller('Bus', ['$scope', 'version', function ($scope, version) {
+			$scope.scopedAppVersion = version;
+		}])
+        .controller('Results', ['$scope', 'version', function ($scope, version) {
 			$scope.scopedAppVersion = version;
 		}])
 		// More involved example where controller is required from an external file

@@ -1,0 +1,287 @@
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
+
+body {
+  font-size: 10px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  background-color: #08090A;
+  overflow-y:scroll; }
+
+#controls-data {
+  color: #fff;
+  font-size: 14px;
+}
+
+#controls-data > p {
+  text-align: center;
+}
+
+.targets, .missions{
+  margin: auto auto 10px;
+  width:150px;
+  height:auto;
+}
+
+#json-table {
+  color: #fff;
+  font-size:14px;
+}
+
+.jh-value > span{
+  padding-left:10px;
+  margin-left:10px;
+}
+
+.milkyway {
+    background-image: url(/static/app/img/background.svg);
+    background-size: cover;
+    height: 100%;
+    overflow-x:hidden;
+    /*overflow-y:hidden;*/
+    background-repeat: no-repeat;
+}
+
+div.list-group-item {
+    height:auto;
+    min-height:110px;
+    background-color: transparent;
+}
+div.list-group-item.active small {
+    color:#fff;
+}
+
+
+input[type="checkbox"].checkboxPL, input[type="checkbox"].checkboxBUS {
+    display: none;
+}
+input[type="checkbox"].checkboxPL + label, input[type="checkbox"].checkboxBUS + label {
+    display: inline;
+    position: relative;
+    background-color: #b94a48;
+
+    /*label styling*/
+    padding: 2px 4px;
+    font-size: 1.2em;
+    font-weight: bold;
+    line-height: 14px;
+    color: #ffffff;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+input[type="checkbox"].checkboxPL:checked + label, input[type="checkbox"].checkboxBUS:checked + label {
+    background-color: #468847;
+}
+
+input[type="checkbox"].checkboxPL:disabled + label, input[type="checkbox"].checkboxBUS:disabled + label {
+    opacity: 0.5;
+}
+
+a#set-payload {
+    background-color: #468847;
+}
+
+h1 {
+  width: 100%;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8); }
+
+h1 span, #navbar h1 a {
+  display: inline;
+  position: relative;
+  padding: 0;
+  font-weight: 300;
+  font-size: 14px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+
+#navbar, #controls, #data {
+  background: rgba(0, 0, 0, 0.4); }
+
+#navbar {
+  z-index: 99;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 16px;
+  width: 100%;
+  height: 48px; }
+
+#navbar a, #data a, #controls label {
+  color: rgba(255, 255, 255, 0.6);
+  display: block;
+  position: relative;
+  text-decoration: none; }
+
+#navbar a:hover, #data a:hover, #controls label:hover {
+  color: #FFF; }
+
+#data a.active {
+  color: #0CF; }
+
+#navbar a {
+  position: absolute;
+  top: 0;
+  height: 48px;
+  padding: 16px;
+  font-size: 14px; }
+
+#toggle-data {
+  left: 0; }
+
+#toggle-controls {
+  right: 0; }
+
+#data, #controls {
+  z-index: 99;
+  position: fixed;
+  opacity: 1;
+  top: 49px;
+  padding: 16px; }
+
+.data-close #data {
+  left: -100%; }
+
+.data-open #data {
+  left: 0px; }
+
+.controls-close #controls {
+  right: -100%; }
+
+.controls-open #controls {
+  right: 0px; }
+
+#data a {
+  margin-bottom: 1px;
+  padding: 6px 10px;
+  font-size: 18px; }
+
+#controls label {
+  opacity: .6;
+  height: 24px;
+  margin-bottom: 28px; }
+
+#controls label:hover {
+  opacity: 1; }
+
+#controls label:before {
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  text-align: center;
+  color: #FFF;
+  z-index: 99; }
+
+#controls label span {
+  display: block;
+  margin-left: 36px;
+  padding-top: 4px;
+  font-size: 18px;
+  color: #FFF; }
+
+#controls span{
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    padding: 15px 15px;
+}
+
+#controls input {
+  display: block;
+  appearance: none; }
+
+#controls input[type="radio"]:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #FFF;
+  border-radius: 16px; }
+
+#controls input:checked[type="radio"]:after {
+  content: '';
+  display: block;
+  top: 3px;
+  margin-left: 3px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: #FFF;
+  z-index: 99; }
+
+#controls input[type="checkbox"]:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100px;
+  height: 22px;
+  border: 2px solid #FFF;
+  border-radius: 16px; }
+
+#controls input[type="checkbox"]:after {
+  content: '';
+  display: block;
+  top: 3px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: #FFF;
+  z-index: 99; }
+
+#controls label.set-view:before {
+  font: bold small-caps 11px/20px sans-serif; }
+
+  #navbar, #controls, #data {
+    background: transparent; }
+
+  #navbar a {
+    display: none; }
+
+  h1 {
+    font-size: 22px;
+    margin-top: 8px; }
+                    
+  #navbar h1 span {
+    line-height: 32px;
+  }
+
+  #controls {
+    padding-right: 32px;
+}
+
+  #data {
+    position: fixed;
+    top: inherit;
+    bottom: 0;
+    width: 100%;
+    text-align: center; }
+
+  #data a {
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    padding: 15px 15px;
+    cursor: pointer;
+  }
+
+  #design{
+    margin-top:25%;
+  }
+
+#data-physics span{
+    padding:0;
+    font-size:12px;
+}

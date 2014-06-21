@@ -3,11 +3,11 @@ import tornado.httpclient
 
 
 class RESTandCache(object):
-    '''
+    """
         Class for Tornado to Async-Call the REST endpoints:
         def get(self, what): client instantiation and fetch
         def on_response(self, response): callback 
-    '''
+    """
     def __init__(self, what):
         self.urls = { 'get_targets': 'http://www.spacexplore.it:80/api/targets/',
                       'get_physics': 'http://www.spacexplore.it:80/api/physics/planets/'
