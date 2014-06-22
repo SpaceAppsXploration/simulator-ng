@@ -43,11 +43,11 @@
 
 
     <div id="data" class="row">
-      <div class="col-sm-8"  >
-            <a ng-repeat="t in Page.targets" target class="col-sm-2 {{t.slug}} bodies-link" id="{{t.slug}}" ng-click="retrieveT(t);">{{t.name}}</a>
+      <div class="col-sm-8">
+            <a target ng-repeat="t in Page.targets" class="col-sm-2 {{t.slug}} bodies-link" id="{{t.slug}}" ng-click="chooseT(t);">{{t.name}}</a>
       </div>
         <div class="col-sm-4">
-            <a class="btn btn-primary" id="design" title="go" ng-click="">Design Mission</a>
+            <a class="btn btn-primary" id="design" title="go" href="#/mission">Design Mission</a>
         </div>
     </div>
 

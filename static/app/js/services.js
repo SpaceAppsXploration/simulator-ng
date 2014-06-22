@@ -141,7 +141,10 @@ define(['angular'], function (angular) {
                 socket.onopen = function(){
                     // rootScope emits opening of socket for controllers
                     $rootScope.$emit('socket', 1);
-                    service.open = true;
+                    $rootScope.$apply(function() {
+                        $rootScope.Socket.open = true;
+                    });
+                    //service.open = true;
                     connectTimeStamps.push( new Date().getTime() );
                     var args = arguments;
 
@@ -231,9 +234,6 @@ define(['angular'], function (angular) {
                     open: false
                 };
 
-            var setVar = function(scope, value){
-              scope.targets = value;
-            };
             var socket = createSocket();
             return service;
         }]);
