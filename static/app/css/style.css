@@ -4607,37 +4607,6 @@ transition: all 0.4s ease-in-out;
 margin-right: 10px;
 }
 
-.menu-btn-tb p{padding: 0;
-line-height: 14px;
-margin-top: 6px;}
-#ico-pellet{ 	border:2px solid #3f3f3f; width:76px; height:76px; background:url(../images/icons/menu-icon.jpg) 0 0;}
-#ico-pellet:hover, #ico-pellet.hovered { border:2px solid #ab7938;background:url(../images/icons/menu-icon.jpg) 0 -76px; z-index:999990;}
-
-#ico-gusci\+di\+nocciola{ border:2px solid #3f3f3f; width:76px; height:76px; background:url(../images/icons/menu-icon.jpg) 608px 0;}
-#ico-gusci\+di\+nocciola:hover, #ico-gusci\+di\+nocciola.hovered{ border:2px solid #92592b; background:url(../images/icons/menu-icon.jpg) 608px -76px; z-index:999990;}
-
-#ico-noccioli\+di\+pesca{ 	 border:2px solid #3f3f3f; width:76px; height:76px; background:url(../images/icons/menu-icon.jpg) 532px 0;}
-#ico-noccioli\+di\+pesca:hover, #ico-noccioli\+di\+pesca.hovered{ border:2px solid #a0401a;background:url(../images/icons/menu-icon.jpg) 532px -76px; z-index:999990;}
-
-#ico-gusci\+di\+pinoli{ 	 border:2px solid #3f3f3f; width:76px; height:76px; background:url(../images/icons/menu-icon.jpg) 456px 0;}
-#ico-gusci\+di\+pinoli:hover, #ico-gusci\+di\+pinoli.hovered{ border:2px solid #ac9a38; background:url(../images/icons/menu-icon.jpg) 456px -76px; z-index:999990;}
-
-#ico-gusci\+di\+mandorla{ 	 border:2px solid #3f3f3f; width:76px; height:76px; background:url(../images/icons/menu-icon.jpg) 380px 0;}
-#ico-gusci\+di\+mandorla:hover, #ico-gusci\+di\+mandorla.hovered{ border:2px solid #ac8d38;background:url(../images/icons/menu-icon.jpg) 380px -76px; z-index:999990;}
-
-#ico-cippato{ 	 border:2px solid #3f3f3f; width:76px; height:76px; background:url(../images/icons/menu-icon.jpg) 304px 0;}
-#ico-cippato:hover, #ico-cippato.hovered{ border:2px solid #caa217;background:url(../images/icons/menu-icon.jpg) 304px -76px; z-index:999990;}
-
-#ico-legna\+da\+ardere{ border:2px solid #3f3f3f; width:76px; height:76px; background:url(../images/icons/menu-icon.jpg) 228px 0;}
-#ico-legna\+da\+ardere:hover, #ico-legna\+da\+ardere.hovered{ border:2px solid #613b16;background:url(../images/icons/menu-icon.jpg) 228px -76px; z-index:999990;}
-
-#ico-nocciolino\+di\+sansa{ border:2px solid #3f3f3f; width:76px; height:76px; background:url(../images/icons/menu-icon.jpg) 152px 0;}
-#ico-nocciolino\+di\+sansa:hover, #ico-nocciolino\+di\+sansa.hovered{ border:2px solid #523113;background:url(../images/icons/menu-icon.jpg) 153px -76px; z-index:999990;}
-
-#ico-sansa\+esausta{ border:2px solid #3f3f3f; width:76px; height:76px; background:url(../images/icons/menu-icon.jpg) 72px 0;}
-#ico-sansa\+esausta:hover, #ico-sansa\+esausta.hovered{ border:2px solid #7e611b;background:url(../images/icons/menu-icon.jpg) 72px -76px; z-index:999990;}
-
-
 .ico-effect:after {
 top: -2px;
 left: -2px;

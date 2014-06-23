@@ -1,0 +1,33 @@
+<div class="col-sm-12">
+
+  <div class="row" style="margin-left:10px;">
+
+        <h1 class="classic-title" style="text-align:left;">Choose Mission&apos;s Goal</h1>
+
+  </div>
+
+  <div class="row row-first">
+        <div class="col-md-1"><</div>
+    <div class="col-md-9" style="margin: auto auto auto -40px;">
+             <!-- Start Icon Box 1-->
+                  <div class="row service-box service-center" ng-repeat="g in Page.goals" style="border:1px solid;">
+                      <div class="col-sm-4">
+                          <div style="width:200px;height:200px;margin: 40px auto auto -0;"><img src="{{g.image_url}}" style="margin: 20px auto 10px auto;" class="media-object img-rounded img-responsive missions"/></div>
+                      </div>
+                      <div class="col-sm-8">
+                          <div class="service-content"  style="height:auto;margin-top: 3%;">
+                              <h4 style="padding-top:15px;">{{g.name}}</h4>
+
+                              <p style="margin: 20px auto 20px auto;">{{g.description}}</p>
+                              <p><a ng-click="chooseG(g);" class="set-mission submit btn btn-default">Choose</a></p>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- End Icon Box 1-->
+      </div>
+  </div>
+
+
+  <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+
+</div>

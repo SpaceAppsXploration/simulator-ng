@@ -14,7 +14,7 @@ define(['angular'], function (angular) {
   // Register Services
   // value service or factory
 	angular.module('myApp.services', [])
-		.value('version', '0.1')
+        .value('version', '0.1')
         .factory('Designing', [ function(){
             var factory; // Simulator model object
 
@@ -186,6 +186,10 @@ define(['angular'], function (angular) {
                         $rootScope.$emit('physics', response.data);
                     }
 
+                    if (response.data_type == 'destination-mission') {
+                        $rootScope.$emit(response.data_type, response.data);
+                    }
+
                     if( service.handlers.onmessage ){
                         $rootScope.$apply(
                             function(){
@@ -236,5 +240,23 @@ define(['angular'], function (angular) {
 
             var socket = createSocket();
             return service;
-        }]);
+        }])
+        .service('myService', function($http, $q) {
+            var _this = this;
+
+            this.promiseToHaveData = function() {
+                var defer = $q.defer();
+
+                $http.get('someFile.json')
+                    .success(function(data) {
+                        angular.extend(_this, data);
+                        defer.resolve();
+                    })
+                    .error(function() {
+                        defer.reject('could not find someFile.json');
+                    });
+
+                return defer.promise;
+            }
+        });
 });

@@ -8,12 +8,13 @@
         <script src="/static/app/js/vendors/jquery.min.js"></script>
         <script src="/static/app/js/vendors/sockjs-0.3.4.min.js"></script>
 
-        <script src="/static/app/js/flow/domflow.js"></script>
         <script src="/static/app/js/vendors/crel/crel.min.js"></script>
         <script src="/static/app/js/vendors/json.human.js/src/json.human.js"></script>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" media="screen">
-        <link href="/static/app/css/targets.css"rel="stylesheet" type="text/css">
         <link href="/static/app/css/style.css" rel="stylesheet" type="text/css">
+        <link href="/static/app/css/app.css"rel="stylesheet" type="text/css">
+        <link href="/static/app/css/targets.css"rel="stylesheet" type="text/css">
+
 
 
 	</head>
@@ -31,10 +32,15 @@
           </div>
         </div>
 
-		<div ng-view>
-            <!-- Hook for ng templates -->
-		</div>
+		<div class="row">
+            <div class="col-sm-8" ng-view>
+                <!-- Hook for ng templates -->
+            </div>
 
+            <div class="col-sm-4" id="selected" selected>
+                   <span>No selections made</span>
+            </div>
+        </div>
 
 
     <script data-main="/static/app/js/main" src="/static/bower_components/requirejs/require.js"></script>

@@ -8,37 +8,34 @@
 *
 */
 
-define(['angular', 'services'], function (angular) {
+define(['angular', 'services', 'utils', 'goals'], function (angular) {
 	'use strict';
 
 	return angular.module('myApp.controllers', ['myApp.services'])
 		// controllers where Services are being used
         .controller('establishSocket', ['$rootScope', '$scope', 'socketService', function ($rootScope, $scope, socketService) {
             /**
-            * ## socketService prepares to open socket
-            * controller for <body> (extends to all templates)
+            * ## controller for <body> (extends to all templates)
+            * socketService prepares to open socket
             */
 
             $rootScope.Socket = {}; // socket status object
 
-            var toServer = function(query, obj){ // utility to call a send to the server
+            var toServer = function(query, obj){ // utility to call a send to the server (SockJS emitter)
                 return socketService.send({"query": query, "object": obj });
             };
             $rootScope.toServer = toServer;
 
-            $rootScope.safeApply = function(fn) { // utility to safe apply for avoiding $digest errors
-                var phase = this.$root.$$phase;
-                if(phase == '$apply' || phase == '$digest') {
-                    if(fn && (typeof(fn) === 'function')) {
-                      fn();
-                    }
-                } else {
-                this.$apply(fn);
-                }
-            };
+            $rootScope.safeApply = safeApply; // load safeApply() from utils.js
 		}])
-		.controller('Start', ['$scope', '$rootScope', 'Designing', 'socketService', function ($scope, $rootScope, Designing, socketService) {
-            // controller for 01-Destination
+		.controller('Start', ['$scope', '$rootScope', 'Designing', function ($scope, $rootScope, Designing) {
+            /**
+            * ## controller for 01-Destination
+            * set Model and Page objects
+            * define the choose destination method
+            * define events listeners
+            */
+
             $rootScope.Model = Designing;
             $scope.Page = {};
 
@@ -53,6 +50,7 @@ define(['angular', 'services'], function (angular) {
             $scope.chooseT = function(obj) { // method fired by clicking on a destination name in template
                 $rootScope.Model.destination = obj;
                 $scope.Page.selected = obj;
+                console.log($rootScope.Model);
 
             };
 
@@ -80,24 +78,57 @@ define(['angular', 'services'], function (angular) {
                 });
                 $rootScope.Model.setDestination(earth[0]); // set initial value to 'earth' object
 
-                $scope.$apply(function(){
+                $rootScope.safeApply(function(){
                     $scope.Page.selected = earth[0];           // set the selected destination in template scope
-                    //console.log($rootScope.Model.destination);
+                    //console.log($rootScope.Model);
                     $scope.Page.targets = targets;             // save the targets' data in template scope
                     //console.log($scope.Page.targets);
                 });
             });
             $rootScope.$on('physics', function(event, value) { // save physical data
                 //console.log(event, value);
-                $scope.Page.physics = value;
-                $scope.$apply();
+                $rootScope.safeApply(function(){
+                    $scope.Page.physics = value;
+                });
             });
 		}])
-        .controller('Mission', ['$scope', 'version', function ($scope, version) {
-			$scope.scopedAppVersion = version;
+        .controller('Mission', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+            if(typeof $rootScope.Model == 'undefined' || $rootScope.Model.destination == null) return $location.path('/start');
+
+            $scope.Page = {};
+            $scope.Page.goals = goals; // load goals data from goals.js
+            $('#selected').html('').html('<div class="row"><img class="img-rounded img-mini" src="'+ $rootScope.Model.destination.image_url +'"/><span class="text">'+ $rootScope.Model.destination.name +'</span></div>');
+
+            $scope.chooseG = function(obj) { // method fired by clicking on choose for mission goal
+                $rootScope.Model.mission = obj;
+                var destination = $rootScope.Model.destination.slug;
+                var goal = $rootScope.Model.mission.slug;
+                $rootScope.toServer("destination-mission", "?destination="+destination+"&mission="+goal); // ask to server if goal-destination combo is good
+                console.log($rootScope.Model);
+            };
+			console.log($rootScope.Model.destination);
+            console.log($scope.Page.goals);
+
+            $rootScope.$on('destination-mission', function(event, value){
+                console.log(value);
+                if (value.code == 1) {
+                    console.log('Error');
+                    var error = value.message+': '+value.content;
+                    $rootScope.Model.setError(error);
+                    $rootScope.Model.setMission(null);
+                    return alert(error);
+                } else {
+                    console.log('Redirect');
+                    $rootScope.Model.setError(null);
+                    $rootScope.$apply(function(){$location.path('/payloads');});
+                }
+
+            });
 		}])
-        .controller('Payloads', ['$scope', 'version', function ($scope, version) {
-			$scope.scopedAppVersion = version;
+        .controller('Payloads', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+			if(typeof $rootScope.Model == 'undefined' || $rootScope.Model.destination == null) return $location.path('/start');
+            else if($rootScope.Model.mission == null) return $location.path('/mission');
+            $('#selected').append('<div class="row"><img class="img-rounded img-mini" src="'+ $rootScope.Model.mission.image_url +'"/><span class="text">'+ $rootScope.Model.mission.name +'</span></div>')
 		}])
         .controller('Bus', ['$scope', 'version', function ($scope, version) {
 			$scope.scopedAppVersion = version;
