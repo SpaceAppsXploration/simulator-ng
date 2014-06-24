@@ -1,5 +1,5 @@
 
-<div class="col-sm-12">
+<div class="col-sm-8">
 
   <div class="row" style="margin-left:10px;">
 
@@ -12,7 +12,7 @@
       <div id="controls" style="width:99%; height:250px;margin-top:5%;">
         <div class="row" style="margin-bottom:15px;">
           <div class="col-sm-1"></div>
-          <div class="col-sm-5">
+          <div class="col-sm-4">
               <div class="row">
                   <span>Description</span>
               </div>
@@ -22,8 +22,8 @@
                   </description>
                 </div>
           </div>
-          <div class="col-sm-1"></div>
-          <div class="col-sm-5">
+
+          <div class="col-sm-4">
               <div class="row">
                   <span>Data</span>
               </div>
@@ -40,16 +40,20 @@
     </div>
 
 
-    <div id="data" class="row">
+    <div id="data" class="row" style="padding-top: 15px;">
       <div class="col-sm-8">
             <a target ng-repeat="t in Page.targets" class="col-sm-2 {{t.slug}} bodies-link" id="{{t.slug}}" ng-click="chooseT(t);">{{t.name}}</a>
       </div>
         <div class="col-sm-4">
-            <a class="btn btn-primary" id="design" title="go" href="#/mission">Set Destination</a>
+            <a class="btn btn-primary" id="design" title="go" ng-click="setDestination()">Set Destination</a>
         </div>
     </div>
 
 
 
   </div>
+</div>
+
+<div class="col-sm-4" id="selected" selectedmenu>
+       <span>No selections made</span>
 </div>

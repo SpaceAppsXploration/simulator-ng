@@ -32,18 +32,26 @@
           </div>
         </div>
 
-		<div class="row">
-            <div class="col-sm-8" ng-view>
-                <!-- Hook for ng templates -->
-            </div>
+		<div class="row" ng-view ng-cloack>
 
-            <div class="col-sm-4" id="selected" selected>
-                   <span>No selections made</span>
-            </div>
+                <!-- Hook for ng templates -->
+
         </div>
 
 
     <script data-main="/static/app/js/main" src="/static/bower_components/requirejs/require.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script>
+
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-50314218-1', 'spacexplore.it');
+	  ga('send', 'pageview');
+
+    </script>
 	</body>
 
 </html>

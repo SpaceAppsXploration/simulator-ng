@@ -23,7 +23,9 @@ class SocketConnection(SockJSConnection):
                  'set-payload': 'http://www.spacexplore.it:80/simulation/',
                  'set-bus': 'http://www.spacexplore.it:80/simulation/',
                  'get_ratings': 'calculate',
-                 'get_missions': 'http://www.spacexplore.it:80/api/missions/by/target/'
+                 'get_missions': 'http://www.spacexplore.it:80/api/missions/by/target/',
+                 'get_comps': 'http://www.spacexplore.it:80/api/components/',
+                 'get_comps_types': 'http://www.spacexplore.it:80/api/components/types/',
     }
 
     def send_error(self, message, error_type=None):

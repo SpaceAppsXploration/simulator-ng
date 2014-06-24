@@ -37,7 +37,7 @@ define(['angular'], function (angular) {
             };
 
             factory.setMission = function(mission){
-                this.mission = mission
+                this.mission = mission;
                 return false
             };
 
@@ -46,14 +46,14 @@ define(['angular'], function (angular) {
             };
 
             factory.addPayload = function(name){
-                var payloads = this.payloads
-                payloads.push(name)
+                var payloads = this.payloads;
+                payloads.push(name);
                 return false
             };
 
             factory.removePayload = function(name){
-                var payloads = this.payloads
-                var index = jQuery.inArray(name, payloads)
+                var payloads = this.payloads;
+                var index = $.inArray(name, payloads);
                 if (index > -1) {
                     payloads.splice(index, 1);
                 }
@@ -64,13 +64,13 @@ define(['angular'], function (angular) {
             };
 
             factory.addBus = function(name){
-                this.bus.push(name)
+                this.bus.push(name);
                 return false
             };
 
             factory.removeBus = function(name){
-                var bus = this.bus
-                var index = jQuery.inArray(name, bus)
+                var bus = this.bus;
+                var index = jQuery.inArray(name, bus);
                 if (index > -1) {
                     bus.splice(index, 1);
                 }
@@ -174,20 +174,10 @@ define(['angular'], function (angular) {
                     if (response.data_type == 'get_target') {
                         if (response.data.length > 1) {
                             //show targets infos
-                            $rootScope.$emit('targets', response.data);
+                            var go = $rootScope.$emit('targets', response.data);
                         }
-                        else {
-                            $rootScope.$emit('target', response.data);
-                        }
-
-                    }
-
-                    if (response.data_type == 'get_physics') {
-                        $rootScope.$emit('physics', response.data);
-                    }
-
-                    if (response.data_type == 'destination-mission') {
-                        $rootScope.$emit(response.data_type, response.data);
+                    } else {
+                        var go = $rootScope.$emit(response.data_type, response.data);
                     }
 
                     if( service.handlers.onmessage ){

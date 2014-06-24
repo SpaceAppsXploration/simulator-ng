@@ -1,0 +1,65 @@
+<div class="col-sm-8">
+  <div class="row" style="margin-left:10px;">
+
+        <h1 class="classic-title" style="text-align:left;">Choose Mission&apos;s Scientific Payload</h1>
+
+  </div>
+
+    <div class="row row-first">
+      <div class="row" ng-repeat="comp in Page.comps">
+        <div class="col-md-1"></div>
+        <div class="col-md-9">
+              <div class="list-group">
+                  <div class="list-group-item">
+                      <div class="media col-md-3">
+                          <figure class="pull-left">
+                              <img class="media-object img-rounded img-responsive"  src="http://placehold.it/80x80" alt="" >
+                          </figure>
+                      </div>
+                      <div class="col-md-6">
+                          <h4 class="list-group-item-heading"> {{comp.name}} </h4>
+                          <p class=""> {{comp.description}}
+                          </p>
+                      </div>
+                      <div class="col-md-3 text-center">
+                          <input type="checkbox" id="{{$index}}" ng-model="Page.checkboxesPL[$index]" ng-change="togglePayload(comp)" class="checkboxPL" data-slug="{{comp.slug}}"/>
+                          <label for="{{$index}}">Assemble</label>
+                      </div>
+                  </div>
+              </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+             <p style="text-align:right;padding-top:15px;"><a id="top" style="cursor:pointer;" onclick="$('html, body').animate({scrollTop:0}, 'slow');return false;">top</a></p>
+        </div>
+    </div>
+
+   </div>
+</div>
+
+<div class="col-sm-4">
+    <div class="row" id="selected" selectedmenu>
+       <span>No selections made</span>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+             <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+             <p style="text-align:right;"><a id="set-payload" ng-click="setPayloads()" class="btn btn-primary btn-lg">Payload Design Is A Go</a></p>
+        </div>
+    </div>
+
+</div>
+
+
+<style type="text/css">
+.list-group {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+</style>
