@@ -11,13 +11,13 @@ define(['angular', 'services'], function(angular, services) {
                 scope.$watch('model', function(obj, attrs) {
                    if(model != null && model.destination != null) {
                        $('#selected').html('').append('<div class="row"><img class="img-rounded img-mini" src="'+ model.destination.image_url +'"/><span class="text">'+ model.destination.name +'</span></div>');
-                   }
+                   } else $('#selected').html('').append("<span>No selections made</span>");
                    if(model != null && model.mission != null) {
                        $('#selected').append('<div class="row"><img class="img-rounded img-mini" src="'+ model.mission.image_url +'"/><span class="text">'+ model.mission.name +'</span></div>')
                    }
                    if(model != null && model.payloads != null && model.payloads.length != 0) {
                        $('#selected').append('<div class="row"><img class="img-rounded img-mini" src="http://placehold.it/50x50"/><span class="text">'+ toString(model.payloads) +'</span></div>')
-                   } else $('#selected').html('').append("<span>No selections made</span>");
+                   }
 
 
                 });
