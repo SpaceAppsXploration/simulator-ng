@@ -27,6 +27,7 @@ ratings = {
     
 
     'opt_sensor': (None, 3, None),
+    'laser_alt': (None, 3, None),
     'radio_sensor': (None, 3, None),
     'microwave': (None, 3, None),
     'infrared': (None, 3, None),
