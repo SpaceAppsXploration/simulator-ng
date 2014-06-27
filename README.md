@@ -1,12 +1,27 @@
 simulator-ng
 ===========
 
+## What's that?
+
+This a POC app for Chronos Project Platform.
+
+This is a Python3 [Tornado](https://github.com/tornadoweb/tornado) Web-server to run [sockjs](https://github.com/sockjs/sockjs-client) with [sockjs-tornado](https://github.com/mrjoes/sockjs-tornado).<br/>
+The data is fetched from [Chronos cloudService](https://github.com/SpaceAppsXploration/cloudService) at [http://spacexplore.it](http://www.spacexplore.it).<br/>
+The app is the Angular-js one in /static/app.
+
+## To Do
+
+Implementing promises <br/>
+Write uilities' functions to handle controllers' common tasks <br/>
+Fix the pages navigation system (pages should keep selections) <br/>
+Move DOM manipulation from controllers to directives<br/>
+
+Notes: $routeProvider > resolve can be found in $route.current.locals<br/>
+Use $scope.bind('<mouseevent>') in directives to trigger events
+
 
 ## Installation
 
-py3.3-tornado server
-
-This is a Python3 [Tornado](https://github.com/tornadoweb/tornado) Web-server to run [sockjs](https://github.com/sockjs/sockjs-client) with [sockjs-tornado](https://github.com/mrjoes/sockjs-tornado)
 
 You need `npm` and `bower` to install client-side libraries and tests, and `angularjs` itself.
 
@@ -30,6 +45,6 @@ To run the server locally:
 
 * Start local server, in simulator-ng directory:
 
-        python3.3 astroloop.py
+        nohup python3.3 astroloop.py &
 
 Check if working: go to [localhost:8080](http://localhost:8080) in your browser
