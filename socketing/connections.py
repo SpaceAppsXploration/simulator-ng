@@ -16,13 +16,13 @@ class SocketConnection(SockJSConnection):
     """
 
     clients = set()
-    SOCK_MSGS = {'get_target': 'http://localhost:8000/api/targets/%s',
-                 'get_physics': 'http://localhost:8000/api/physics/planets/%s',
-                 'destination-mission': 'http://localhost:8000/simulation/%s',
+    SOCK_MSGS = {'get_target': 'http://www.spacexplore.it:80/api/targets/%s',
+                 'get_physics': 'http://www.spacexplore.it:80/api/physics/planets/%s',
+                 'destination-mission': 'http://www.spacexplore.it:80/simulation/%s',
                  'get_ratings': 'calculate',
-                 'get_comps': 'http://localhost:8000/api/components/%s',
-                 'get_comps_types': 'http://localhost:8000/api/components/types/%s',
-                 'get_sci_data': 'http://localhost:8000/api/scidata/by/target/%s/by/comps/%s',
+                 'get_comps': 'http://www.spacexplore.it:80/api/components/%s',
+                 'get_comps_types': 'http://www.spacexplore.it:80/api/components/types/%s',
+                 'get_sci_data': 'http://www.spacexplore.it:80/api/scidata/by/target/%s/by/comps/%s',
     }
 
     def send_error(self, message, error_type=None):
