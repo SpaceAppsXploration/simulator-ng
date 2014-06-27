@@ -23,12 +23,18 @@ ratings = {
     'deep_space_obs': (5, None, 2.5),
     'atm_analysis': (5, None, 2),
     'sample_collect': (5, None, 5),
-    'telecom':(1.5, None, 1),
+    'telecom': (1.5, None, 1),
     
 
-    'opt_sensor': (None, 4, None),
-    'radio_sensor': (None, 4, None),
-    'spectrometer': (None, 5, None),
+    'opt_sensor': (None, 3, None),
+    'radio_sensor': (None, 3, None),
+    'microwave': (None, 3, None),
+    'infrared': (None, 3, None),
+    'ultraviolet': (None, 3, None),
+    'x_rays': (None, 3, None),
+    'gamma_rays': (None, 3, None),
+    'plasma': (None, 4, None),
+    'particles': (None, 4, None),
     'probe': (None, 5, None),
     'amplifier': (None, 3, None),
 

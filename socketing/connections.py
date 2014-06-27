@@ -16,16 +16,13 @@ class SocketConnection(SockJSConnection):
     """
 
     clients = set()
-    SOCK_MSGS = {'get_target': 'http://www.spacexplore.it:80/api/targets/',
-                 'get_physics': 'http://www.spacexplore.it:80/api/physics/planets/',
-                 'destination': 'object',
-                 'destination-mission': 'http://www.spacexplore.it:80/simulation/',
-                 'set-payload': 'http://www.spacexplore.it:80/simulation/',
-                 'set-bus': 'http://www.spacexplore.it:80/simulation/',
+    SOCK_MSGS = {'get_target': 'http://localhost:8000/api/targets/%s',
+                 'get_physics': 'http://localhost:8000/api/physics/planets/%s',
+                 'destination-mission': 'http://localhost:8000/simulation/%s',
                  'get_ratings': 'calculate',
-                 'get_missions': 'http://www.spacexplore.it:80/api/missions/by/target/',
-                 'get_comps': 'http://www.spacexplore.it:80/api/components/',
-                 'get_comps_types': 'http://www.spacexplore.it:80/api/components/types/',
+                 'get_comps': 'http://localhost:8000/api/components/%s',
+                 'get_comps_types': 'http://localhost:8000/api/components/types/%s',
+                 'get_sci_data': 'http://localhost:8000/api/scidata/by/target/%s/by/comps/%s',
     }
 
     def send_error(self, message, error_type=None):
@@ -49,12 +46,11 @@ class SocketConnection(SockJSConnection):
         }))
 
     def get(self, msg):
-        url = self.SOCK_MSGS[msg['query']]
-        q = str(msg['object'])
-        # print(url+q)
+        url = self.SOCK_MSGS[msg['query']] % msg['object']
+        print(url)
         #query = self.get_argument('q')
         client = tornado.httpclient.HTTPClient()
-        response = client.fetch(url + q)
+        response = client.fetch(url)
         client.close()
         return json.loads(response.body.decode("utf-8"))
 
@@ -115,6 +111,22 @@ class SocketConnection(SockJSConnection):
                 # query REST endpoint and return json
                 #print(msg)
                 response = self.get(msg)
+                self.send_message(response, msg['query'])
+                return
+
+            elif msg['query'] == 'get_sci_data':
+                params = msg['object']
+                target = params['target']
+                comps = params['comps']
+                print(target, comps)
+                res = []
+
+                for i in comps:
+                    res.append(self.get({'query': 'get_sci_data', 'object': (str(target), str(i))}))
+                #response = self.get(msg)
+                res = [item for sublist in res for item in sublist]
+                response = list({v['id']: v for v in res}.values())
+                print(response)
                 self.send_message(response, msg['query'])
                 return
 

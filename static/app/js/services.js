@@ -174,10 +174,10 @@ define(['angular'], function (angular) {
                     if (response.data_type == 'get_target') {
                         if (response.data.length > 1) {
                             //show targets infos
-                            var go = $rootScope.$emit('targets', response.data);
+                            $rootScope.$emit('targets', response.data);
                         }
                     } else {
-                        var go = $rootScope.$emit(response.data_type, response.data);
+                        $rootScope.$emit(response.data_type, response.data);
                     }
 
                     if( service.handlers.onmessage ){

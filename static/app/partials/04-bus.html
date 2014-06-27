@@ -5,8 +5,68 @@
 
   </div>
 
+
+  <div class="row row-first">
+      <div class="row" ng-repeat="comp in Page.bus" style="border:1px solid;">
+
+        <div class="row" style="margin-bottom:25px;">
+            <div ng-repeat="c in comp">
+                <div class="col-sm-1"></div>
+                    <div class="media col-sm-5" ng-if="$index == 0">
+                        <p style="font-weight:bold; text-decoration: underline;">{{c.pbtype[0]}}
+                        </p>
+                    </div>
+                    <div class="media col-sm-5" ng-if="$index == 1">
+                        <p style="font-weight:bold;"> &nbsp;&nbsp;
+                        </p>
+                    </div>
+            </div>
+
+         <div class="row">
+              <div class="col-sm-1"></div>
+
+                <div class="col-sm-5" ng-repeat="c in comp" id="div">
+                    <div class="col-sm-12 text-center">
+                        <div class="col-sm-4">
+                            <h4 class="list-group-item-heading"> {{c.name}} </h4>
+                        </div>
+                        <div class="col-sm-8" style="padding-top:15px;">
+                            <input bus type="checkbox" ng-change="toggleBUS(c)" ng-model="Page.checkboxesBUS[$parent.$index][$index]" id="{{$parent.$index}}{{$index}}" class="checkboxBUS" data-slug="{{c.slug}}"/>
+                            <label for="{{$parent.$index}}{{$index}}">Assemble</label>
+                        </div>
+                    </div>
+                        <p class=""> {{c.description}}
+                        </p>
+                </div>
+
+         </div>
+      </div>
+
+  </div>
+</div>
 </div>
 
-<div class="col-sm-4" id="selected" selectedmenu>
+<div class="col-sm-4">
+    <div class="row" id="selected" selectedmenu>
        <span>No selections made</span>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+             <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+             <p style="text-align:right;"><a id="set-bus" ng-click="setBus()" class="btn btn-primary btn-lg">Bus Design Is A Go</a></p>
+        </div>
+    </div>
+
 </div>
+
+
+<style type="text/css">
+.text-center {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+</style>

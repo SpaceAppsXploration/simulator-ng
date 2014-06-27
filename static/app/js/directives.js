@@ -83,6 +83,5 @@ define(['angular', 'services'], function(angular, services) {
                 restrict: "A"
                 });
         });
-
 });
 

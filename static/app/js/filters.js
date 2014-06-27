@@ -8,5 +8,5 @@ define(['angular', 'services'], function (angular, services) {
 			return function(text) {
 				return String(text).replace(/\%VERSION\%/mg, version);
 			};
-	}]);
+	    }]);
 });
