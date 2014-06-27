@@ -35,6 +35,7 @@ ratings = {
     'gamma_rays': (None, 3, None),
     'plasma': (None, 4, None),
     'mag': (None, 4, None),
+    'grav': (None, 4, None),
     'particles': (None, 4, None),
     'probe': (None, 5, None),
     'amplifier': (None, 3, None),
