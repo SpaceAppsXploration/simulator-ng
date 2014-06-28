@@ -306,6 +306,7 @@ input[type="submit"] {
 
 .menu > li {
   display: inline;
+    font-weight: bold;
 }
 
 .menu > li:before {

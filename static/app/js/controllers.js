@@ -13,7 +13,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
 	return angular.module('myApp.controllers', ['myApp.services'])
 		// controllers where Services are being used
-        .controller('establishSocket', ['$rootScope', '$scope', 'socketService', 'Designing', function ($rootScope, $scope, socketService, Design) {
+        .controller('establishSocket', ['$rootScope', '$scope', '$location', 'socketService', 'Designing', function ($rootScope, $scope, $location, socketService, Designing) {
             /**
             * ## controller for <body> (extends to all templates)
             * socketService prepares to open socket
@@ -28,7 +28,12 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             $rootScope.safeApply = safeApply; // load safeApply() from utils.js
 
-            $scope.Model = Design; // init the Model object
+            $scope.reset = function() {
+                $scope.Model = Designing;
+                $location.path('/start');
+            };
+
+            $scope.Model = Designing; // init the Model object
             $scope.Page = {};
 		}])
 		.controller('Start', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
