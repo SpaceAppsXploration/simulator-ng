@@ -52,7 +52,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             $scope.chooseT = function(obj) { // method fired by clicking on a destination name in template
                 $scope.safeApply(function(){ $scope.Page.highlight = obj; });
-                console.log($scope.Page.highlight);
+                //console.log($scope.Page.highlight);
 
             };
 
@@ -87,7 +87,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 });
             });
             $rootScope.$on('get_physics', function(event, value) { // save physical data
-                console.log(event, value);
+                //console.log(event, value);
                 $scope.safeApply(function(){
                     $scope.Page.physics = value;
                 });
@@ -102,10 +102,11 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             */
 
             var Model = $scope.$parent.Model;
-            console.log(Model);
+            //console.log(Model);
             var paramsTemp = null;
 
             if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
+            if(Model.payloads != null) Model.payloads = null;
 
             $scope.Page.goals = goals; // load goals data from goals.js
 
@@ -115,21 +116,21 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 var goal = Model.mission.slug;
                 paramsTemp = "?destination="+destination+"&mission="+goal;
                 $rootScope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
-                console.log(Model);
+                //console.log(Model);
             };
             //console.log($scope.Page.goals);
 
             $rootScope.$on('destination-mission', function(event, value){
-                console.log(value);
+                //console.log(value);
                 if (value.code == 1) {
-                    console.log('Error');
+                    //console.log('Error');
                     var error = value.message+': '+value.content;
                     Model.setError(error);
                     Model.setMission(null);
                     paramsTemp = null;
                     return alert(error);
                 } else {
-                    console.log('Redirect');
+                    //console.log('Redirect');
                     Model.setError(null);
                     Model.setParams(paramsTemp);
                     $location.path('/payloads');
@@ -163,7 +164,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             $scope.togglePayload = function(obj){
                 console.log($scope.Page.checkboxesPL);
-                console.log(obj);
+                //console.log(obj);
                 var slug = obj.slug;
                 if($.inArray(slug, payloads) == -1) {
                     $scope.safeApply(function(){ Model.addPayload(slug); });
@@ -171,7 +172,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 else {
                     $scope.safeApply(function(){ Model.removePayload(slug); });
                 }
-                console.log(payloads);
+                //console.log(payloads);
             };
 
             $scope.setPayloads = function(){
@@ -181,20 +182,20 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     check += '&'+payloads[i]+'=true'
                 }
                 paramsTemp = params+check;
-                console.log(paramsTemp);
+                //console.log(paramsTemp);
                 $rootScope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
             };
 
             $rootScope.$on('destination-mission', function(event, value){
-                console.log(value);
+                //console.log(value);
                 if (value.code == 1) {
-                    console.log('Error');
+                    //console.log('Error');
                     var error = value.message+': '+value.content;
                     Model.setError(error);
                     paramsTemp = null;
                     return alert(error);
                 } else {
-                    console.log('Redirect');
+                    //console.log('Redirect');
                     Model.setError(null);
                     Model.setParams(paramsTemp);
                     $location.path('/bus');
@@ -211,7 +212,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                         return obj.category == 'bus';
                 });
 
-                console.log(pl)
+                //console.log(pl)
 
                 function toObject(arr) {
                     var rv = {};
@@ -248,7 +249,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 };
 
                 bs = grouped(bs, 2);
-                console.log(bs);
+                //console.log(bs);
                 $scope.safeApply(function(){
                     $scope.Page.pl = pl;          // set the payload
                     $scope.Page.bus = bs;          // set the bus obj in the Page
@@ -307,11 +308,11 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             $scope.toggleBUS = function(obj, el){
                 var model = $scope.Page.checkboxesBUS;
-                console.log(model)
+                //console.log(model)
                 for (var i in model){
                     if(model[i][0] == true) {
                         var id = i+[0];
-                        console.log($('#'+id).parent().parent().parent().next().find('input[type="checkbox"]'));
+                        //console.log($('#'+id).parent().parent().parent().next().find('input[type="checkbox"]'));
                         $('#'+id).parent().parent().parent().next().find('input[type="checkbox"]').prop('disabled', true);
                     } else {
                         var id = i+[0];
@@ -319,7 +320,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     }
                     if(model[i][1] == true) {
                         var id = i+[1];
-                        console.log($('#'+id).parent().parent().parent().prev().find('input[type="checkbox"]'));
+                        //console.log($('#'+id).parent().parent().parent().prev().find('input[type="checkbox"]'));
                         $('#'+id).parent().parent().parent().prev().find('input[type="checkbox"]').prop('disabled', true);
                     } else {
                         var id = i+[1];
@@ -335,7 +336,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 else {
                     $scope.safeApply(function(){ Model.removeBus(slug); });
                 }
-                console.log(bus);
+                //console.log(bus);
 
             };
 
@@ -346,20 +347,20 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     check += '&'+bus[i]+'=bustrue'
                 }
                 paramsTemp = params+check;
-                console.log(paramsTemp);
+                //console.log(paramsTemp);
                 $rootScope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
             };
 
             $rootScope.$on('destination-mission', function(event, value){
-                console.log(value);
+                //console.log(value);
                 if (value.code == 1) {
-                    console.log('Error');
+                    //console.log('Error');
                     var error = value.message+': '+value.content;
                     Model.setError(error);
                     paramsTemp = null;
                     return alert(error);
                 } else {
-                    console.log('Redirect');
+                    //console.log('Redirect');
                     Model.setError(null);
                     Model.setParams(paramsTemp);
                     $location.path('/results');
@@ -424,6 +425,20 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
 		}])
         .controller('Results', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+            var Model = $scope.$parent.Model;
+
+            if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
+            else if(Model.mission == null) return $location.path('/mission');
+            else if(Model.payloads == null) return $location.path('/payloads');
+
+            $scope.Page.sci_data = {};
+            $scope.Page.sci_data.loaded = false;
+            $scope.Page.sci_data.value = null;
+
+            $scope.Page.ratings = {};
+            $scope.Page.ratings.loaded = false;
+            $scope.Page.ratings.value = null;
+
 			var totals = new Array()
 
             var payloads = $scope.Model.getPayloads();
@@ -435,8 +450,8 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             totals[3] = bus;
 
             var target = $scope.Model.getDestination().id;
-            console.log(totals)
-            console.log(target)
+            //console.log(totals)
+            //console.log(target)
 
             $rootScope.toServer("get_ratings", totals);
 
@@ -455,52 +470,23 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 comps.push(BUS[b]['id'])
             }
 
-             console.log(comps);
+             //console.log(comps);
             $rootScope.toServer("get_sci_data", {"target": target, "comps": comps});
 
             $rootScope.$on('get_ratings', function(event, values){
-              var data = values;
-              var rates = JsonHuman.format(data);
-              $('#ratings').append('<div id="t-ratings" class="table-responsive"></div>');
-              $('#t-ratings').append(rates);
+                $rootScope.safeApply(function() {
+                    $scope.Page.ratings.loaded = true;
+                    $scope.Page.ratings.value = values;
+                });
+
             });
 
             $rootScope.$on('get_sci_data', function(event, values){
-              var data = values;
-              console.log(data)
-
-              function collect(data){
-                var missions = '';
-                var data = data;
-                for (var i = 0; i < data.length ; i++) {
-                  var header = data[i].header;
-                    header = header.replace(/^(.{41}[^\s]*).*/);
-                  var image;
-                  if(data[i].mission != null) image = data[i].mission.image_url;
-                    else image = 'http://placehold.it/80x80';
-                  missions += '<div class="list-group"> \
-                              <div class="list-group-item"> \
-                                  <div class="media col-md-3"> \
-                                      <figure class="pull-left"> \
-                                          <img class="media-object img-rounded img-responsive"  src="'+image+'" alt="" style="width=auto; height:80px;" > \
-                                      </figure> \
-                                  </div> \
-                                  <div class="col-md-6"> \
-                                      <h4 class="list-group-item-heading">'+header+'...</h4> \
-                                      <p class="">  \
-                                          <a target="_blank" href="'+data[i].body+'"> Website</a>  \
-                                      </p> \
-                                      <p> \
-                                          <a onclick="#">See Details</a> \
-                                      </p> \
-                                  </div> \
-                              </div> \
-                          </div>';
-                }
-                return missions
-              }
-              var missions = collect(data)
-              $('#similars').append(missions);
+                console.log('SCI_DATA', values);
+                $rootScope.safeApply(function() {
+                    $scope.Page.sci_data.loaded = true;
+                    $scope.Page.sci_data.value = values;
+                });
             });
 
 		}])

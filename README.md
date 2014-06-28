@@ -11,10 +11,12 @@ The app is the Angular-js one in /static/app.
 
 ## To Do
 
-Implementing promises <br/>
-Write uilities' functions to handle controllers' common tasks <br/>
-Fix the pages navigation system (pages should keep selections) <br/>
-Move DOM manipulation from controllers to directives<br/>
+*Implement loader<br/>
+*Implement promises <br/>
+*Write uilities' functions to handle controllers' common tasks <br/>
+*Fix the pages navigation system (pages should keep selections) <br/>
+*Move DOM manipulation from controllers to directives<br/>
+*Implement [JSON-RPC](http://en.wikipedia.org/wiki/JSON-RPC)
 
 Notes: $routeProvider > resolve can be found in $route.current.locals<br/>
 Use $scope.bind('<mouseevent>') in directives to trigger events

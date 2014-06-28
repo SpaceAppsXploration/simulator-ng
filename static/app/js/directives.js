@@ -27,7 +27,7 @@ define(['angular', 'services'], function(angular, services) {
                 scope: false,
                 link: link,
                 restrict: "A"
-                });
+            });
         })
         .directive('target', function() {
             function link(scope,obj, attrs) {
@@ -76,6 +76,85 @@ define(['angular', 'services'], function(angular, services) {
 
                 });
 
+            }
+            return({
+                scope: false,
+                link: link,
+                restrict: "A"
+                });
+        })
+        .directive('similars', function() {
+            function link(scope, obj, attrs) {
+                function collect(data) {
+                   console.log(data);
+                        var missions = '';
+                        var data = data;
+                        for (var i = 0; i < data.length; i++) {
+                            var data = data[i];
+                            var header = data['header'];
+                            header = header.split(' ');
+                            header = header.slice(0, 4);
+                            header = header.join(' ')
+                            var image;
+                            if (data.mission != null) image = data.mission.image_url;
+                            else image = 'http://placehold.it/80x80';
+                            missions += '<div class="list-group"> \
+                                        <div class="list-group-item"> \
+                                        <div class="media col-md-3"> \
+                                        <figure class="pull-left"> \
+                                        <img class="media-object img-rounded img-responsive" src="' + image + '" alt="" style="width=auto; height:80px;" > \
+                                        </figure> \
+                                        </div> \
+                                        <div class="col-md-6"> \
+                                        <h4 class="list-group-item-heading">' + header + '...</h4> \
+                                        <p class=""> \
+                                        <a target="_blank" href="' + data.body + '"> Website</a> \
+                                        </p> \
+                                        <p> \
+                                        <a onclick="#">See Details</a> \
+                                        </p> \
+                                        </div> \
+                                        </div> \
+                                        </div>';
+                        }
+                        return missions
+                }
+
+                if (typeof scope.Page.ratings.loaded != 'undefined') {
+                    scope.$watch('Page.sci_data.loaded', function (obj, attrs) {
+                        if (obj != false) {
+                            $('#similars').html('');
+                            var data = scope.Page.sci_data.value;
+
+                            if (data.length != 0) var missions = collect(data);
+                            else $('#similars').append('no data for these target/payloads combination. Try again!');
+                            $('#similars').append(missions);
+
+                        }
+
+                    });
+                }
+            }
+            return({
+                scope: false,
+                link: link,
+                restrict: "A"
+                });
+        })
+        .directive('ratings', function() {
+            function link(scope,obj, attrs) {
+                if (typeof scope.Page.ratings.loaded != 'undefined') {
+                    scope.$watch('Page.ratings.loaded', function (obj, attrs) {
+                        if (obj != false) {
+                            $('#ratings').html('');
+                            var data = scope.Page.ratings.value;
+                            var rates = JsonHuman.format(data);
+                            $('#ratings').append('<div id="t-ratings" class="table-responsive"></div>');
+                            $('#t-ratings').append(rates);
+                        }
+
+                    });
+                }
             }
             return({
                 scope: false,
