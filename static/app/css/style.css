@@ -229,14 +229,11 @@ input[type="submit"] {
 .boxed-page header {
 	width: 1220px;
 }
-#loader {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: #000;
-	z-index: 9999999999;
+.loader {
+	position: relative;
+	width: auto;
+	height: auto;
+
 }
 
 /** Loader by http://lucianmarin.com **/

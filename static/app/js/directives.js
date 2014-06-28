@@ -161,6 +161,20 @@ define(['angular', 'services'], function(angular, services) {
                 link: link,
                 restrict: "A"
                 });
+        })
+        .directive('start', function() {
+            function link(scope,obj, attrs) {
+                obj.bind('mouseenter', function(event){
+                   console.log('start:hover', event.target)
+                });
+            }
+
+
+            return({
+                scope: false,
+                link: link,
+                restrict: "A"
+                });
         });
 });
 
