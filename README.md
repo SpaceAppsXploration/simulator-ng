@@ -7,15 +7,18 @@ This a POC app for Chronos Project Platform.
 
 This is a Python3 [Tornado](https://github.com/tornadoweb/tornado) Web-server to run [sockjs](https://github.com/sockjs/sockjs-client) with [sockjs-tornado](https://github.com/mrjoes/sockjs-tornado).<br/>
 The data is fetched from [Chronos cloudService](https://github.com/SpaceAppsXploration/cloudService) at [http://spacexplore.it](http://www.spacexplore.it).<br/>
-The app is the Angular-js one in /static/app.
+The app is the Angular-js one in [/static/app](https://github.com/SpaceAppsXploration/simulator-ng/tree/master/static/app).
 
 ## To Do
 
-*Implement loader<br/>
-*Implement promises <br/>
-*Write uilities' functions to handle controllers' common tasks <br/>
+*Write a brief tutorial<br/>
+*Write hints for hovers<br/>
+*Limit possible choices in bus and payloads (3/4)<br/>
+*Implement loaders<br/>
+*Implement promises<br/>
+*Write utilities' functions to handle controllers' common tasks <br/>
 *Fix the pages navigation system (pages should keep selections) <br/>
-*Move DOM manipulation from controllers to directives<br/>
+*Have all DOM manipulations into directives<br/>
 *Implement [JSON-RPC](http://en.wikipedia.org/wiki/JSON-RPC)
 
 Notes: $routeProvider > resolve can be found in $route.current.locals<br/>

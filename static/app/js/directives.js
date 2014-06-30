@@ -32,23 +32,23 @@ define(['angular', 'services'], function(angular, services) {
         .directive('target', function() {
             function link(scope,obj, attrs) {
                 var planet_id;
-                scope.$watch('Page.highlight', function(obj, attrs) {
+                if(typeof scope.Page.highlight != 'undefined') {
+                    scope.$watch('Page.highlight', function (obj, attrs) {
                         planet_id = obj.id;
                         //console.log('directive target change', attrs);
-                      /** update description **/
+                        /** update description **/
                         $('description').text("");
-                        $('description').append('<img class="media-object img-rounded img-responsive targets" src="'+obj.image_url+'"/>');
-                        $('description').append('<p>'+obj.characteristics+'</p>');
-                        var el = $('#'+obj.slug);
+                        $('description').append('<img class="media-object img-rounded img-responsive targets" src="' + obj.image_url + '"/>');
+                        $('description').append('<p>' + obj.characteristics + '</p>');
+                        var el = $('#' + obj.slug);
                         el.parent().find('a').removeClass('active');
                         el.addClass('active');
 
-                      /** update physics **/
-                       var list = scope.Page.physics;
-                       var body;
-                       if(planet_id == 2) body = list[0];
-                       else
-                       {
+                        /** update physics **/
+                        var list = scope.Page.physics;
+                        var body;
+                        if (planet_id == 2) body = list[0];
+                        else {
                             body = list.filter(function (o) {
                                 //console.log(o.target);
                                 return o.target == planet_id;
@@ -56,8 +56,8 @@ define(['angular', 'services'], function(angular, services) {
 
                         }
 //console.log(body)
-                       if(typeof body != 'undefined' && body.length != 0) {
-                           $('physics').text("");
+                        if (typeof body != 'undefined' && body.length != 0) {
+                            $('physics').text("");
                             var print = body;
                             delete print.target;
                             delete print.discover;
@@ -67,14 +67,15 @@ define(['angular', 'services'], function(angular, services) {
                             //console.log(physics)
                             $('physics').append('<div id="t-resp" class="table-responsive"></div>');
                             $('#t-resp').append(physics);
-                       } else {
-                           $('physics').text("");
-                           $('physics').html("No Data For This Body.");
-                       }
-                      /** update selected menu **/
+                        } else {
+                            $('physics').text("");
+                            $('physics').html("No Data For This Body.");
+                        }
+                        /** update selected menu **/
 
 
-                });
+                    });
+                }
 
             }
             return({
@@ -90,13 +91,13 @@ define(['angular', 'services'], function(angular, services) {
                         var missions = '';
                         var data = data;
                         for (var i = 0; i < data.length; i++) {
-                            var data = data[i];
-                            var header = data['header'];
+                            var obj = data[i];
+                            var header = obj['header'];
                             header = header.split(' ');
                             header = header.slice(0, 4);
                             header = header.join(' ')
                             var image;
-                            if (data.mission != null) image = data.mission.image_url;
+                            if (obj.mission != null) image = obj.mission.image_url;
                             else image = 'http://placehold.it/80x80';
                             missions += '<div class="list-group"> \
                                         <div class="list-group-item"> \
@@ -108,10 +109,10 @@ define(['angular', 'services'], function(angular, services) {
                                         <div class="col-md-6"> \
                                         <h4 class="list-group-item-heading">' + header + '...</h4> \
                                         <p class=""> \
-                                        <a target="_blank" href="' + data.body + '"> Website</a> \
+                                        <a target="_blank" href="' + obj.body + '"> Website</a> \
                                         </p> \
                                         <p> \
-                                        <a onclick="#">See Details</a> \
+                                        <a href="#">See Details</a> \
                                         </p> \
                                         </div> \
                                         </div> \
@@ -125,10 +126,14 @@ define(['angular', 'services'], function(angular, services) {
                         if (obj != false) {
                             $('#similars').html('');
                             var data = scope.Page.sci_data.value;
+                            //console.log('SCI_DATA_DIRECTIVE', data);
 
-                            if (data.length != 0) var missions = collect(data);
+                            if (data.length != 0) {
+                                var missions = collect(data);
+                                $('#similars').append(missions);
+                            }
                             else $('#similars').append('no data for these target/payloads combination. Try again!');
-                            $('#similars').append(missions);
+
 
                         }
 

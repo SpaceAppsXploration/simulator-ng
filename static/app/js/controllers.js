@@ -13,7 +13,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
 	return angular.module('myApp.controllers', ['myApp.services'])
 		// controllers where Services are being used
-        .controller('establishSocket', ['$rootScope', '$scope', '$window', 'socketService', 'Designing', function ($rootScope, $scope, $window, socketService, Designing) {
+        .controller('establishSocket', ['$rootScope', '$scope', '$location', 'socketService', 'Designing', '$window', function ($rootScope, $scope, $location, socketService, Designing, $window) {
             /**
             * ## controller for <body> (extends to all templates)
             * socketService prepares to open socket
@@ -30,7 +30,8 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             $scope.reset = function() {
                 $scope.Model = Designing;
-                $window.location.href('/');
+                $window.location.href = '/';
+                $window.location.reload();
             };
 
             $scope.Model = Designing; // init the Model object
