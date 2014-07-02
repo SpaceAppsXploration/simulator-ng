@@ -4,7 +4,7 @@ define([
 	'services',
 	'directives',
 	'controllers',
-	'angularRoute',
+	'angularRoute'
 	], function (angular, filters, services, directives, controllers) {
 		'use strict';
 
@@ -16,5 +16,20 @@ define([
 			'myApp.filters',
 			'myApp.services',
 			'myApp.directives'
-		]);
+		])
+        .factory('mySocket', function (socketFactory) {
+             var port = (location.port != 80) ? ':' + location.port : '';
+             return socketFactory({
+                 "url": "//" + document.domain + "" + port + "/connect",
+                 "debug":true,
+                 "devel" : true,
+                 "protocols_whitelist": ['xdr-streaming',
+                            'xdr-polling',
+                            'xhr-streaming',
+                            'iframe-eventsource',
+                            'iframe-htmlfile',
+                            'xhr-polling',
+                            'websocket' ]
+             });
+        });
 });

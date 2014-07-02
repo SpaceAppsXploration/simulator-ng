@@ -13,20 +13,41 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
 	return angular.module('myApp.controllers', ['myApp.services'])
 		// controllers where Services are being used
-        .controller('establishSocket', ['$rootScope', '$scope', '$location', 'socketService', 'Designing', '$window', function ($rootScope, $scope, $location, socketService, Designing, $window) {
+        .controller('establishSocket', ['$scope', '$location', 'mySocket', 'Designing', '$window', function ($scope, $location, mySocket, Designing, $window) {
             /**
             * ## controller for <body> (extends to all templates)
             * socketService prepares to open socket
             */
 
-            $rootScope.Socket = {}; // socket status object
+            mySocket.setHandler('open', function() {
+                mySocket.status = true;
+                $scope.$broadcast('socket', true);
+                console.log('STATUS: OPEN: ' + true);
+            });
+
+            mySocket.setHandler('close', function() {
+                $scope.$broadcast('socket', false);
+                console.log('STATUS: OPEN: ' + false);
+            });
+
+            mySocket.setHandler('message', function(response) {
+                var response = JSON.parse(response.data);
+                if (response.data_type == 'get_target') {
+                    if (response.data.length > 1) {
+                        //show targets infos
+                        $scope.$broadcast('targets', response.data);
+                    }
+                } else {
+                    $scope.$broadcast(response.data_type, response.data);
+                }
+            });
 
             var toServer = function(query, obj){ // utility to call a send to the server (SockJS emitter)
-                return socketService.send({"query": query, "object": obj });
+                return mySocket.send(JSON.stringify({"query": query, "object": obj }));
             };
-            $rootScope.toServer = toServer;
+            $scope.toServer = toServer;
 
-            $rootScope.safeApply = safeApply; // load safeApply() from utils.js
+            $scope.safeApply = safeApply; // load safeApply() from utils.js
 
             $scope.reset = function() {
                 $scope.Model = Designing;
@@ -34,10 +55,13 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 $window.location.reload();
             };
 
+            $scope.Socket = mySocket;
             $scope.Model = Designing; // init the Model object
             $scope.Page = {};
+
+            console.log($scope.Socket);
 		}])
-		.controller('Start', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+		.controller('Start', ['$scope', '$location', function ($scope, $location) {
             /**
             * ## controller for 01-Destination
             * User chooses destination
@@ -47,12 +71,11 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             var Model = $scope.$parent.Model;
 
-            $rootScope.$watch('Socket.open', function(value){ // watch opening and trigger for init data
+            $scope.$watch('Socket.status', function(value){ // watch opening and trigger for init data
                 if (value == true) {
                     console.log('Socket.open: ', value);
-                    $scope.Socket.open = true;
-                    if (typeof $scope.Page.physics == 'undefined') $rootScope.toServer("get_physics", ""); // ask for physical data about destinations
-                    if (typeof $scope.Page.targets == 'undefined') $rootScope.toServer("get_target", ""); // ask for all the destinations
+                    if (typeof $scope.Page.physics == 'undefined') $scope.toServer("get_physics", ""); // ask for physical data about destinations
+                    if (typeof $scope.Page.targets == 'undefined') $scope.toServer("get_target", ""); // ask for all the destinations
                 } else return;
             });
 
@@ -63,20 +86,20 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             };
 
             $scope.setDestination = function(){
-                Model.destination = $scope.Page.highlight; // ng-click scope var to rootScope
+                Model.destination = $scope.Page.highlight; // ng-click scope var
                 if (Model.mission != null) Model.mission = null;
                 $scope.safeApply(function() { $location.path('/mission') });
             };
 
-            // Events Listeners from socketService
-            $rootScope.$on('socket', function(event, value) { // sockets opens
+            // Events Listeners for mySocket handlers $broadcasting
+            $scope.$on('socket', function(event, value) { // sockets opens
                 //console.log(event, value);
-                if (value === 1) {
+                if (value === true) {
                     console.log('now open, can trigger');
                 }
                 else console.log('now closed, cannot trigger');
             });
-            $rootScope.$on('targets', function(event, values) { // receive data for all the targets
+            $scope.$on('targets', function(event, values) { // receive data for all the targets
                 //console.log(event, value);
                 var earth = values.filter(function( obj ) {
                         return obj.slug == 'earth';
@@ -87,19 +110,19 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
                 $scope.safeApply(function(){
                     $scope.Page.highlight = earth[0];           // set the selected destination in template scope
-                    //console.log($rootScope.Model);
+                    //console.log($scope.Model);
                     $scope.Page.targets = targets;             // save the targets' data in template scope
                     //console.log($scope.Page.targets);
                 });
             });
-            $rootScope.$on('get_physics', function(event, value) { // save physical data
+            $scope.$on('get_physics', function(event, value) { // save physical data
                 //console.log(event, value);
                 $scope.safeApply(function(){
                     $scope.Page.physics = value;
                 });
             });
 		}])
-        .controller('Mission', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+        .controller('Mission', ['$scope', '$location', function ($scope, $location) {
             /**
             * ## controller for 02-Mission
             * User decides mission's goal
@@ -121,12 +144,12 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 var destination = Model.destination.slug;
                 var goal = Model.mission.slug;
                 paramsTemp = "?destination="+destination+"&mission="+goal;
-                $rootScope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
+                $scope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
                 //console.log(Model);
             };
             //console.log($scope.Page.goals);
 
-            $rootScope.$on('destination-mission', function(event, value){
+            $scope.$on('destination-mission', function(event, value){
                 //console.log(value);
                 if (value.code == 1) {
                     //console.log('Error');
@@ -145,7 +168,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             });
 		}])
-        .controller('Payloads', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+        .controller('Payloads', ['$scope', '$location', function ($scope, $location) {
             /**
             * ## controller for 03-Payloads
             * User decides payloads
@@ -165,8 +188,8 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 			if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
             else if(Model.mission == null) return $location.path('/mission');
 
-            if (typeof $scope.Page.pl == 'undefined') $rootScope.toServer("get_comps", ""); // ask for payloads data
-            if (typeof $scope.pl_types == 'undefined') $rootScope.toServer("get_comps_types", ""); // ask for payloads types
+            if (typeof $scope.Page.pl == 'undefined') $scope.toServer("get_comps", ""); // ask for payloads data
+            if (typeof $scope.pl_types == 'undefined') $scope.toServer("get_comps_types", ""); // ask for payloads types
 
             $scope.togglePayload = function(obj){
                 console.log($scope.Page.checkboxesPL);
@@ -189,10 +212,10 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 }
                 paramsTemp = params+check;
                 //console.log(paramsTemp);
-                $rootScope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
+                $scope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
             };
 
-            $rootScope.$on('destination-mission', function(event, value){
+            $scope.$on('destination-mission', function(event, value){
                 //console.log(value);
                 if (value.code == 1) {
                     //console.log('Error');
@@ -210,7 +233,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             });
 
-            $rootScope.$on('get_comps', function(event, values){
+            $scope.$on('get_comps', function(event, values){
                 var pl = values.filter(function( obj ) {
                         return obj.category == 'payload';
                 });
@@ -261,7 +284,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     $scope.Page.bus = bs;          // set the bus obj in the Page
                 });
             });
-            $rootScope.$on('get_comps_types', function(event, values){
+            $scope.$on('get_comps_types', function(event, values){
                 var pl_types = values.filter(function( obj ) {
                         return obj.category == 'payload';
                 });
@@ -278,7 +301,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
 
         }])
-        .controller('Bus', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+        .controller('Bus', ['$scope', '$location', function ($scope, $location) {
             /**
             * ## controller for 04-Bus
             * User decides bus
@@ -299,8 +322,8 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             else if(Model.mission == null) return $location.path('/mission');
             else if(Model.payloads == null) return $location.path('/payloads');
 
-            if (typeof $scope.Page.bus== 'undefined') $rootScope.toServer("get_comps", ""); // ask for bus data
-            if (typeof $scope.Page.bs_types == 'undefined') $rootScope.toServer("get_comps_types", ""); // ask for bus types
+            if (typeof $scope.Page.bus== 'undefined') $scope.toServer("get_comps", ""); // ask for bus data
+            if (typeof $scope.Page.bs_types == 'undefined') $scope.toServer("get_comps_types", ""); // ask for bus types
 
             var restBUS = $scope.Page.bus;
             var initCheckBoxes = function(){
@@ -354,10 +377,10 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 }
                 paramsTemp = params+check;
                 //console.log(paramsTemp);
-                $rootScope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
+                $scope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
             };
 
-            $rootScope.$on('destination-mission', function(event, value){
+            $scope.$on('destination-mission', function(event, value){
                 //console.log(value);
                 if (value.code == 1) {
                     //console.log('Error');
@@ -375,7 +398,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             });
 
-            $rootScope.$on('get_comps', function(event, values){
+            $scope.$on('get_comps', function(event, values){
                 var pl = values.filter(function( obj ) {
                         return obj.category == 'payload';
                 });
@@ -415,7 +438,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     $scope.Page.bus = bs;          // set the bus obj in the Page
                 });
             });
-            $rootScope.$on('get_comps_types', function(event, values){
+            $scope.$on('get_comps_types', function(event, values){
                 var pl_types = values.filter(function( obj ) {
                         return obj.category == 'payload';
                 });
@@ -430,7 +453,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             });
 
 		}])
-        .controller('Results', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+        .controller('Results', ['$scope', '$location', function ($scope, $location) {
             var Model = $scope.$parent.Model;
 
             if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
@@ -459,7 +482,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             //console.log(totals)
             //console.log(target)
 
-            $rootScope.toServer("get_ratings", totals);
+            $scope.toServer("get_ratings", totals);
 
             var PAYLOADS = $scope.$parent.PAYLOADS;
             var BUS = $scope.$parent.BUS;
@@ -477,19 +500,19 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             }
 
              //console.log(comps);
-            $rootScope.toServer("get_sci_data", {"target": target, "comps": comps});
+            $scope.toServer("get_sci_data", {"target": target, "comps": comps});
 
-            $rootScope.$on('get_ratings', function(event, values){
-                $rootScope.safeApply(function() {
+            $scope.$on('get_ratings', function(event, values){
+                $scope.safeApply(function() {
                     $scope.Page.ratings.loaded = true;
                     $scope.Page.ratings.value = values;
                 });
 
             });
 
-            $rootScope.$on('get_sci_data', function(event, values){
+            $scope.$on('get_sci_data', function(event, values){
                 console.log('SCI_DATA', values);
-                $rootScope.safeApply(function() {
+                $scope.safeApply(function() {
                     $scope.Page.sci_data.loaded = true;
                     $scope.Page.sci_data.value = values;
                 });

@@ -113,124 +113,50 @@ define(['angular'], function (angular) {
 
             return  factory
         }])
-        .factory('socketService', ['$rootScope', '$log', function($rootScope, $log){
-            var createSocket = function(){
+        .provider('socketFactory', function () {
 
-                // Get reference to port.
-                var port = (location.port != 80) ? ':' + location.port : '';
-                var connectTimeStamps = [];
+            // when forwarding events, prefix the event name
+            var ioSocket;
 
-                var socket = new SockJS('//' + document.domain + '' + port + '/connect', null,
-                    { 'debug':true, 'devel' : true,
-                        'protocols_whitelist': ['xdr-streaming',
-                            'xdr-polling',
-                            'xhr-streaming',
-                            'iframe-eventsource',
-                            'iframe-htmlfile',
-                            'xhr-polling',
-                            'websocket' ]
-                    }
-                );
+            // expose to provider
+            this.$get = function ($timeout) {
 
-                /**
-                * ## Data interaction hooks
-                *
-                * Passes off core SockJS data interaction hooks to rest of application so
-                * callbacks can be cleanly defined externally for each event.
-                */
-                socket.onopen = function(){
-                    // rootScope emits opening of socket for controllers
-                    $rootScope.$emit('socket', 1);
-                    $rootScope.$apply(function() {
-                        $rootScope.Socket.open = true;
-                    });
-                    //service.open = true;
-                    connectTimeStamps.push( new Date().getTime() );
-                    var args = arguments;
-
-                    service.timesOpened++;
-                    // Attempted to connect. Note timestamp.
-                    //service.send({"query": "test", "object": '123124'});
-
-                    if(service.handlers.onopen ){
-                        $rootScope.$apply(function() {
-                            service.handlers.onopen.apply( socket, args )
-                        })
-                    }
+                var asyncAngularify = function (socket, callback) {
+                    return callback ? function () {
+                        var args = arguments;
+                        $timeout(function () {
+                            callback.apply(socket, args);
+                        }, 0);
+                    } : angular.noop;
                 };
 
-                socket.onmessage = function(data){
+                return function socketFactory(options) {
+                    options = options || {};
+                    var socket = options.socket || new SockJS(options.url);
 
-                    var args = arguments;
-                    var response = JSON.parse(data.data);
-                    //console.log(response)
-                    try{
-                        args[0].data = JSON.parse(args[0].data);
-                    } catch(e){
-                    // there should be a better way to do this
-                    // but it is fast
-                    }
-
-                    if (response.data_type == 'get_target') {
-                        if (response.data.length > 1) {
-                            //show targets infos
-                            $rootScope.$emit('targets', response.data);
+                    var wrappedSocket = {
+                        status: false,
+                        callbacks: {},
+                        setHandler: function (event, callback) {
+                            socket['on' + event] = asyncAngularify(socket, callback);
+                            return this;
+                        },
+                        removeHandler: function (event) {
+                            delete socket['on' + event];
+                            return this;
+                        },
+                        send: function () {
+                            return socket.send.apply(socket, arguments);
+                        },
+                        close: function () {
+                            return socket.close.apply(socket, arguments);
                         }
-                    } else {
-                        $rootScope.$emit(response.data_type, response.data);
-                    }
+                    };
 
-                    if( service.handlers.onmessage ){
-                        $rootScope.$apply(
-                            function(){
-                                service.handlers.onmessage.apply(socket, args);
-                            }
-                        )
-                    }
+                    return wrappedSocket;
                 };
-
-                socket.onclose = function(){
-                    $rootScope.$emit('socket', 0);
-                    service.open = false;
-                    console.log('STATUS: OPEN: ' + service.open + ' ' + connectTimeStamps);
-                    setTimeout( function(){ socket = createSocket(service); } , 3000 );
-                    var args = arguments;
-
-                    if( service.handlers.onclose ){
-                        $rootScope.$apply(
-                            function(){
-                            service.handlers.onclose.apply(socket,args);
-                        }
-                        )
-                    }
-                };
-
-            return socket;
             };
-
-            var service =
-                { handlers : {},
-                    onopen: function( callback ){
-                        this.handlers.onopen = callback;
-                    },
-                    onmessage: function( callback ){
-                        console.log('here goes the callback')
-                        this.handlers.onmessage = callback;
-                    },
-                    onclose: function( callback ){
-                        this.handlers.onclose = callback;
-                    },
-                    send: function( data ){
-                        var msg = typeof(data) == "object" ? JSON.stringify(data) : data;
-                        //console.log(msg)
-                        var status = socket.send(msg);
-                    },
-                    open: false
-                };
-
-            var socket = createSocket();
-            return service;
-        }])
+        })
         .service('myService', function($http, $q) {
             var _this = this;
 

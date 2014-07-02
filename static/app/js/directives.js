@@ -16,7 +16,20 @@ define(['angular', 'services'], function(angular, services) {
                        $('#selected').append('<div class="row"><img class="img-rounded img-mini" src="'+ model.mission.image_url +'"/><span class="text">'+ model.mission.name +'</span></div>')
                    }
                    if(model != null && model.payloads != null && model.payloads.length != 0) {
-                       $('#selected').append('<div class="row"><img class="img-rounded img-mini" src="http://placehold.it/50x50"/><span class="text">'+ toString(model.payloads) +'</span></div>')
+                       var payloads = model.payloads;
+                       var print = '';
+                       for(var i in payloads){
+                           print += payloads[i]+' ';
+                       }
+                       $('#selected').append('<div class="row"><img class="img-rounded img-mini" src="http://placehold.it/50x50"/><span class="text">'+ print +'</span></div>')
+                   }
+                   if(model != null && model.bus != null && model.bus.length != 0) {
+                       var bus = model.bus;
+                       var print = '';
+                       for(var i in bus){
+                           print += bus[i]+' ';
+                       }
+                       $('#selected').append('<div class="row"><img class="img-rounded img-mini" src="http://placehold.it/50x50"/><span class="text">'+ print +'</span></div>')
                    }
 
 
@@ -95,10 +108,17 @@ define(['angular', 'services'], function(angular, services) {
                             var header = obj['header'];
                             header = header.split(' ');
                             header = header.slice(0, 4);
-                            header = header.join(' ')
+                            header = header.join(' ');
+                            var mission;
                             var image;
-                            if (obj.mission != null) image = obj.mission.image_url;
-                            else image = 'http://placehold.it/80x80';
+                            if (obj.mission != null) {
+                                image = obj.mission.image_url;
+                                mission = obj.mission.id;
+                            }
+                            else {
+                                image = 'http://placehold.it/80x80';
+                                mission = '#'
+                            }
                             missions += '<div class="list-group"> \
                                         <div class="list-group-item"> \
                                         <div class="media col-md-3"> \
@@ -112,7 +132,7 @@ define(['angular', 'services'], function(angular, services) {
                                         <a target="_blank" href="' + obj.body + '"> Website</a> \
                                         </p> \
                                         <p> \
-                                        <a href="#">See Details</a> \
+                                        <a target="_blank" href="http://www.spacexplore.it/webapp/data/missions/details/' + mission + '">See Details</a> \
                                         </p> \
                                         </div> \
                                         </div> \

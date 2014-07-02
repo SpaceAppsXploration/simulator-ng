@@ -1,78 +1,85 @@
 
-<div class="col-sm-8">
 
-    <div class="row">
+<div class="row">
+    <div class="business-header jumbotron" style="margin-top:0px;border-round:25px;border:2px solid #000;">
         <div class="col-md-1"></div>
-        <div class="col-md-10">
-            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
-            <h1 class="text-center">Mission Is A Go!</h1>
-            <div id="target" class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div style="width:99%;height:99%;margin: auto auto;"><img src="https://pbs.twimg.com/media/BgYG7GTCUAAG0Pt.jpg" style="margin: 10px auto 10px;" class="img-thumbnail"/></div>
-            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+        <div class="col-md-11">
+            <h1 class="text-center" style="padding-bottom:-5px;">Mission Is A Go!</h1>
+
+            <div class="row" style="">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="row" id="ratings-row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <h1 class="text-center">Rating of your mission</h1>
+                <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+                  <div id="ratings" style="" ratings>
+                      <div class="loader">
+                        <div class="orbital">
+                            <div class="one"></div>
+                            <div class="two"></div>
+                            <div class="three"></div>
+                            <div class="four"></div>
+                        </div>
+                      </div>
+                  </div>
+                <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
             </div>
         </div>
     </div>
 
-    <div class="row" id="ratings-row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
-            <h1 class="text-center">Rating of your mission</h1>
-            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
-              <div id="ratings" style="" ratings>
-                  <div class="loader">
-                    <div class="orbital">
-                        <div class="one"></div>
-                        <div class="two"></div>
-                        <div class="three"></div>
-                        <div class="four"></div>
-                    </div>
-                  </div>
-              </div>
-            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
-        </div>
-    </div>
+    <div class="col-sm-6">
+        <div class="row" id="missions-row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
 
+                <h1 class="text-center">Similar Missions from Space Agencies</h1>
+                <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
 
-    <div class="row" id="missions-row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
+                <div class="row" id="similars" similars>
+                    Loading...
+                     <div class="loader">
+                        <div class="orbital">
+                            <div class="one"></div>
+                            <div class="two"></div>
+                            <div class="three"></div>
+                            <div class="four"></div>
+                        </div>
+                      </div>
+                </div>
 
-            <h1 class="text-center">Similar Missions from Space Agencies</h1>
-            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
-
-            <div class="row" id="similars" similars>
-                Loading...
-                 <div class="loader">
-                    <div class="orbital">
-                        <div class="one"></div>
-                        <div class="two"></div>
-                        <div class="three"></div>
-                        <div class="four"></div>
-                    </div>
-                  </div>
+                <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
             </div>
+        </div>
+    </div>
 
-
-
-            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+    <div class="col-sm-2">
+        <div class="row" id="selected" selectedmenu>
+           <span>No selections made</span>
         </div>
     </div>
 
 </div>
-
-<div class="col-sm-4">
-    <div class="row" id="selected" selectedmenu>
-       <span>No selections made</span>
-    </div>
-</div>
-
 
 
 <style type="text/css">
     .jh-type-object > tr > td {
         font-size:120%;
-        spadding-left:15px;
+        padding-left:15px;
     }
-</style>
+    .business-header {
+        color: #000000;
+        padding-top:100px;
+        width: auto;
+        height: auto;
+        background: url('https://pbs.twimg.com/media/BgYG7GTCUAAG0Pt.jpg') center center no-repeat;
+        background-size: cover;
+    }
+    </style>
