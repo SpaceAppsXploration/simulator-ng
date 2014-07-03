@@ -11,19 +11,20 @@ The app is the Angular-js one in [/static/app](https://github.com/SpaceAppsXplor
 
 ## To Do
 
-*Improve Errors display to users (now it is done with alert())<br/>
-*~~Write a brief tutorial~~<br/>
-*Write hints for hovers<br/>
-*Limit possible choices in bus and payloads (3/4)<br/>
-*Implement loaders<br/>
-*Implement promises<br/>
-*Write utilities' functions to handle controllers' common tasks <br/>
-*Fix the pages navigation system (pages should keep selections) <br/>
-*Have all DOM manipulations into directives<br/>
-*~~Implement [JSON-RPC](http://www.jsonrpc.org/specification) spec for client-server communications~~
-*~~Refactor socket wrapper~~
+*Improve Errors display to users (now it is done with alert())<br>
+*~~Write a brief tutorial~~<br>
+*Write hints for hovers<br>
+*Limit possible choices in bus and payloads (3/4)<br>
+*Implement loaders<br>
+*Implement promises<br>
+*Write utilities' functions to handle controllers' common tasks <br>
+*Fix the pages navigation system (pages should keep selections) <br>
+*Have all DOM manipulations into directives<br>
+*~~Implement [JSON-RPC](http://www.jsonrpc.org/specification) spec for client-server communications~~ <br>
+*~~Refactor socket wrapper~~ <br>
+*Solve the double-binding for Payloads and Bus controllers
 
-Notes: $routeProvider > resolve can be found in $route.current.locals<br/>
+Notes: $routeProvider > resolve can be found in $route.current.locals<br>
 Use $scope.bind('<mouseevent>') in directives to trigger events
 
 
