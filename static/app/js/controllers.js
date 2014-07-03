@@ -454,6 +454,12 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
 		}])
         .controller('Results', ['$scope', '$location', function ($scope, $location) {
+            /**
+            * ## controller for 05-Results
+            * Results displayed
+            *
+            *
+            */
             var Model = $scope.$parent.Model;
 
             if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
@@ -519,6 +525,39 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             });
 
 		}])
+        .controller('Tutorial', ['$scope', '$location', function ($scope, $location) {
+            /**
+            * ## controller for Tutorial
+            * Display tutorial
+            *
+            * By now just a placeholder
+            */
+        }])
+        .controller('Feedback', ['$scope', '$http', function ($scope, $http) {
+            /**
+            * ## controller for Feedback
+            * Display form
+            *
+            *
+            */
+            $scope.success = false;
+            $scope.httpError = false;
+            $scope.msg = {};
+
+            $scope.send = function() {
+                var job = { job: { klass: 'msg', args: [$scope.msg]}};
+                $http.post('/contact',job).
+                success(function(data){
+                    $scope.success = true;
+                    $scope.msg = {};
+                })
+                .error(function(data){
+                      $scope.httpError = true;
+                });
+            }
+
+
+        }])
 		// More involved example where controller is required from an external file
 		.controller('MyCtrl2', ['$scope', '$injector', function($scope, $injector) {
 			require(['controllers/myctrl2'], function(myctrl2) {

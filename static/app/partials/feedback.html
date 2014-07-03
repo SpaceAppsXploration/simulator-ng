@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="business-header jumbotron" style="margin-top:0px;border-round:25px;border:2px solid #000;">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-11">
+            <h1 class="text-center" style="padding-bottom:-5px;">Tell us what you (don&apos;t) like</h1>
+
+            <div class="row" style="">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-6">
+
+    <div class="alert alert-error" ng-show="httpError">
+        <button class="close" data-dismiss="alert">x</button>
+        <strong>Error</strong>
+        <text> An Error occured trying to send message, please contact administrator or retry</text>
+    </div>
+    <div class="alert alert-success" ng-show="success">
+        <button class="close" data-dismiss="alert">x</button>
+        <strong>Message sent.</strong>
+        <text>Thanks!</text>
+     </div>
+    <form name="contactForm">
+        <div class="control-group" ng-class="{error: contactForm.name.$invalid}">
+            <label>Name</label>
+            <input class="col-sm-4" type="text" name="name" ng-model="msg.name" placeholder="Your Name">
+        </div>
+        <div class="control-group" ng-class="{error: contactForm.email.$invalid}">
+            <label>Email</label>
+            <input class="col-sm-4" type="email" name="email" ng-model="msg.email" placeholder="you@email.com">
+            <span class="help-inline" ng-show="contactForm.email.$error.email">Not a Email</span>
+        </div>
+        <div class="control-group" ng-class="{error: contactForm.message.$invalid}">
+            <label>Message</label>
+            <textarea class="col-sm-4" rows="5" name="message" ng-model="msg.body" required></textarea>
+            <span class="help-inline" ng-show="contactForm.message.$error.required">Required</span>
+        </div>
+        <button class="btn btn-primary btn-large" ng-click="send()" ng-disabled="contactForm.$invalid">Send</button>
+    </form>
+   </div>
+</div>

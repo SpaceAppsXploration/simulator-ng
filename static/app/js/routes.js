@@ -34,6 +34,14 @@ define(['angular', 'app'], function(angular, app) {
                 templateUrl: '/static/app/partials/05-results.html',
                 controller: 'Results'
             });
+            $routeProvider.when('/tutorial', {
+                templateUrl: '/static/app/partials/tutorial.html',
+                controller: 'Tutorial'
+            });
+            $routeProvider.when('/feedback', {
+                templateUrl: '/static/app/partials/feedback.html',
+                controller: 'Feedback'
+            });
             $routeProvider.otherwise({redirectTo: '/start'});
 	    }]); /** end of routing **/
 
