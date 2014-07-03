@@ -24,6 +24,7 @@ if __name__ == '__main__':
 
     app = tornado.web.Application(
         [(r"/", IndexHandler),
+         (r"/contact", SendFeedback),
          (r"/pointer_test", TestHandler)] + \
         SocketRouter.urls,
         (r"/static/(.*)", web.StaticFileHandler, {"path": settings['static_path']}),

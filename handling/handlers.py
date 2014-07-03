@@ -38,6 +38,17 @@ class IndexHandler(tornado.web.RequestHandler):
                                bus_comps=bus_comps, bus_types=bus_types)
 
 
+class SendFeedback(tornado.web.RequestHandler):
+    def post(self):
+        req = self.request.body.decode('utf-8')
+        print(json.loads(req))
+
+        import pickle
+
+        with open('handling/feedback.save', 'a') as f:
+            f.write(req+' \n')
+
+
 class TestHandler(tornado.web.RequestHandler):
     def get(self):
         return self.render('cursor-test.html')

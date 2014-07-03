@@ -545,17 +545,23 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             $scope.msg = {};
 
             $scope.send = function() {
-                var job = { job: { klass: 'msg', args: [$scope.msg]}};
-                $http.post('/contact',job).
-                success(function(data){
+                var obj = $scope.msg;
+                console.log($scope.msg);
+                $http({
+                    url: '/contact',
+                    method: "POST",
+                    data: obj,
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                })
+                    .success(function(data){
                     $scope.success = true;
                     $scope.msg = {};
+                    console.log(data);
                 })
-                .error(function(data){
-                      $scope.httpError = true;
-                });
-            }
-
+                    .error(function(data){
+                          $scope.httpError = true;
+                    });
+                };
 
         }])
 		// More involved example where controller is required from an external file
