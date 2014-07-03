@@ -26,22 +26,37 @@
         <strong>Message sent.</strong>
         <text>Thanks!</text>
      </div>
-    <form name="contactForm">
+    <form name="contactForm" accept-charset="utf-8" class="form" role="form">
         <div class="control-group" ng-class="{error: contactForm.name.$invalid}">
             <label>Name</label>
-            <input class="col-sm-4" type="text" name="name" ng-model="msg.name" placeholder="Your Name">
+            <input class="col-sm-4 form-control input-lg" type="text" name="name" ng-model="msg.name" placeholder="Your Name">
         </div>
         <div class="control-group" ng-class="{error: contactForm.email.$invalid}">
             <label>Email</label>
-            <input class="col-sm-4" type="email" name="email" ng-model="msg.email" placeholder="you@email.com">
+            <input class="col-sm-4 form-control input-lg" type="email" name="email" ng-model="msg.email" placeholder="you@email.com">
             <span class="help-inline" ng-show="contactForm.email.$error.email">Not a Email</span>
+        </div>
+        <div class="control-group" ng-class="{error: contactForm.age.$invalid}">
+            <label>Age</label>
+            <input class="col-sm-4 form-control input-lg" type="text" name="age" ng-model="msg.age" required placeholder="">
+            <span class="help-inline" ng-show="contactForm.age.$error.required">Required</span>
         </div>
         <div class="control-group" ng-class="{error: contactForm.message.$invalid}">
             <label>Message</label>
-            <textarea class="col-sm-4" rows="5" name="message" ng-model="msg.body" required></textarea>
+            <textarea class="col-sm-4 form-control input-lg" rows="5" name="message" ng-model="msg.body" required></textarea>
             <span class="help-inline" ng-show="contactForm.message.$error.required">Required</span>
         </div>
         <button class="btn btn-primary btn-large" ng-click="send()" ng-disabled="contactForm.$invalid">Send</button>
     </form>
    </div>
 </div>
+
+<style type="text/css">
+    .help-inline {
+        color: #ffffff;
+    }
+    .control-group {
+        margin-bottom: 20px;
+    }
+
+</style>
