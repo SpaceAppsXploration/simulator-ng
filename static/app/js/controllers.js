@@ -169,7 +169,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     Model.setParams(paramsTemp);
                     $location.path('/payloads');
                     $scope.simError;
-                    return $scope.$apply();
+                    $scope.$apply();
                 }
 
             });
@@ -231,7 +231,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     Model.setError(error);
                     paramsTemp = null;
                     $scope.simError = error;
-                    return $scope.$apply();
+                    $scope.$apply();
                     //return alert(error);
                 } else {
                     //console.log('Redirect');
@@ -239,7 +239,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     Model.setParams(paramsTemp);
                     $location.path('/bus');
                     $scope.simError;
-                    return $scope.$apply();
+                    $scope.$apply();
                 }
 
             });
@@ -401,6 +401,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     Model.setError(error);
                     paramsTemp = null;
                     $scope.simError = error;
+                    $scope.$apply();
                     //return alert(error);
                 } else {
                     //console.log('Redirect');
@@ -408,7 +409,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     Model.setParams(paramsTemp);
                     $location.path('/results');
                     $scope.simError;
-                    return $scope.$apply();
+                    $scope.$apply();
                 }
 
             });
