@@ -157,19 +157,19 @@ define(['angular'], function (angular) {
                 };
             };
         })
-        .service('myService', function($http, $q) {
-            var _this = this;
+        .service('getDBscience', function($http, $q) {
+            var _this = this; // data get passed directly in the service obj
 
             this.promiseToHaveData = function() {
                 var defer = $q.defer();
 
-                $http.get('someFile.json')
+                $http.get('/database')
                     .success(function(data) {
                         angular.extend(_this, data);
                         defer.resolve();
                     })
                     .error(function() {
-                        defer.reject('could not find someFile.json');
+                        defer.reject('Error in request');
                     });
 
                 return defer.promise;

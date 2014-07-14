@@ -31,10 +31,7 @@ define(['angular', 'services'], function(angular, services) {
                        }
                        $('#selected').append('<div class="row"><img class="img-rounded img-mini" src="http://placehold.it/50x50"/><span class="text">'+ print +'</span></div>')
                    }
-
-
                 });
-
             }
             return({
                 scope: false,
@@ -42,6 +39,7 @@ define(['angular', 'services'], function(angular, services) {
                 restrict: "A"
             });
         })
+
         .directive('target', function() {
             function link(scope,obj, attrs) {
                 var planet_id;
@@ -66,7 +64,6 @@ define(['angular', 'services'], function(angular, services) {
                                 //console.log(o.target);
                                 return o.target == planet_id;
                             });
-
                         }
 //console.log(body)
                         if (typeof body != 'undefined' && body.length != 0) {
@@ -84,12 +81,8 @@ define(['angular', 'services'], function(angular, services) {
                             $('physics').text("");
                             $('physics').html("No Data For This Body.");
                         }
-                        /** update selected menu **/
-
-
                     });
                 }
-
             }
             return({
                 scope: false,
@@ -97,6 +90,7 @@ define(['angular', 'services'], function(angular, services) {
                 restrict: "A"
                 });
         })
+
         .directive('similars', function() {
             function link(scope, obj, attrs) {
                 function collect(data) {
@@ -107,17 +101,20 @@ define(['angular', 'services'], function(angular, services) {
                             var obj = data[i];
                             var header = obj['header'];
                             header = header.split(' ');
-                            header = header.slice(0, 4);
+                            header = header.slice(0, 6);
                             header = header.join(' ');
                             var mission;
                             var image;
+                            var mission_link;
                             if (obj.mission != null) {
                                 image = obj.mission.image_url;
                                 mission = obj.mission.id;
+                                mission_link = obj.mission.link_url;
                             }
                             else {
                                 image = 'http://placehold.it/80x80';
-                                mission = '#'
+                                mission = '#';
+                                mission_link = '';
                             }
                             missions += '<div class="list-group"> \
                                         <div class="list-group-item"> \
@@ -129,7 +126,10 @@ define(['angular', 'services'], function(angular, services) {
                                         <div class="col-md-6"> \
                                         <h4 class="list-group-item-heading">' + header + '...</h4> \
                                         <p class=""> \
-                                        <a target="_blank" href="' + obj.body + '"> Website</a> \
+                                        <a target="_blank" href="' + obj.body + '"> Go to data</a> \
+                                        </p> \
+                                        <p class=""> \
+                                        <a target="_blank" href="' + mission_link + '"> Mission&apos; website</a> \
                                         </p> \
                                         <p> \
                                         <a target="_blank" href="http://www.spacexplore.it/webapp/data/missions/details/' + mission + '">See Details</a> \
@@ -187,6 +187,7 @@ define(['angular', 'services'], function(angular, services) {
                 restrict: "A"
                 });
         })
+        /*
         .directive('start', function() {
             function link(scope,obj, attrs) {
                 obj.bind('mouseenter', function(event){
@@ -194,12 +195,30 @@ define(['angular', 'services'], function(angular, services) {
                 });
             }
 
+            return({
+                scope: false,
+                link: link,
+                restrict: "A"
+                });
+        })
+        */
+        .directive('compsmenu', function() {
+            function link(scope,obj, attrs) {
+                if (typeof scope.Page.pl != 'undefined') {
+                    scope.$watch('Page.pl', function (obj, attrs) {
+                        console.log('PL loaded', obj, attrs);
 
+
+                    });
+                }
+            }
             return({
                 scope: false,
                 link: link,
                 restrict: "A"
                 });
         });
+
+
 });
 

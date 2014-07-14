@@ -22,8 +22,9 @@ if __name__ == '__main__':
 
     SocketRouter = SockJSRouter(SocketConnection, '/connect')
 
-    app = tornado.web.Application(
+    app = web.Application(
         [(r"/", IndexHandler),
+         (r"/database", Database),
          (r"/contact", SendFeedback),
          (r"/pointer_test", TestHandler)] + \
         SocketRouter.urls,

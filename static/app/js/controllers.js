@@ -474,7 +474,9 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             $scope.Page.ratings.loaded = false;
             $scope.Page.ratings.value = null;
 
-			var totals = new Array()
+            $scope.Page.missions = {};
+
+			var totals = new Array();
 
             var payloads = $scope.Model.getPayloads();
             var bus = $scope.Model.getBus();
@@ -554,14 +556,130 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                 })
                     .success(function(data){
-                    $scope.success = true;
-                    $scope.msg = {};
-                    console.log(data);
-                })
+                        $scope.success = true;
+                        $scope.msg = {};
+                        console.log(data);
+                    })
                     .error(function(data){
                           $scope.httpError = true;
                     });
                 };
+
+        }])
+        .controller('Database', ['$scope', '$http', /*'getDBscience',*/ function ($scope, $http/*, getDBscience*/) {
+            //console.log(getDBscience);
+            $scope.graph = {};
+            $scope.Page.pl = {};
+            $scope.graph = {
+                "edges" : {
+                    3: {
+                        87: {
+                            "label": "Venera 2",
+                            "id": 87,
+                            "type": "mission",
+                            "color":"red",
+                            "shape":"dot"
+                        }
+                    },
+                    7: {
+                        168: {
+                        "label": "Cassini",
+                        "id": 168,
+                        "type": "mission",
+                        "color":"red",
+                        "shape":"dot"
+                        }
+                    },
+                    170: {
+                        125: {
+                           "label": "Variations of sulphur dioxide at the cloud top of Venus's dynamic atmosphere",
+                           "id": 125,
+                           "type": "datum",
+                           "color":"green",
+                           "shape":"dot"
+                           },
+                        126: {
+                           "label": "A teardrop-shaped ionosphere at Venus in tenuous solar wind",
+                           "id": 126,
+                           "type": "datum",
+                           "color":"green",
+                           "shape":"dot"
+                           }
+                        }
+                    },
+
+                   "nodes" : {
+                       3: {
+                           "label": "1VA/2 Payload",
+                           "id": 3,
+                           "type": "datum",
+                            "color":"green",
+                            "shape":"dot"
+                       },
+                       87: {
+                           "label": "Venera 2",
+                           "id": 87,
+                           "type": "mission",
+                            "color":"red",
+                            "shape":"dot"
+                       },
+                       126: {
+                           "label": "A teardrop-shaped ionosphere at Venus in tenuous solar wind",
+
+                           "id": 126,
+                           "type": "datum",
+                            "color":"green",
+                            "shape":"dot"
+                       },
+                       170: {
+                           "label": "Venus Express",
+                           "id": 170,
+                           "type": "mission",
+                            "color":"red",
+                            "shape":"dot"
+                       },
+                       7: {
+                           "label": "Cassini - UVIS Venus",
+                           "id": 7,
+                           "type": "datum",
+                            "color":"green",
+                            "shape":"dot"
+                       },
+                       168: {
+                           "label": "Cassini",
+                           "id": 168,
+                           "type": "mission",
+                            "color":"red",
+                            "shape":"dot"
+                       },
+                       125: {
+                           "label": "Variations of sulphur dioxide at the cloud top of Venus's dynamic atmosphere",
+                           "id": 125,
+                           "type": "datum",
+                           "color":"green",
+                           "shape":"dot"
+                       }
+                   }
+
+                };
+
+            if (typeof $scope.Page.pl == 'undefined') $scope.toServer("get_comps", "");
+
+            $scope.$on('get_comps', function(event, values) {
+                var pl = values.filter(function (obj) {
+                    return obj.category == 'payload';
+                });
+                    console.log(pl);
+                $scope.safeApply(function(){
+
+                    $scope.Page.pl = pl;
+                });
+
+            });
+
+            // ask list of components (pl)
+            // on receive list of components
+
 
         }])
 		// More involved example where controller is required from an external file

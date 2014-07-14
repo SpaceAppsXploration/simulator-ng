@@ -23,6 +23,7 @@ class SocketConnection(SockJSConnection):
                  'get_comps': 'http://www.spacexplore.it:80/api/components/%s',
                  'get_comps_types': 'http://www.spacexplore.it:80/api/components/types/%s',
                  'get_sci_data': 'http://www.spacexplore.it:80/api/scidata/by/target/%s/by/comps/%s',
+                 'get_missions_by_target': 'http://www.spacexplore.it:80/api/missions/by/target/%s'
     }
 
     def send_error(self, message, error_type=None):

@@ -42,6 +42,15 @@ define(['angular', 'app'], function(angular, app) {
                 templateUrl: '/static/app/partials/feedback.html',
                 controller: 'Feedback'
             });
+            $routeProvider.when('/database', {
+                templateUrl: '/static/app/partials/database.html',
+                controller: 'Database',
+                resolve: {
+                    initializeData: function ($q, $timeout, getDBscience) {
+                        return getDBscience.promiseToHaveData();
+                    }
+                }
+            });
             $routeProvider.otherwise({redirectTo: '/start'});
 	    }]); /** end of routing **/
 
