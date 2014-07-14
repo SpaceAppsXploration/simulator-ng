@@ -160,6 +160,8 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     Model.setMission(null);
                     $scope.simError = error;
                     paramsTemp = null;
+                    $scope.$apply();
+                    $('html, body').animate({scrollTop:0}, 'slow');
                     //return alert(error);
                 } else {
                     //console.log('Redirect');
@@ -229,6 +231,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     Model.setError(error);
                     paramsTemp = null;
                     $scope.simError = error;
+                    return $scope.$apply();
                     //return alert(error);
                 } else {
                     //console.log('Redirect');
