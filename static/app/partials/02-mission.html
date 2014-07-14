@@ -8,7 +8,7 @@
 
   <div class="row row-first">
         <div class="col-md-1"><</div>
-    <div class="col-md-9" style="margin: auto auto auto -40px;">
+    <div class="col-md-8" style="margin: auto auto auto -40px;">
              <!-- Start Icon Box 1-->
                   <div class="row service-box service-center" ng-repeat="g in Page.goals" style="border:1px solid;">
                       <div class="col-sm-4">
@@ -21,10 +21,16 @@
                               <p style="margin: 20px auto 20px auto;">{{g.description}}</p>
                               <p><a ng-click="chooseG(g);" class="set-mission submit btn btn-default">Choose</a></p>
                           </div>
+                          <div class="alert alert-error" ng-show="simError" style="color: orangered">
+                              <button class="close" data-dismiss="alert">x</button>
+                              <strong>Warning: </strong>
+                              <text> {{simError}}</text>
+                          </div>
                       </div>
                   </div>
                   <!-- End Icon Box 1-->
       </div>
+
   </div>
 
 

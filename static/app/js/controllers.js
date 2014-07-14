@@ -51,6 +51,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             $scope.reset = function() {
                 $scope.Model = Designing;
+                $scope.simError;
                 $window.location.href = '/';
                 $window.location.reload();
             };
@@ -131,6 +132,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             */
 
             var Model = $scope.$parent.Model;
+            $scope.simError;
             //console.log(Model);
             var paramsTemp = null;
 
@@ -156,13 +158,15 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     var error = value.message+': '+value.content;
                     Model.setError(error);
                     Model.setMission(null);
+                    $scope.simError = error;
                     paramsTemp = null;
-                    return alert(error);
+                    //return alert(error);
                 } else {
                     //console.log('Redirect');
                     Model.setError(null);
                     Model.setParams(paramsTemp);
                     $location.path('/payloads');
+                    $scope.simError;
                     return $scope.$apply();
                 }
 
@@ -184,6 +188,8 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             var params = $scope.Model.printParams();
             var paramsTemp;
+
+            $scope.simError;
 
 			if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
             else if(Model.mission == null) return $location.path('/mission');
@@ -222,12 +228,14 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     var error = value.message+': '+value.content;
                     Model.setError(error);
                     paramsTemp = null;
-                    return alert(error);
+                    $scope.simError = error;
+                    //return alert(error);
                 } else {
                     //console.log('Redirect');
                     Model.setError(null);
                     Model.setParams(paramsTemp);
                     $location.path('/bus');
+                    $scope.simError;
                     return $scope.$apply();
                 }
 
@@ -278,7 +286,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 };
 
                 bs = grouped(bs, 2);
-                //console.log(bs);
+                console.log(bs);
                 $scope.safeApply(function(){
                     $scope.Page.pl = pl;          // set the payload
                     $scope.Page.bus = bs;          // set the bus obj in the Page
@@ -317,6 +325,8 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             var params = $scope.Model.printParams();
             var paramsTemp;
+
+            $scope.simError;
 
 			if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
             else if(Model.mission == null) return $location.path('/mission');
@@ -387,12 +397,14 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     var error = value.message+': '+value.content;
                     Model.setError(error);
                     paramsTemp = null;
-                    return alert(error);
+                    $scope.simError = error;
+                    //return alert(error);
                 } else {
                     //console.log('Redirect');
                     Model.setError(null);
                     Model.setParams(paramsTemp);
                     $location.path('/results');
+                    $scope.simError;
                     return $scope.$apply();
                 }
 

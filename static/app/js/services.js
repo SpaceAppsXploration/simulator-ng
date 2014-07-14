@@ -28,7 +28,7 @@ define(['angular'], function (angular) {
             };
 
             factory.setDestination = function(target){
-                this.destination = target
+                this.destination = target;
                 return false
             };
 

@@ -42,7 +42,7 @@ define(['angular', 'app'], function(angular, app) {
                 templateUrl: '/static/app/partials/feedback.html',
                 controller: 'Feedback'
             });
-            $routeProvider.when('/database', {
+            /*$routeProvider.when('/database', {
                 templateUrl: '/static/app/partials/database.html',
                 controller: 'Database',
                 resolve: {
@@ -50,7 +50,7 @@ define(['angular', 'app'], function(angular, app) {
                         return getDBscience.promiseToHaveData();
                     }
                 }
-            });
+            });*/
             $routeProvider.otherwise({redirectTo: '/start'});
 	    }]); /** end of routing **/
 
