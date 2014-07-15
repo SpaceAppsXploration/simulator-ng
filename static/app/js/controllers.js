@@ -8,7 +8,7 @@
 *
 */
 
-define(['angular', 'services', 'utils', 'goals'], function (angular) {
+define(['angular', 'services', 'utils', 'goals', 'Processing'], function (angular) {
 	'use strict';
 
 	return angular.module('myApp.controllers', ['myApp.services'])
@@ -543,13 +543,15 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             });
 
 		}])
-        .controller('Tutorial', ['$scope', '$location', function ($scope, $location) {
+        .controller('Sandbox', ['$scope', '$location', function ($scope, $location) {
             /**
-            * ## controller for Tutorial
-            * Display tutorial
+            * ## controller for Processing Experiments
+            * Display Processing scripts
             *
-            * By now just a placeholder
             */
+            console.log(Processing.version);
+            $scope.version = Processing.version;
+
         }])
         .controller('Feedback', ['$scope', '$http', function ($scope, $http) {
             /**

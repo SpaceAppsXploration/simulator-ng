@@ -31,5 +31,8 @@ define([
                             'xhr-polling',
                             'websocket' ]
              });
-        });
+        })
+        /*.config(function($locationProvider) {
+            $locationProvider.html5Mode(true);
+        })*/;
 });

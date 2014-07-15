@@ -35,12 +35,15 @@ define(['angular', 'app'], function(angular, app) {
                 controller: 'Results'
             });
             $routeProvider.when('/tutorial', {
-                templateUrl: '/static/app/partials/tutorial.html',
-                controller: 'Tutorial'
+                templateUrl: '/static/app/partials/tutorial.html'
             });
             $routeProvider.when('/feedback', {
                 templateUrl: '/static/app/partials/feedback.html',
                 controller: 'Feedback'
+            });
+            $routeProvider.when('/sandbox', {
+                templateUrl: '/static/app/partials/processing.html',
+                controller: 'Sandbox'
             });
             /*$routeProvider.when('/database', {
                 templateUrl: '/static/app/partials/database.html',

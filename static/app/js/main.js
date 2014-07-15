@@ -4,7 +4,8 @@ require.config({
 		angularRoute: '../../bower_components/angular-route/angular-route',
 		angularMocks: '../../bower_components/angular-mocks/angular-mocks',
 		text: '../../bower_components/requirejs-text/text',
-        sockjsClient: '../../bower_components/sockjs-client/lib/all'
+        sockjsClient: '../../bower_components/sockjs-client/lib/all',
+        Processing: '../../bower_components/Processing.js/processing'
 	},
 	shim: {
 		'angular' : {'exports' : 'angular'},
@@ -12,7 +13,8 @@ require.config({
 		'angularMocks': {
 			deps:['angular'],
 			'exports':'angular.mock'
-		}
+		},
+        'Processing': {'exports': 'Processing'}
 	},
 	priority: [
 		"angular"
