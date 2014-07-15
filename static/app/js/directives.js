@@ -124,7 +124,7 @@ define(['angular', 'services'], function(angular, services) {
                                         </figure> \
                                         </div> \
                                         <div class="col-md-6"> \
-                                        <h4 class="list-group-item-heading">' + header + '...</h4> \
+                                        <h5 class="list-group-item-heading">' + header + '...</h5> \
                                         <p class=""> \
                                         <a target="_blank" href="' + obj.body + '"> Go to data</a> \
                                         </p> \
