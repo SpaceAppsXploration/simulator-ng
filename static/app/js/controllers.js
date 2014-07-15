@@ -8,7 +8,7 @@
 *
 */
 
-define(['angular', 'services', 'utils', 'goals', 'Processing'], function (angular) {
+define(['angular', 'services', 'utils', 'goals'], function (angular) {
 	'use strict';
 
 	return angular.module('myApp.controllers', ['myApp.services'])
