@@ -552,6 +552,43 @@ define(['angular', 'services', 'utils', 'goals', 'Processing'], function (angula
             console.log(Processing.version);
             $scope.version = Processing.version;
 
+            var sketchProc = function (processing) {
+                // Override draw function, by default it will be called 60 times per second
+                processing.draw = function() {
+                  // determine center and max clock arm length
+                  var centerX = processing.width / 2, centerY = processing.height / 2;
+                  var maxArmLength = Math.min(centerX, centerY);
+
+                  function drawArm(position, lengthScale, weight) {
+                    processing.strokeWeight(weight);
+                   processing.line(centerX, centerY,
+                     centerX + Math.sin(position * 2 * Math.PI) * lengthScale * maxArmLength,
+                     centerY - Math.cos(position * 2 * Math.PI) * lengthScale * maxArmLength);
+                 }
+
+                 // erase background
+                 processing.background(224);
+
+                 var now = new Date();
+
+                 // Moving hours arm by small increments
+                 var hoursPosition = (now.getHours() % 12 + now.getMinutes() / 60) / 12;
+                 drawArm(hoursPosition, 0.5, 5);
+
+                 // Moving minutes arm by small increments
+                 var minutesPosition = (now.getMinutes() + now.getSeconds() / 60) / 60;
+                 drawArm(minutesPosition, 0.80, 3);
+
+                 // Moving hour arm by second increments
+                 var secondsPosition = now.getSeconds() / 60;
+                 drawArm(secondsPosition, 0.90, 1);
+               };
+             };
+
+            var canvas = document.getElementById("canvas1");
+            // attaching the sketchProc function to the canvas
+            var processingInstance = new Processing(canvas, sketchProc);
+
         }])
         .controller('Feedback', ['$scope', '$http', function ($scope, $http) {
             /**
@@ -582,122 +619,6 @@ define(['angular', 'services', 'utils', 'goals', 'Processing'], function (angula
                           $scope.httpError = true;
                     });
                 };
-
-        }])
-        .controller('Database', ['$scope', '$http', /*'getDBscience',*/ function ($scope, $http/*, getDBscience*/) {
-            //console.log(getDBscience);
-            $scope.graph = {};
-            $scope.Page.pl = {};
-            $scope.graph = {
-                "edges" : {
-                    3: {
-                        87: {
-                            "label": "Venera 2",
-                            "id": 87,
-                            "type": "mission",
-                            "color":"red",
-                            "shape":"dot"
-                        }
-                    },
-                    7: {
-                        168: {
-                        "label": "Cassini",
-                        "id": 168,
-                        "type": "mission",
-                        "color":"red",
-                        "shape":"dot"
-                        }
-                    },
-                    170: {
-                        125: {
-                           "label": "Variations of sulphur dioxide at the cloud top of Venus's dynamic atmosphere",
-                           "id": 125,
-                           "type": "datum",
-                           "color":"green",
-                           "shape":"dot"
-                           },
-                        126: {
-                           "label": "A teardrop-shaped ionosphere at Venus in tenuous solar wind",
-                           "id": 126,
-                           "type": "datum",
-                           "color":"green",
-                           "shape":"dot"
-                           }
-                        }
-                    },
-
-                   "nodes" : {
-                       3: {
-                           "label": "1VA/2 Payload",
-                           "id": 3,
-                           "type": "datum",
-                            "color":"green",
-                            "shape":"dot"
-                       },
-                       87: {
-                           "label": "Venera 2",
-                           "id": 87,
-                           "type": "mission",
-                            "color":"red",
-                            "shape":"dot"
-                       },
-                       126: {
-                           "label": "A teardrop-shaped ionosphere at Venus in tenuous solar wind",
-
-                           "id": 126,
-                           "type": "datum",
-                            "color":"green",
-                            "shape":"dot"
-                       },
-                       170: {
-                           "label": "Venus Express",
-                           "id": 170,
-                           "type": "mission",
-                            "color":"red",
-                            "shape":"dot"
-                       },
-                       7: {
-                           "label": "Cassini - UVIS Venus",
-                           "id": 7,
-                           "type": "datum",
-                            "color":"green",
-                            "shape":"dot"
-                       },
-                       168: {
-                           "label": "Cassini",
-                           "id": 168,
-                           "type": "mission",
-                            "color":"red",
-                            "shape":"dot"
-                       },
-                       125: {
-                           "label": "Variations of sulphur dioxide at the cloud top of Venus's dynamic atmosphere",
-                           "id": 125,
-                           "type": "datum",
-                           "color":"green",
-                           "shape":"dot"
-                       }
-                   }
-
-                };
-
-            if (typeof $scope.Page.pl == 'undefined') $scope.toServer("get_comps", "");
-
-            $scope.$on('get_comps', function(event, values) {
-                var pl = values.filter(function (obj) {
-                    return obj.category == 'payload';
-                });
-                    console.log(pl);
-                $scope.safeApply(function(){
-
-                    $scope.Page.pl = pl;
-                });
-
-            });
-
-            // ask list of components (pl)
-            // on receive list of components
-
 
         }])
 		// More involved example where controller is required from an external file
