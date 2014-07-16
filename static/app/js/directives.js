@@ -132,7 +132,7 @@ define(['angular', 'services'], function(angular, services) {
                                         <a target="_blank" href="' + mission_link + '"> Mission&apos;s website</a> \
                                         </p> \
                                         <p> \
-                                        <a target="_blank" href="http://www.spacexplore.it/webapp/data/missions/details/' + mission + '">See Details</a> \
+                                        <a target="_blank" href="/webapp/data/missions/details/' + mission + '">See Details</a> \
                                         </p> \
                                         </div> \
                                         </div> \
