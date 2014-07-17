@@ -6,9 +6,8 @@ define(['angular', 'services'], function(angular, services) {
 	angular.module('myApp.directives', ['myApp.services'])
         .directive('selectedmenu', function() {
             function link(scope,obj, attrs) {
-                console.log(scope.Model);
                 var model = scope.Model;
-                scope.$watch('model', function(obj, attrs) {
+                scope.$watch('Model', function(obj, attrs) {
                    if(model != null && model.destination != null) {
                        $('#selected').html('').append('<div class="row"><img class="img-rounded img-mini" src="'+ model.destination.image_url +'"/><span class="text">'+ model.destination.name +'</span></div>');
                    } else $('#selected').html('').append("<span>No selections made</span>");
@@ -31,7 +30,7 @@ define(['angular', 'services'], function(angular, services) {
                        }
                        $('#selected').append('<div class="row"><img class="img-rounded img-mini" src="http://placehold.it/50x50"/><span class="text">'+ print +'</span></div>')
                    }
-                });
+                }, true);
             }
             return({
                 scope: false,
@@ -41,54 +40,110 @@ define(['angular', 'services'], function(angular, services) {
         })
 
         .directive('target', function() {
-            function link(scope,obj, attrs) {
-                var planet_id;
-                if(typeof scope.Page.highlight != 'undefined') {
-                    scope.$watch('Page.highlight', function (obj, attrs) {
-                        planet_id = obj.id;
-                        //console.log('directive target change', attrs);
-                        /** update description **/
-                        $('description').text("");
-                        $('description').append('<img class="media-object img-rounded img-responsive targets" src="' + obj.image_url + '"/>');
-                        $('description').append('<p>' + obj.characteristics + '</p>');
-                        var el = $('#' + obj.slug);
-                        el.parent().find('a').removeClass('active');
-                        el.addClass('active');
+            function link(scope, obj, attrs) {
+                //console.log('directive loaded:', attrs.target);
+                var element = obj;
+                var planet = attrs.target;
+                obj.bind('mouseenter', function(event){
+                    //console.log('start:hover', element.slug);
+                    if (element.css('color') != 'rgb(255, 255, 255)') {
+                        element.css('color', '#ccc');
+                        scope.safeApply(function () { scope.Page.highlight = $.parseJSON(planet); });
+                    }
+                    else scope.safeApply(function () { scope.Page.highlight = $.parseJSON(planet); });
+                });
+                obj.bind('mouseleave', function(event){
+                    console.log(element.css('color'));
+                    if (element.css('color') != 'rgb(255, 255, 255)') {
+                        element.css('color', '#888');
+                        scope.safeApply(function () { scope.Page.highlight = null; });
+                    }
+                    else scope.safeApply(function () { scope.Page.highlight = null; });
+                });
+                obj.bind('click', function(event){
+                    $('.names').css('color', '#888');
+                    scope.safeApply(function(){scope.setDestination($.parseJSON(planet));});
+                    element.css('color', '#fff');
+                });
+                scope.$watch('Page.highlight', function (obj, attrs) {
+                  if (typeof scope.Page.highlight != 'undefined') {
+                      if (scope.Page.highlight == null) { // triggered on mouseleave
+                          $('#description').text("");
+                          $('#physics').text("");
+                      }
+                      else { // triggered on mouseenter
+                          //console.log(obj);
 
-                        /** update physics **/
-                        var list = scope.Page.physics;
-                        var body;
-                        if (planet_id == 2) body = list[0];
-                        else {
+                          /** update description **/
+                          $('#description').text("");
+                          //$('#description').append('<img class="media-object img-rounded img-responsive targets" src="' + obj.image_url + '"/>');
+                          $('#description').append('<p>' + obj.characteristics + '</p>');
+
+                          var list = scope.Page.physics;
+                          var body;
+                          if (obj.id == 2) body = list[0];
+                          else {
                             body = list.filter(function (o) {
-                                //console.log(o.target);
-                                return o.target == planet_id;
+                            //console.log(o.target);
+                            return o.target == obj.id;
                             });
-                        }
-//console.log(body)
-                        if (typeof body != 'undefined' && body.length != 0) {
-                            $('physics').text("");
-                            var print = body;
-                            delete print.target;
-                            delete print.discover;
-                            delete print.name;
-                            delete print.active;
-                            var physics = JsonHuman.format(print);
-                            //console.log(physics)
-                            $('physics').append('<div id="t-resp" class="table-responsive"></div>');
-                            $('#t-resp').append(physics);
-                        } else {
-                            $('physics').text("");
-                            $('physics').html("No Data For This Body.");
-                        }
-                    });
-                }
+                          }
+                          /** update physics **/
+                          if (typeof body != 'undefined' && body.length != 0) {
+                              $('#physics').text("");
+                              var print = body;
+                              delete print.target;
+                              delete print.discover;
+                              delete print.name;
+                              delete print.active;
+                              var physics = JsonHuman.format(print);
+                              //console.log(physics)
+                              $('#physics').append('<div id="t-resp" class="table-responsive"></div>');
+                              $('#t-resp').append(physics);
+                          } else {
+                              $('#physics').text("");
+                              $('#physics').html("No Data For This Body.");
+                          }
+                      }
+                  }
+                });
+
             }
             return({
                 scope: false,
                 link: link,
                 restrict: "A"
+            });
+        })
+
+        .directive('goal', function() {
+            function link(scope, obj, attrs) {
+                //console.log('directive loaded:', attrs.target);
+                var element = obj;
+                var mission = attrs.goal;
+
+                obj.bind('mouseenter', function(event){
+                    //console.log('start:hover', element.slug);
+                    element.css('color', '#ccc');
+                    element.parent().next().children('.gdesc').first().css('color', '#fff');
+                    scope.safeApply(function(){ scope.Page.mission = $.parseJSON(mission); })
                 });
+                obj.bind('mouseleave', function(event){
+                    //console.log('stop:hover', event.target);
+                    element.css('color', '#888');
+                    element.parent().next().children('.gdesc').first().css('color', '#ccc');
+                    scope.safeApply(function(){scope.Page.mission = null; })
+                });
+                obj.bind('click', function(event){
+
+                    scope.chooseG($.parseJSON(mission));
+                });
+            }
+            return({
+                scope: false,
+                link: link,
+                restrict: "A"
+            });
         })
 
         .directive('similars', function() {

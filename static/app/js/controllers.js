@@ -19,18 +19,18 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             * socketService prepares to open socket
             */
 
-            mySocket.setHandler('open', function() {
+            mySocket.setHandler('open', function() {  // define handler for 'open' socket action
                 mySocket.status = true;
                 $scope.$broadcast('socket', true);
                 console.log('STATUS: OPEN: ' + true);
             });
 
-            mySocket.setHandler('close', function() {
+            mySocket.setHandler('close', function() { // define handler for 'close' socket action
                 $scope.$broadcast('socket', false);
                 console.log('STATUS: OPEN: ' + false);
             });
 
-            mySocket.setHandler('message', function(response) {
+            mySocket.setHandler('message', function(response) { // define handler for 'message' socket action
                 var response = JSON.parse(response.data);
                 if (response.data_type == 'get_target') {
                     if (response.data.length > 1) {
@@ -49,9 +49,9 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             $scope.safeApply = safeApply; // load safeApply() from utils.js
 
-            $scope.reset = function() {
+            $scope.reset = function() {  // to reset inputs
                 $scope.Model = Designing;
-                $scope.simError;
+                $scope.simError = '';
                 $window.location.href = '/';
                 $window.location.reload();
             };
@@ -71,6 +71,8 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             */
 
             var Model = $scope.$parent.Model;
+            $scope.Page.goals = goals; // load goals data from goals.js
+            var paramsTemp = null;
 
             $scope.$watch('Socket.status', function(value){ // watch opening and trigger for init data
                 if (value == true) {
@@ -80,16 +82,25 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 } else return;
             });
 
-            $scope.chooseT = function(obj) { // method fired by clicking on a destination name in template
-                $scope.safeApply(function(){ $scope.Page.highlight = obj; });
-                //console.log($scope.Page.highlight);
-
-            };
-
             $scope.setDestination = function(){
                 Model.destination = $scope.Page.highlight; // ng-click scope var
                 if (Model.mission != null) Model.mission = null;
-                $scope.safeApply(function() { $location.path('/mission') });
+                //console.log(Model.getDestination())
+            };
+
+            $scope.chooseG = function(obj) { // method fired by clicking on choose for mission goal
+                if (Model.destination != null) {
+                    Model.mission = obj;
+                    var destination = Model.destination.slug;
+                    var goal = Model.mission.slug;
+                    paramsTemp = "?destination="+destination+"&mission="+goal;
+                    $scope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
+                    //console.log(Model);
+                }
+                else {
+                    $scope.simError = 'need to set a destination first';
+                    Model.mission = null;
+                }
             };
 
             // Events Listeners for mySocket handlers $broadcasting
@@ -101,7 +112,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 else console.log('now closed, cannot trigger');
             });
             $scope.$on('targets', function(event, values) { // receive data for all the targets
-                //console.log(event, value);
+                console.log(event, values);
                 var earth = values.filter(function( obj ) {
                         return obj.slug == 'earth';
                 });
@@ -121,6 +132,27 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 $scope.safeApply(function(){
                     $scope.Page.physics = value;
                 });
+            });
+            $scope.$on('destination-mission', function(event, value){
+                //console.log(value);
+                if (value.code == 1) {
+                    //console.log('Error');
+                    var error = value.message+': '+value.content;
+                    Model.setError(error);
+                    Model.setMission(null);
+                    $scope.simError = error;
+                    paramsTemp = null;
+                    $scope.$apply();
+                    //return alert(error);
+                } else {
+                    //console.log('Redirect');
+                    Model.setError(null);
+                    Model.setParams(paramsTemp);
+                    $location.path('/payloads');
+                    $scope.simError = '';
+                    $scope.$apply();
+                }
+
             });
 		}])
         .controller('Mission', ['$scope', '$location', function ($scope, $location) {
@@ -151,28 +183,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             };
             //console.log($scope.Page.goals);
 
-            $scope.$on('destination-mission', function(event, value){
-                //console.log(value);
-                if (value.code == 1) {
-                    //console.log('Error');
-                    var error = value.message+': '+value.content;
-                    Model.setError(error);
-                    Model.setMission(null);
-                    $scope.simError = error;
-                    paramsTemp = null;
-                    $scope.$apply();
-                    $('html, body').animate({scrollTop:0}, 'slow');
-                    //return alert(error);
-                } else {
-                    //console.log('Redirect');
-                    Model.setError(null);
-                    Model.setParams(paramsTemp);
-                    $location.path('/payloads');
-                    $scope.simError;
-                    $scope.$apply();
-                }
 
-            });
 		}])
         .controller('Payloads', ['$scope', '$location', function ($scope, $location) {
             /**
