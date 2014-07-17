@@ -1,0 +1,82 @@
+<div class="col-sm-12">
+
+  <div class="row">
+      <h1 class="classic-title" style="text-align:left;">Plan & Define
+          <span style="text-decoration: none; border-bottom: none; font-size: 16px;text-align:left;padding-left:25px;">Target and Goal</span>
+      </h1>
+
+  </div>
+
+  <div class="row">
+      <div class="col-sm-3">
+          <p target="{{t}}" ng-repeat="t in Page.targets" class="names {{t.slug}}" id="{{t.slug}}">{{t.name}}</p>
+      </div>
+      <div class="col-sm-3" id="description">
+
+      </div>
+      <div class="col-sm-4" id="physics">
+
+      </div>
+      <div class="col-sm-2" id="selected" selectedmenu>
+           <span>No selections made</span>
+      </div>
+  </div>
+
+  <div class="row" id="alert">
+     <div class="alert alert-error" ng-show="simError">
+         &nbsp;
+        <strong>Warning: </strong>
+        <text> {{simError}}</text>
+     </div>
+  </div>
+
+  <div class="row">
+      <div class="col-sm-6">
+          <div class="row" ng-repeat="g in Page.goals">
+              <div class="col-sm-6">
+                <p goal="{{g}}" class="goals {{g.slug}}" id="{{g.slug}}">{{g.name}}</p>
+              </div>
+              <div class="col-sm-6">
+                <p class="gdesc"> {{g.description}}</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="col-sm-6" style="min-height: 250px;">
+          &nbsp;
+      </div>
+  </div>
+
+</div>
+
+
+<style type="text/css">
+    .row {
+        margin-left:10px;
+    }
+    .names {
+        font-size: 150%;
+        font-family: 'Inconsolata';
+        cursor: pointer;
+        color: #888;
+        width: auto;
+    }
+    #physics > div {
+        font-size: 120%;
+        margin-left:35px;
+    }
+    .goals {
+        font-size: 160%;
+        font-family: 'Inconsolata';
+        cursor: pointer;
+        color: #888;
+    }
+    .gdesc {
+        font-size: 110%;
+    }
+    #alert {
+        color: orangered;
+        min-height: 75px;
+        font-size: 14px;
+    }
+</style>
