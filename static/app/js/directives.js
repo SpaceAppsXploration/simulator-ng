@@ -207,7 +207,7 @@ define(['angular', 'services'], function(angular, services) {
                                 var missions = collect(data);
                                 $('#similars').append(missions);
                             }
-                            else $('#similars').append('no data for these target/payloads combination. Try again!');
+                            else $('#similars').append('<span style="font-size:16px;">No data for these target/payloads combination. Try again!</span>');
 
 
                         }
