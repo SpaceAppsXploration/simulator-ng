@@ -92,10 +92,10 @@ define(['angular', 'services'], function(angular, services) {
                           if (typeof body != 'undefined' && body.length != 0) {
                               $('#physics').text("");
                               var print = body;
-                              delete print.target;
-                              delete print.discover;
-                              delete print.name;
-                              delete print.active;
+                              if(print.target) delete print.target;
+                              if(print.discover) delete print.discover;
+                              if(print.name) delete print.name;
+                              if(print.active) delete print.active;
                               var physics = JsonHuman.format(print);
                               //console.log(physics)
                               $('#physics').append('<div id="t-resp" class="table-responsive"></div>');

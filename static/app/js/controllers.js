@@ -155,39 +155,9 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             });
 		}])
-        .controller('Mission', ['$scope', '$location', function ($scope, $location) {
-            /**
-            * ## controller for 02-Mission
-            * User decides mission's goal
-            * define the choose mission method
-            * define events listeners
-            */
-
-            var Model = $scope.$parent.Model;
-            $scope.simError;
-            //console.log(Model);
-            var paramsTemp = null;
-
-            if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
-            if(Model.payloads != null) Model.payloads = null;
-
-            $scope.Page.goals = goals; // load goals data from goals.js
-
-            $scope.chooseG = function(obj) { // method fired by clicking on choose for mission goal
-                Model.mission = obj;
-                var destination = Model.destination.slug;
-                var goal = Model.mission.slug;
-                paramsTemp = "?destination="+destination+"&mission="+goal;
-                $scope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
-                //console.log(Model);
-            };
-            //console.log($scope.Page.goals);
-
-
-		}])
         .controller('Payloads', ['$scope', '$location', function ($scope, $location) {
             /**
-            * ## controller for 03-Payloads
+            * ## controller for 02-Design
             * User decides payloads
             * define the setPayloads method
             * define events listeners
@@ -490,8 +460,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             var Model = $scope.$parent.Model;
 
             if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
-            else if(Model.mission == null) return $location.path('/mission');
-            else if(Model.payloads == null) return $location.path('/payloads');
+            if(Model.payloads == null || Model.payloads.length == 0) return $location.path('/payloads');
 
             $scope.Page.sci_data = {};
             $scope.Page.sci_data.loaded = false;

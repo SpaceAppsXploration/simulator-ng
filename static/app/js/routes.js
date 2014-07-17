@@ -17,11 +17,6 @@ define(['angular', 'app'], function(angular, app) {
                 templateUrl: '/static/app/partials/01-targeting.html',
                 controller: 'Start'
             });
-            $routeProvider.when('/mission', {
-                templateUrl: '/static/app/partials/02-mission.html',
-                controller: 'Mission',
-                resolve: null
-            });
             $routeProvider.when('/payloads', {
                 templateUrl: '/static/app/partials/03-payloads.html',
                 controller: 'Payloads'
