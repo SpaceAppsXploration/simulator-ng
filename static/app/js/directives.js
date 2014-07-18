@@ -1,6 +1,18 @@
 define(['angular', 'services'], function(angular, services) {
 	'use strict';
 
+
+    var genColor = function(seed) {
+        var color = Math.floor((Math.abs(Math.sin(seed) * 16777215)) % 16777215);
+        color = color.toString(16);
+        // pad any colors shorter than 6 characters with leading 0s
+        while(color.length < 6) {
+            color = '0' + color;
+        }
+
+        return '#'+color;
+    };
+
   /* Directives */
 
 	angular.module('myApp.directives', ['myApp.services'])
@@ -42,11 +54,12 @@ define(['angular', 'services'], function(angular, services) {
         .directive('target', function() {
             function link(scope, obj, attrs) {
                 //console.log('directive loaded:', attrs.target);
-                var element = obj;
-                var planet = $.parseJSON(attrs.target);
+                var element = obj; /* html element */
+                var planet = $.parseJSON(attrs.target); /* destination object in html element */
+
                 obj.bind('mouseenter', function(event){
                     //console.log('start:hover', element.slug);
-                    if (scope.Page.selection != true) {
+                    if (scope.Page.selection != true) { /* if there is not an already selected element */
                         if (element.css('color') != 'rgb(255, 255, 255)') {
                             element.css('color', '#ccc');
                             scope.safeApply(function () { scope.Page.highlight = planet; });
@@ -56,7 +69,7 @@ define(['angular', 'services'], function(angular, services) {
                 });
                 obj.bind('mouseleave', function(event){
                     //console.log(element.css('color'));
-                    if (scope.Page.selection != true) {
+                    if (scope.Page.selection != true) {  /* if there is not an already selected element */
                         if (element.css('color') != 'rgb(255, 255, 255)') {
                             element.css('color', '#888');
                             scope.safeApply(function () { scope.Page.highlight = null; });
@@ -66,27 +79,21 @@ define(['angular', 'services'], function(angular, services) {
                 });
                 obj.bind('click', function(event){
                     $('.names').css('color', '#888');
+                    element.css('color', '#fff'); /* higlight selected */
+
+                    var figure = genColor(planet.id); /* generate destination color from seed */
+                    //console.log(figure, planet.id);
+
                     scope.$apply(function() {
-                        scope.Page.selection = true;
-                        scope.Page.highlight = planet;
-                        scope.setDestination(planet);
+                        scope.Page.selection = true; /* a destination is selected >>> true */
+                        scope.Page.highlight = planet; /* what destination is selected (watched by description and data) */
+                        scope.Page.destcolor = figure; /* color of the selected destination */
+                        scope.setDestination(planet); /* controller function is triggered */
                     });
-                    element.css('color', '#fff');
 
-                    function genColor (seed) {
-                        var color = Math.floor((Math.abs(Math.sin(seed) * 16777215)) % 16777215);
-                        color = color.toString(16);
-                        // pad any colors shorter than 6 characters with leading 0s
-                        while(color.length < 6) {
-                            color = '0' + color;
-                        }
-
-                        return '#'+color;
-                    }
-                    var figure = genColor(planet.id);
-                    console.log(figure, planet.id);
-                    $('#oval').css('background', figure.toString()).fadeIn('slow');
-                    $('html, body').animate({scrollTop: $('#oval').offset().top}, 'easeOutQuint');
+                    var scroll = $('#oval').css('background', figure.toString()).fadeIn('slow').offset().top;
+                    /* set shape color and scroll down to goal selection */
+                    $('html, body').animate({scrollTop: scroll}, 'easeOutQuint');
                 });
                 scope.$watch('Page.highlight', function (obj, attrs) {
                   if (typeof scope.Page.highlight != 'undefined') {
@@ -99,9 +106,8 @@ define(['angular', 'services'], function(angular, services) {
                           //console.log(obj);
 
                           /** update description **/
-                          $('#description').text("");
+                          $('#description').text("").append('<p>' + obj.characteristics + '</p>');
                           //$('#description').append('<img class="media-object img-rounded img-responsive targets" src="' + obj.image_url + '"/>');
-                          $('#description').append('<p>' + obj.characteristics + '</p>');
 
                           var list = scope.Page.physics;
                           var body;
@@ -114,7 +120,6 @@ define(['angular', 'services'], function(angular, services) {
                           }
                           /** update physics **/
                           if (typeof body != 'undefined' && body.length != 0) {
-                              $('#physics').text("");
                               var print = body;
                               if(print.target) delete print.target;
                               if(print.discover) delete print.discover;
@@ -122,11 +127,10 @@ define(['angular', 'services'], function(angular, services) {
                               if(print.active) delete print.active;
                               var physics = JsonHuman.format(print);
                               //console.log(physics)
-                              $('#physics').append('<div id="t-resp" class="table-responsive"></div>');
+                              $('#physics').text("").append('<div id="t-resp" class="table-responsive"></div>');
                               $('#t-resp').append(physics);
                           } else {
-                              $('#physics').text("");
-                              $('#physics').html("No Data For This Body.");
+                              $('#physics').text("").html("No Data For This Body.");
                           }
                       }
                   }
@@ -144,23 +148,39 @@ define(['angular', 'services'], function(angular, services) {
             function link(scope, obj, attrs) {
                 //console.log('directive loaded:', attrs.target);
                 var element = obj;
-                var mission = attrs.goal;
+                var mission = $.parseJSON(attrs.goal);
+                //console.log(attrs.goal);
+
+                var goalcolor = genColor(mission.id); /* generate a color for mission's goal */
 
                 obj.bind('mouseenter', function(event){
                     //console.log('start:hover', element.slug);
                     element.css('color', '#ccc');
                     element.parent().next().children('.gdesc').first().css('color', '#fff');
-                    scope.safeApply(function(){ scope.Page.mission = $.parseJSON(mission); })
+                    scope.safeApply(function(){ scope.Page.mission = mission; });
+                    var destcolor = scope.Page.destcolor;
+                    $('#oval').css('background', '-webkit-linear-gradient(left,'+destcolor+', '+goalcolor +')')
+                              .css('background', '-o-linear-gradient(right,'+destcolor+', '+goalcolor +')')
+                              .css('background', '-moz-linear-gradient(right,'+destcolor+', '+goalcolor +')')
+                              .css('background', 'linear-gradient(to right,'+destcolor+', '+goalcolor +')');
+                    console.log(destcolor, goalcolor, mission.id);
+
                 });
                 obj.bind('mouseleave', function(event){
                     //console.log('stop:hover', event.target);
                     element.css('color', '#888');
                     element.parent().next().children('.gdesc').first().css('color', '#ccc');
                     scope.safeApply(function(){scope.Page.mission = null; })
+
+                    $('#oval').css('background', scope.Page.destcolor)
                 });
                 obj.bind('click', function(event){
-
-                    scope.chooseG($.parseJSON(mission));
+                    var destcolor = scope.Page.destcolor;
+                    $('#oval').css('background', '-webkit-linear-gradient(left,'+destcolor+', '+goalcolor +')')
+                              .css('background', '-o-linear-gradient(right,'+destcolor+', '+goalcolor +')')
+                              .css('background', '-moz-linear-gradient(right,'+destcolor+', '+goalcolor +')')
+                              .css('background', 'linear-gradient(to right,'+destcolor+', '+goalcolor +')');
+                    scope.chooseG(mission);
                 });
             }
             return({

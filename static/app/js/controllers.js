@@ -75,6 +75,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             $scope.Page.goals = goals; // load goals data from goals.js
             var paramsTemp = null;
             $scope.Page.selection = false;
+            $scope.Page.destcolor = null;
 
             $scope.$watch('Socket.status', function(value){ // watch opening and trigger for init data
                 if (value == true) {
