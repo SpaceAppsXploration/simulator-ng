@@ -30,7 +30,7 @@
      </div>
   </div>
 
-  <div class="row">
+  <div class="row" style="display:none;" id="goals-row">
       <div class="col-sm-6">
           <div class="row" ng-repeat="g in Page.goals">
               <div class="col-sm-6">
@@ -42,8 +42,10 @@
           </div>
       </div>
 
-      <div class="col-sm-6" style="min-height: 250px;">
-          &nbsp;
+      <div class="col-sm-6">
+          <div id="oval_parent">
+            <div id="oval"  style="display: none;"></div>
+          </div>
       </div>
   </div>
 
@@ -79,5 +81,19 @@
         color: orangered;
         min-height: 75px;
         font-size: 14px;
+    }
+    #oval_parent{
+        width:280px;
+        height:280px;
+        overflow:hidden;
+    }
+
+    #oval{
+        width: 220px;
+        height: 220px;
+        margin: 0px 0 0 40px;
+        -moz-border-radius: 49% ;
+        -webkit-border-radius: 49% ;
+        border-radius: 49% ;
     }
 </style>

@@ -54,6 +54,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 $scope.simError = '';
                 $window.location.href = '/';
                 $window.location.reload();
+                $scope.safeApply();
             };
 
             $scope.Socket = mySocket;
@@ -73,6 +74,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             var Model = $scope.$parent.Model;
             $scope.Page.goals = goals; // load goals data from goals.js
             var paramsTemp = null;
+            $scope.Page.selection = false;
 
             $scope.$watch('Socket.status', function(value){ // watch opening and trigger for init data
                 if (value == true) {

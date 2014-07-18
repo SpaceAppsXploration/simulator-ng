@@ -43,30 +43,54 @@ define(['angular', 'services'], function(angular, services) {
             function link(scope, obj, attrs) {
                 //console.log('directive loaded:', attrs.target);
                 var element = obj;
-                var planet = attrs.target;
+                var planet = $.parseJSON(attrs.target);
                 obj.bind('mouseenter', function(event){
                     //console.log('start:hover', element.slug);
-                    if (element.css('color') != 'rgb(255, 255, 255)') {
-                        element.css('color', '#ccc');
-                        scope.safeApply(function () { scope.Page.highlight = $.parseJSON(planet); });
+                    if (scope.Page.selection != true) {
+                        if (element.css('color') != 'rgb(255, 255, 255)') {
+                            element.css('color', '#ccc');
+                            scope.safeApply(function () { scope.Page.highlight = planet; });
+                        }
+                        else scope.safeApply(function () { scope.Page.highlight = planet; });
                     }
-                    else scope.safeApply(function () { scope.Page.highlight = $.parseJSON(planet); });
                 });
                 obj.bind('mouseleave', function(event){
-                    console.log(element.css('color'));
-                    if (element.css('color') != 'rgb(255, 255, 255)') {
-                        element.css('color', '#888');
-                        scope.safeApply(function () { scope.Page.highlight = null; });
+                    //console.log(element.css('color'));
+                    if (scope.Page.selection != true) {
+                        if (element.css('color') != 'rgb(255, 255, 255)') {
+                            element.css('color', '#888');
+                            scope.safeApply(function () { scope.Page.highlight = null; });
+                        }
+                        else scope.safeApply(function () { scope.Page.highlight = null; });
                     }
-                    else scope.safeApply(function () { scope.Page.highlight = null; });
                 });
                 obj.bind('click', function(event){
                     $('.names').css('color', '#888');
-                    scope.safeApply(function(){scope.setDestination($.parseJSON(planet));});
+                    scope.$apply(function() {
+                        scope.Page.selection = true;
+                        scope.Page.highlight = planet;
+                        scope.setDestination(planet);
+                    });
                     element.css('color', '#fff');
+
+                    function genColor (seed) {
+                        var color = Math.floor((Math.abs(Math.sin(seed) * 16777215)) % 16777215);
+                        color = color.toString(16);
+                        // pad any colors shorter than 6 characters with leading 0s
+                        while(color.length < 6) {
+                            color = '0' + color;
+                        }
+
+                        return '#'+color;
+                    }
+                    var figure = genColor(planet.id);
+                    console.log(figure, planet.id);
+                    $('#oval').css('background', figure.toString()).fadeIn('slow');
+                    $('html, body').animate({scrollTop: $('#oval').offset().top}, 'easeOutQuint');
                 });
                 scope.$watch('Page.highlight', function (obj, attrs) {
                   if (typeof scope.Page.highlight != 'undefined') {
+                      $('#goals-row').show();
                       if (scope.Page.highlight == null) { // triggered on mouseleave
                           $('#description').text("");
                           $('#physics').text("");
