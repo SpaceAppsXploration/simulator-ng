@@ -101,9 +101,15 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     //console.log(Model);
                 }
                 else {
-                    $scope.simError = 'need to set a destination first';
-                    Model.mission = null;
+                    $scope.safeApply(function() {
+                        $scope.simError = 'need to set a destination first';
+                        Model.mission = null;
+                    });
                 }
+            };
+
+            $scope.resetError = function(){
+                  $scope.simError = '';
             };
 
             // Events Listeners for mySocket handlers $broadcasting
@@ -151,7 +157,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     //console.log('Redirect');
                     Model.setError(null);
                     Model.setParams(paramsTemp);
-                    $location.path('/payloads');
+                    $location.path('/design');
                     $scope.simError = '';
                     $scope.$apply();
                 }
@@ -167,12 +173,15 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             */
 
             var Model = $scope.$parent.Model;
-            $scope.Page.checkboxesPL = {}; // checkboxes form bind model
+            $scope.Model.payloads = [];
+            $scope.Model.bus = [];
 
-            $scope.safeApply(function(){ $scope.Model.payloads = [] });
+            $scope.Page.plslots = null;
+            $scope.Page.busslots = null;
+
+            $scope.Model.payloads = [];
             var payloads = $scope.Model.payloads;
 
-            var params = $scope.Model.printParams();
             var paramsTemp;
 
             $scope.simError;
@@ -180,12 +189,38 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 			if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
             else if(Model.mission == null) return $location.path('/mission');
 
+            $scope.resetInput = function(){
+                $scope.Page.plslots = {
+                    1: {"status": false, "value": null, "slug": null, "element": null},
+                    2: {"status": false, "value": null, "slug": null, "element": null},
+                    3: {"status": false, "value": null, "slug": null, "element": null}
+                }; /* the three payloads slots are void */
+
+                $scope.Page.busslots = {
+                    1: {"status": false,
+                        1: {"value": null, "slug": null, "element": null},
+                        2: {"value": null, "slug": null, "element": null}
+                    },
+                    2: {"status": false,
+                        1: {"value": null, "slug": null, "element": null},
+                        2: {"value": null, "slug": null, "element": null}
+                    }
+                }; /* the two bus slots are void */
+
+                paramsTemp = '';
+            };
+
             if (typeof $scope.Page.pl == 'undefined') $scope.toServer("get_comps", ""); // ask for payloads data
             if (typeof $scope.pl_types == 'undefined') $scope.toServer("get_comps_types", ""); // ask for payloads types
 
+            $scope.resetError = function(){
+                  $scope.simError = '';
+            };
+
+
+
             $scope.togglePayload = function(obj){
-                console.log($scope.Page.checkboxesPL);
-                //console.log(obj);
+                console.log(obj);
                 var slug = obj.slug;
                 if($.inArray(slug, payloads) == -1) {
                     $scope.safeApply(function(){ Model.addPayload(slug); });
@@ -193,18 +228,34 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 else {
                     $scope.safeApply(function(){ Model.removePayload(slug); });
                 }
-                //console.log(payloads);
+
+                var check = '&'+slug+'=true';
+                paramsTemp += check;
+                                console.log(paramsTemp);
             };
 
-            $scope.setPayloads = function(){
-                if(payloads.length == 0) return alert("Want to waste some fuel?");
-                var check = '';
-                for (var i = 0; i < payloads.length;i++) {
-                    check += '&'+payloads[i]+'=true'
+            $scope.toggleBUS = function(obj, el){
+                var bus = Model.getBus();
+                var slug = obj.slug;
+                if($.inArray(slug, bus) == -1) {
+                    $scope.safeApply(function(){ Model.addBus(slug); });
                 }
-                paramsTemp = params+check;
-                //console.log(paramsTemp);
-                $scope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
+                else {
+                    $scope.safeApply(function(){ Model.removeBus(slug); });
+                }
+                console.log(Model.bus);
+
+                if (Model.getBus().length == 2) {
+                    var check = '';
+                    for (var i = 0; i < bus.length;i++) {
+                        check += '&'+bus[i]+'=bustrue'
+                    }
+                    paramsTemp += check;
+                    paramsTemp = Model.printParams() + paramsTemp;
+                                        console.log(paramsTemp);
+                    $scope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
+                }
+
             };
 
             $scope.$on('destination-mission', function(event, value){
@@ -213,16 +264,17 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     //console.log('Error');
                     var error = value.message+': '+value.content;
                     Model.setError(error);
+                    $scope.simError = error+' '+paramsTemp.toString();
                     paramsTemp = null;
-                    $scope.simError = error;
+                    $scope.resetInput();
                     $scope.$apply();
                     //return alert(error);
                 } else {
                     //console.log('Redirect');
                     Model.setError(null);
                     Model.setParams(paramsTemp);
-                    $location.path('/bus');
-                    $scope.simError;
+                    $location.path('/results');
+                    $scope.resetError();
                     $scope.$apply();
                 }
 
@@ -247,8 +299,9 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     return rv;
                 }
 
-                $scope.$parent.PAYLOADS = toObject(pl); // set the general payloads obj by slug
-                $scope.$parent.BUS = toObject(bs); // set the general bus obj by slug
+                $scope.$parent.PAYLOADS = toObject(pl); // set the general payloads obj
+                $scope.$parent.BUS = toObject(bs); // set the general bus obj
+                //console.log($scope.Page.BUS);
 
                 var grouped = function(input, itemsPerRow) {
                       if (itemsPerRow === undefined) {
@@ -277,6 +330,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 $scope.safeApply(function(){
                     $scope.Page.pl = pl;          // set the payload
                     $scope.Page.bus = bs;          // set the bus obj in the Page
+                    $scope.resetInput()            // init pl and bus slots for data bindings
                 });
             });
             $scope.$on('get_comps_types', function(event, values){
@@ -296,166 +350,9 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
 
         }])
-        .controller('Bus', ['$scope', '$location', function ($scope, $location) {
-            /**
-            * ## controller for 04-Bus
-            * User decides bus
-            * define the setBus method
-            * define events listeners
-            */
-
-            var Model = $scope.$parent.Model;
-
-
-            $scope.safeApply(function(){ $scope.Model.bus = [] });
-            var bus = $scope.Model.bus;
-
-            var params = $scope.Model.printParams();
-            var paramsTemp;
-
-            $scope.simError;
-
-			if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
-            else if(Model.mission == null) return $location.path('/mission');
-            else if(Model.payloads == null) return $location.path('/payloads');
-
-            if (typeof $scope.Page.bus== 'undefined') $scope.toServer("get_comps", ""); // ask for bus data
-            if (typeof $scope.Page.bs_types == 'undefined') $scope.toServer("get_comps_types", ""); // ask for bus types
-
-            var restBUS = $scope.Page.bus;
-            var initCheckBoxes = function(){
-                var obj = {};
-                for(var i = 0; i < restBUS.length; i++){
-                    obj[i] = {0: false, 1: false}
-                }
-                return obj
-            }; // checkboxes form bind model
-            $scope.Page.checkboxesBUS = initCheckBoxes();
-
-            $scope.toggleBUS = function(obj, el){
-                var model = $scope.Page.checkboxesBUS;
-                //console.log(model)
-                for (var i in model){
-                    if(model[i][0] == true) {
-                        var id = i+[0];
-                        //console.log($('#'+id).parent().parent().parent().next().find('input[type="checkbox"]'));
-                        $('#'+id).parent().parent().parent().next().find('input[type="checkbox"]').prop('disabled', true);
-                    } else {
-                        var id = i+[0];
-                        $('#'+id).parent().parent().parent().next().find('input[type="checkbox"]').prop('disabled', false);
-                    }
-                    if(model[i][1] == true) {
-                        var id = i+[1];
-                        //console.log($('#'+id).parent().parent().parent().prev().find('input[type="checkbox"]'));
-                        $('#'+id).parent().parent().parent().prev().find('input[type="checkbox"]').prop('disabled', true);
-                    } else {
-                        var id = i+[1];
-                       $('#'+id).parent().parent().parent().prev().find('input[type="checkbox"]').prop('disabled', false);
-                    }
-
-                }
-
-                var slug = obj.slug;
-                if($.inArray(slug, bus) == -1) {
-                    $scope.safeApply(function(){ Model.addBus(slug); });
-                }
-                else {
-                    $scope.safeApply(function(){ Model.removeBus(slug); });
-                }
-                //console.log(bus);
-
-            };
-
-            $scope.setBus = function(){
-                if(bus.length == 0) return alert("Payloads cannot fly into a bubble...");
-                var check = '';
-                for (var i = 0; i < bus.length;i++) {
-                    check += '&'+bus[i]+'=bustrue'
-                }
-                paramsTemp = params+check;
-                //console.log(paramsTemp);
-                $scope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
-            };
-
-            $scope.$on('destination-mission', function(event, value){
-                //console.log(value);
-                if (value.code == 1) {
-                    //console.log('Error');
-                    var error = value.message+': '+value.content;
-                    Model.setError(error);
-                    paramsTemp = null;
-                    $scope.simError = error;
-                    $scope.$apply();
-                    //return alert(error);
-                } else {
-                    //console.log('Redirect');
-                    Model.setError(null);
-                    Model.setParams(paramsTemp);
-                    $location.path('/results');
-                    $scope.simError;
-                    $scope.$apply();
-                }
-
-            });
-
-            $scope.$on('get_comps', function(event, values){
-                var pl = values.filter(function( obj ) {
-                        return obj.category == 'payload';
-                });
-                var bs = values.filter(function( obj ) {
-                        return obj.category == 'bus';
-                });
-                var grouped = function(input, itemsPerRow) {
-
-                      if (itemsPerRow === undefined) {
-                        itemsPerRow = 1;
-                      }
-
-                      var out = [];
-                      if(typeof input != 'undefined') {
-                          for (var i = 0; i < input.length; i++) {
-                              var rowElementIndex = i % itemsPerRow;
-                              var rowIndex = (i - rowElementIndex) / itemsPerRow;
-                              var row;
-                              if (rowElementIndex === 0) {
-                                  row = [];
-                                  out[rowIndex] = row;
-                              } else {
-                                  row = out[rowIndex];
-                              }
-
-                              row[rowElementIndex] = input[i];
-                          }
-                      }
-
-                      return out;
-
-                };
-
-                bs = grouped(bs, 2);
-                $scope.safeApply(function(){
-                    $scope.Page.pl = pl;          // set the payload
-                    $scope.Page.bus = bs;          // set the bus obj in the Page
-                });
-            });
-            $scope.$on('get_comps_types', function(event, values){
-                var pl_types = values.filter(function( obj ) {
-                        return obj.category == 'payload';
-                });
-                var bs_types = values.filter(function( obj ) {
-                        return obj.category == 'bus';
-                });
-                $scope.safeApply(function(){
-                    $scope.Page.pl_types = pl_types;           // set the comps obj in the Page
-                    $scope.Page.bs_types = bs_types;           // set the comps obj in the Page
-                });
-
-            });
-
-		}])
         .controller('Results', ['$scope', '$location', function ($scope, $location) {
             /**
-            * ## controller for 05-Results
+            * ## controller for 03-Results
             * Results displayed
             *
             *
@@ -463,7 +360,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             var Model = $scope.$parent.Model;
 
             if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
-            if(Model.payloads == null || Model.payloads.length == 0) return $location.path('/payloads');
+            if(Model.payloads == null || Model.payloads.length == 0) return $location.path('/design');
 
             $scope.Page.sci_data = {};
             $scope.Page.sci_data.loaded = false;
@@ -479,6 +376,8 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             var payloads = $scope.Model.getPayloads();
             var bus = $scope.Model.getBus();
+
+            console.log(payloads, bus);
 
             totals[0] = $scope.Model.getDestination().slug;
             totals[1] = $scope.Model.getMission().slug;

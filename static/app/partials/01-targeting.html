@@ -1,9 +1,15 @@
 <div class="col-sm-12">
 
   <div class="row">
-      <h1 class="classic-title" style="text-align:left;">Plan & Define
-          <span style="text-decoration: none; border-bottom: none; font-size: 16px;text-align:left;padding-left:25px;">Target and Goal</span>
-      </h1>
+      <div class="col-sm-3">
+          <span class="headers">Choose a destination</span>
+      </div>
+      <div class="col-sm-3">
+          <span class="headers">Description</span>
+      </div>
+      <div class="col-sm-3">
+          <span class="headers">Data</span>
+      </div>
 
   </div>
 
@@ -11,15 +17,13 @@
       <div class="col-sm-3">
           <p target="{{t}}" ng-repeat="t in Page.targets" class="names {{t.slug}}" id="{{t.slug}}">{{t.name}}</p>
       </div>
-      <div class="col-sm-3" id="description">
-
+      <div class="col-sm-3" id="description" ng-show="Page.highlight">
+             <p>{{Page.highlight.characteristics}}</p>
       </div>
       <div class="col-sm-4" id="physics">
 
       </div>
-      <div class="col-sm-2" id="selected" selectedmenu>
-           <span>No selections made</span>
-      </div>
+
   </div>
 
   <div class="row" id="alert">
@@ -30,9 +34,20 @@
      </div>
   </div>
 
-  <div class="row" style="display:none;" id="goals-row">
+  <div class="row goals-row" style="display:none;margin-left: 0;" >
       <div class="col-sm-6">
-          <div class="row" ng-repeat="g in Page.goals">
+          <div class="col-sm-6">
+              <span class="headers" style="margin-left: -5px;">Choose a mission</span>
+          </div>
+          <div class="col-sm-6">
+              <span class="headers">Mission&apos;s goal</span>
+          </div>
+      </div>
+  </div>
+
+  <div class="row goals-row" style="display:none;" id="goals-row">
+      <div class="col-sm-6">
+          <div class="row" style="margin-left:-15px;" ng-repeat="g in Page.goals">
               <div class="col-sm-6">
                 <p goal="{{g}}" class="goals {{g.slug}}" id="{{g.slug}}">{{g.name}}</p>
               </div>
@@ -56,11 +71,15 @@
     .row {
         margin-left:10px;
     }
+    .headers {
+        font-variant: small-caps;
+        font-size: 14px;
+        text-align:left;
+        margin-bottom: 10px;
+    }
     .names {
         font-size: 150%;
-        font-family: 'Inconsolata';
         cursor: pointer;
-        color: #888;
         width: auto;
     }
     #physics > div {
@@ -70,9 +89,7 @@
     }
     .goals {
         font-size: 160%;
-        font-family: 'Inconsolata';
         cursor: pointer;
-        color: #888;
     }
     .gdesc {
         font-size: 110%;
@@ -92,8 +109,8 @@
         width: 220px;
         height: 220px;
         margin: 0px 0 0 40px;
-        -moz-border-radius: 49% ;
-        -webkit-border-radius: 49% ;
-        border-radius: 49% ;
+        -moz-border-radius: 46% ;
+        -webkit-border-radius: 46% ;
+        border-radius: 46% ;
     }
 </style>

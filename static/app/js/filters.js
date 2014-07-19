@@ -8,5 +8,13 @@ define(['angular', 'services'], function (angular, services) {
 			return function(text) {
 				return String(text).replace(/\%VERSION\%/mg, version);
 			};
-	    }]);
+	    }])
+        .filter('assembled', function(){
+            return function(text){
+                if((typeof text == 'undefined') || (text == null)){
+                    return ''
+                }
+                else return text + ' assembled';
+            }
+        });
 });

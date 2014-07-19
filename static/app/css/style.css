@@ -32,6 +32,19 @@
 /*------------------------------------------*/
 /*	     01 - General & Basic Styles
 /*------------------------------------------*/
+
+html {
+    margin: 0;
+    padding:0;
+}
+
+body {
+    font-size: 14px;
+    font-family: 'Inconsolata', monospace, sans-serif;
+    color: #c8d2d2
+}
+
+
 strong, b {
 	font-weight: 600;
 }
@@ -92,7 +105,6 @@ h6 {
 	line-height: 18px;
 }
 p {
-	color: #fff;
 	font-size: 13px;
 	font-family: 'Open Sans', sans-serif;
 	line-height: 22px;

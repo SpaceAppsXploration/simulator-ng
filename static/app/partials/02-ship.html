@@ -1,0 +1,151 @@
+<div class="col-sm-12">
+
+  <div class="row">
+      <div class="col-md-6" id="selected" selectedmenu>
+           <span>No selections made</span>
+      </div>
+  </div>
+
+  <div class="row">
+       <div class="col-sm-3">
+          <span class="headers">Scientific payloads<br/><br/></span>
+      </div>
+
+      <div class="col-sm-9">
+          <div class="col-sm-3" ng-show="Page.plslots[1]">
+              <span class="headers">{{Page.plslots[1].value.name|assembled}} </span>
+          </div>
+          <div class="col-sm-3" ng-show="Page.plslots[2]">
+              <span class="headers">{{Page.plslots[2].value.name|assembled}}</span>
+          </div>
+          <div class="col-sm-3" ng-show="Page.plslots[3]">
+              <span class="headers">{{Page.plslots[3].value.name|assembled}}</span>
+          </div>
+      </div>
+  </div>
+
+  <div class="row">
+      <div class="col-sm-3" id="pllist">
+          <p payload="{{p}}" ng-repeat="p in Page.pl" class="names {{p.slug}}" id="{{p.slug}}">{{p.name}}</p>
+      </div>
+
+      <div class="col-sm-9" id="plslots">
+          <div id="plslot-1" plslot="1" ng-show="Page.plslots[1]" data-full="false" class="col-sm-3">
+              <p>{{Page.plslots[1].value.description}}</p>
+          </div>
+          <div id="plslot-2" plslot="2" ng-show="Page.plslots[2]" data-full="false" class="col-sm-3">
+              <p>{{Page.plslots[2].value.description}}</p>
+          </div>
+          <div id="plslot-3" plslot="3" ng-show="Page.plslots[3]" data-full="false" class="col-sm-3">
+              <p>{{Page.plslots[3].value.description}}</p>
+          </div>
+      </div>
+
+  </div>
+
+  <div class="row" id="alert" ng-show="simError">
+     <div class="alert alert-error" >
+         &nbsp;
+        <strong>Warning: </strong>
+        <text> {{simError}}</text>
+     </div>
+  </div>
+
+
+  <div class="row row-first" id="row-bus">
+      <div class="col-sm-3">
+          <span class="headers">Bus<br/><br/></span>
+      </div>
+      <div class="col-sm-4">
+          <span class="headers"></span>
+      </div>
+      <div class="col-sm-4">
+          <span class="headers"></span>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-sm-3">
+          <p bustype="{{t}}" datacounter="{{$index}}" ng-repeat="t in Page.bs_types" class="types {{t.slug}}" id="{{t.slug}}">{{t.name}} ></p>
+      </div>
+      <div class="col-sm-4" id="busslot-1" ng-show="Page.busslots[1]">
+          <div class="row">
+              <div class="buscomp" busslot="1" buscomp="1">
+                  <p class="headers" style="padding-bottom:0">{{Page.busslots[1][1].value.name}}</p>
+                  <p>{{Page.busslots[1][1].value.description}}</p>
+              </div>
+          </div>
+          <div class="row" style="padding-top:10px">
+              <div class="buscomp" busslot="1" buscomp="2">
+                  <p class="headers" style="padding-bottom:0">{{Page.busslots[1][2].value.name}}</p>
+                  <p>{{Page.busslots[1][2].value.description}}</p>
+              </div>
+          </div>
+      </div>
+      <div class="col-sm-4" id="busslot-2" ng-show="Page.busslots[2]">
+          <div class="row">
+              <div class="buscomp" busslot="2" buscomp="1">
+                  <p class="headers" style="padding-bottom:0">{{Page.busslots[2][1].value.name}}</p>
+                  <p>{{Page.busslots[2][1].value.description}}</p>
+              </div>
+          </div>
+          <div class="row" style="padding-top:10px">
+              <div class="buscomp" busslot="2" buscomp="2">
+                  <p class="headers" style="padding-bottom:0">{{Page.busslots[2][2].value.name}}</p>
+                  <p>{{Page.busslots[2][2].value.description}}</p>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+</div>
+
+
+<style type="text/css">
+    .row {
+        margin-left:10px;
+    }
+    .headers {
+        font-variant: small-caps;
+        font-size: 14px;
+        text-align:left;
+        padding-bottom: 10px;
+    }
+    .names {
+        font-size: 130%;
+        font-family: 'Inconsolata', monospace, sans-serif;
+        cursor: pointer;
+        color: #888;
+        width: auto;
+    }
+    .buscomp {
+        cursor: pointer;
+    }
+    #alert {
+        color: orangered;
+        min-height: 75px;
+        font-size: 14px;
+    }
+    #pllist {
+        display: block;
+        margin-top: 10px;
+    }
+    #plslots {
+        display: block;
+    }
+    #plslots > div {
+        display: block;
+        min-height: 150px;
+        padding-top:5px;
+    }
+    .types {
+        font-size: 130%;
+        font-family: 'Inconsolata', monospace, sans-serif;
+        cursor: pointer;
+        color: #888;
+        width: auto;
+    }
+
+
+
+</style>
