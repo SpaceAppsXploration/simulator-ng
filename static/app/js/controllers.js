@@ -19,18 +19,18 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             * socketService prepares to open socket
             */
 
-            mySocket.setHandler('open', function() {  // define handler for 'open' socket action
+            mySocket.setHandler('open', function() {  /* define handler for 'open' socket action */
                 mySocket.status = true;
                 $scope.$broadcast('socket', true);
                 console.log('STATUS: OPEN: ' + true);
             });
 
-            mySocket.setHandler('close', function() { // define handler for 'close' socket action
+            mySocket.setHandler('close', function() { /* define handler for 'close' socket action */
                 $scope.$broadcast('socket', false);
                 console.log('STATUS: OPEN: ' + false);
             });
 
-            mySocket.setHandler('message', function(response) { // define handler for 'message' socket action
+            mySocket.setHandler('message', function(response) { /* define handler for 'message' socket action */
                 var response = JSON.parse(response.data);
                 if (response.data_type == 'get_target') {
                     if (response.data.length > 1) {
@@ -42,14 +42,14 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 }
             });
 
-            var toServer = function(query, obj){ // utility to call a send to the server (SockJS emitter)
+            var toServer = function(query, obj){ /* utility to call a send to the server (SockJS emitter) */
                 return mySocket.send(JSON.stringify({"query": query, "object": obj }));
             };
             $scope.toServer = toServer;
 
-            $scope.safeApply = safeApply; // load safeApply() from utils.js
+            $scope.safeApply = safeApply; /* load safeApply() from utils.js */
 
-            $scope.reset = function() {  // to reset inputs
+            $scope.reset = function() {  /* to reset inputs */
                 $scope.Model = Designing;
                 $scope.simError = '';
                 $window.location.href = '/';
@@ -58,7 +58,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             };
 
             $scope.Socket = mySocket;
-            $scope.Model = Designing; // init the Model object
+            $scope.Model = Designing; /* init the Model object */
             $scope.Page = {};
 
             console.log($scope.Socket);
@@ -72,32 +72,32 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             */
 
             var Model = $scope.$parent.Model;
-            $scope.Page.goals = goals; // load goals data from goals.js
+            $scope.Page.goals = goals; /* load goals data from goals.js */
             var paramsTemp = null;
             $scope.Page.selection = false;
             $scope.Page.destcolor = null;
 
-            $scope.$watch('Socket.status', function(value){ // watch opening and trigger for init data
+            $scope.$watch('Socket.status', function(value){ /* watch opening and trigger for init data */
                 if (value == true) {
                     console.log('Socket.open: ', value);
-                    if (typeof $scope.Page.physics == 'undefined') $scope.toServer("get_physics", ""); // ask for physical data about destinations
-                    if (typeof $scope.Page.targets == 'undefined') $scope.toServer("get_target", ""); // ask for all the destinations
+                    if (typeof $scope.Page.physics == 'undefined') $scope.toServer("get_physics", ""); /* ask for physical data about destinations */
+                    if (typeof $scope.Page.targets == 'undefined') $scope.toServer("get_target", ""); /* ask for all the destinations */
                 } else return;
             });
 
-            $scope.setDestination = function(){
-                Model.destination = $scope.Page.highlight; // ng-click scope var
+            $scope.setDestination = function(){  /* method fired when clicking on a destination's name */
+                Model.destination = $scope.Page.highlight;
                 if (Model.mission != null) Model.mission = null;
                 //console.log(Model.getDestination())
             };
 
-            $scope.chooseG = function(obj) { // method fired by clicking on choose for mission goal
+            $scope.chooseG = function(obj) { /* method fired by clicking on a mission goal */
                 if (Model.destination != null) {
                     Model.mission = obj;
                     var destination = Model.destination.slug;
                     var goal = Model.mission.slug;
                     paramsTemp = "?destination="+destination+"&mission="+goal;
-                    $scope.toServer("destination-mission", paramsTemp); // ask to server if goal-destination combo is good
+                    $scope.toServer("destination-mission", paramsTemp); /* ask to server if goal-destination combo is good */
                     //console.log(Model);
                 }
                 else {
@@ -112,15 +112,15 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                   $scope.simError = '';
             };
 
-            // Events Listeners for mySocket handlers $broadcasting
-            $scope.$on('socket', function(event, value) { // sockets opens
+            /********** Events Listeners for mySocket handlers $broadcasting *************/
+            $scope.$on('socket', function(event, value) { /* sockets opens */
                 //console.log(event, value);
                 if (value === true) {
                     console.log('now open, can trigger');
                 }
                 else console.log('now closed, cannot trigger');
             });
-            $scope.$on('targets', function(event, values) { // receive data for all the targets
+            $scope.$on('targets', function(event, values) { /* receive data for all the targets */
                 console.log(event, values);
                 var earth = values.filter(function( obj ) {
                         return obj.slug == 'earth';
@@ -130,13 +130,13 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 });
 
                 $scope.safeApply(function(){
-                    $scope.Page.highlight = earth[0];           // set the selected destination in template scope
+                    $scope.Page.highlight = earth[0];           /* set the selected destination in template scope */
                     //console.log($scope.Model);
-                    $scope.Page.targets = targets;             // save the targets' data in template scope
+                    $scope.Page.targets = targets;             /* save the targets' data in template scope */
                     //console.log($scope.Page.targets);
                 });
             });
-            $scope.$on('get_physics', function(event, value) { // save physical data
+            $scope.$on('get_physics', function(event, value) { /* save physical data */
                 //console.log(event, value);
                 $scope.safeApply(function(){
                     $scope.Page.physics = value;
@@ -208,7 +208,11 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 }; /* the two bus slots are void */
 
                 paramsTemp = '';
+                $scope.Model.payloads = [];
+                $scope.Model.bus = [];
             };
+
+            $scope.resetInput();
 
             if (typeof $scope.Page.pl == 'undefined') $scope.toServer("get_comps", ""); // ask for payloads data
             if (typeof $scope.pl_types == 'undefined') $scope.toServer("get_comps_types", ""); // ask for payloads types
@@ -216,8 +220,6 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             $scope.resetError = function(){
                   $scope.simError = '';
             };
-
-
 
             $scope.togglePayload = function(obj){
                 console.log(obj);
@@ -264,7 +266,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                     //console.log('Error');
                     var error = value.message+': '+value.content;
                     Model.setError(error);
-                    $scope.simError = error+' '+paramsTemp.toString();
+                    $scope.simError = error;
                     paramsTemp = null;
                     $scope.resetInput();
                     $scope.$apply();

@@ -242,7 +242,7 @@ define(['angular', 'services'], function(angular, services) {
                 obj.bind('click', function (event) {
                     element.css('color', '#fff');
                     /* higlight selected */
-                    console.log('Click', scope.Page.plslots);
+                    //console.log('Click', scope.Page.plslots);
                     scope.$apply(function () {
                         scope.Page.plslots[scope.Page.assembling].status = true;
                         scope.togglePayload(scope.Page.plslots[scope.Page.assembling].value);
@@ -280,7 +280,7 @@ define(['angular', 'services'], function(angular, services) {
                     element.css('color', '#ccc');
                     var slots = scope.Page.busslots;
                     var counter = attrs.datacounter;
-                                        console.log(bus[counter])
+                                        //console.log(bus[counter])
 
                     if (slots[1].status == false) {
                         scope.$apply(function () {
@@ -289,7 +289,7 @@ define(['angular', 'services'], function(angular, services) {
 
                             slots[1][2].value = bus[counter][1];
                             slots[1][2].slug = type;
-                            console.log(slots)
+                            //console.log(slots)
                         });
                     }
                     else if (slots[2].status == false) {
@@ -299,7 +299,7 @@ define(['angular', 'services'], function(angular, services) {
 
                             slots[2][2].value = bus[counter][1];
                             slots[2][2].slug = type;
-                            console.log(slots)
+                            //console.log(slots)
                         });
                     }
 
@@ -325,7 +325,7 @@ define(['angular', 'services'], function(angular, services) {
 
                 obj.bind('click', function (event) {
                     element.css('color', '#fff');
-                                    console.log(scope.Page.busslots[slotn][compn].value);
+                                    //console.log(scope.Page.busslots[slotn][compn].value);
                     scope.$apply(function () {
                         scope.Page.busslots[slotn].status = true;
                         scope.toggleBUS(scope.Page.busslots[slotn][compn].value);
