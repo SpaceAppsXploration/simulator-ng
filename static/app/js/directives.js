@@ -91,6 +91,7 @@ define(['angular', 'services'], function(angular, services) {
                         scope.Page.selection = true; /* a destination is selected >>> true */
                         scope.Page.highlight = planet; /* what destination is selected (watched by description and data) */
                         scope.Page.destcolor = figure; /* color of the selected destination */
+                        scope.Model.destcolor = figure;
                         scope.resetError();
                         scope.setDestination(planet); /* controller function is triggered */
                     });
@@ -173,7 +174,7 @@ define(['angular', 'services'], function(angular, services) {
                     element.parent().next().children('.gdesc').first().css('color', '#c8d2d2');
                     scope.safeApply(function(){scope.Page.mission = null; });
 
-                    $('#oval').css('border', '2px solid'+scope.Page.destcolor)
+                    $('#oval').css('border', '2px solid '+scope.Page.destcolor)
                               .css('background', 'none')
                 });
                 obj.bind('click', function(event){
@@ -182,6 +183,7 @@ define(['angular', 'services'], function(angular, services) {
                               .css('background', '-o-linear-gradient(right,'+destcolor+', '+goalcolor +')')
                               .css('background', '-moz-linear-gradient(right,'+destcolor+', '+goalcolor +')')
                               .css('background', 'linear-gradient(to right,'+destcolor+', '+goalcolor +')');
+                    scope.Model.goalcolor = goalcolor;
                     scope.chooseG(mission);
                 });
             }
@@ -257,11 +259,7 @@ define(['angular', 'services'], function(angular, services) {
                           /* set shape color and scroll down to goal selection */
                           $('html, body').animate({scrollTop: scroll}, 'easeOutQuint');
                     }
-
-
                 });
-
-
             }
             return({
                 scope: false,
@@ -369,21 +367,23 @@ define(['angular', 'services'], function(angular, services) {
                             }
                             missions += '<div class="list-group"> \
                                         <div class="list-group-item"> \
-                                        <div class="media col-md-3"> \
+                                        <div class="media col-xs-3"> \
                                         <figure class="pull-left"> \
-                                        <img class="media-object img-rounded img-responsive" src="' + image + '" alt="" style="width=auto; height:80px;" > \
+                                        <img class="media-object img-rounded img-responsive" src="' + image + '" style="width=auto; height:50px;" > \
                                         </figure> \
                                         </div> \
-                                        <div class="col-md-6"> \
-                                        <h5 class="list-group-item-heading">' + header + '...</h5> \
-                                        <p class=""> \
+                                        <div class="col-xs-5"> \
+                                        <h6 class="list-group-item-heading">' + header + '...</h6> \
+                                        </div> \
+                                        <div class="col-xs-4">\
+                                        <p class="link-small"> \
                                         <a target="_blank" href="' + obj.body + '"> Go to data</a> \
                                         </p> \
-                                        <p class=""> \
+                                        <p class="link-small"> \
                                         <a target="_blank" href="' + mission_link + '"> Mission&apos;s website</a> \
                                         </p> \
-                                        <p> \
-                                        <a target="_blank" href="/webapp/data/missions/details/' + mission + '">See Details</a> \
+                                        <p class="link-small"> \
+                                        <a target="_blank" href="/webapp/data/missions/details/' + mission + '">Mission&apos;s Details</a> \
                                         </p> \
                                         </div> \
                                         </div> \
@@ -438,21 +438,6 @@ define(['angular', 'services'], function(angular, services) {
                 restrict: "A"
                 });
         })
-        /*
-        .directive('start', function() {
-            function link(scope,obj, attrs) {
-                obj.bind('mouseenter', function(event){
-                   console.log('start:hover', event.target)
-                });
-            }
-
-            return({
-                scope: false,
-                link: link,
-                restrict: "A"
-                });
-        })
-        */
         .directive('compsmenu', function() {
             function link(scope,obj, attrs) {
                 if (typeof scope.Page.pl != 'undefined') {

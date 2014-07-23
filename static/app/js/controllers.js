@@ -360,6 +360,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             *
             */
             var Model = $scope.$parent.Model;
+            console.log(Model.destination.name);
 
             if(typeof Model == 'undefined' || Model.destination == null) return $location.path('/start');
             if(Model.payloads == null || Model.payloads.length == 0) return $location.path('/design');

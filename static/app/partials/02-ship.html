@@ -8,18 +8,31 @@
 
   <div class="row">
        <div class="col-sm-3">
-          <span class="headers">Scientific payloads<br/><br/></span>
+          <span class="headers">Scientific Payloads<br/><br/><br/></span>
       </div>
 
       <div class="col-sm-9">
-          <div class="col-sm-3" ng-show="Page.plslots[1]">
-              <span class="headers">{{Page.plslots[1].value.name|assembled}} </span>
+          <div class="row">
+              <div class="col-sm-3">
+                    <span class="headers">payload slot one</span>
+              </div>
+              <div class="col-sm-3">
+                   <span class="headers">payload slot two</span>
+              </div>
+              <div class="col-sm-3">
+                   <span class="headers">payload slot three</span>
+              </div>
           </div>
-          <div class="col-sm-3" ng-show="Page.plslots[2]">
-              <span class="headers">{{Page.plslots[2].value.name|assembled}}</span>
-          </div>
-          <div class="col-sm-3" ng-show="Page.plslots[3]">
-              <span class="headers">{{Page.plslots[3].value.name|assembled}}</span>
+          <div class="row">
+              <div class="col-sm-3" ng-show="Page.plslots[1]">
+                  <span class="headers">{{Page.plslots[1].value.name|assembled}} </span>
+              </div>
+              <div class="col-sm-3" ng-show="Page.plslots[2]">
+                  <span class="headers">{{Page.plslots[2].value.name|assembled}}</span>
+              </div>
+              <div class="col-sm-3" ng-show="Page.plslots[3]">
+                  <span class="headers">{{Page.plslots[3].value.name|assembled}}</span>
+              </div>
           </div>
       </div>
   </div>
@@ -57,10 +70,10 @@
           <span class="headers">Bus<br/><br/></span>
       </div>
       <div class="col-sm-4">
-          <span class="headers"></span>
+          <span class="headers">bus slot one</span>
       </div>
       <div class="col-sm-4">
-          <span class="headers"></span>
+          <span class="headers">bus slot two</span>
       </div>
   </div>
   <div class="row" style="margin-bottom:50px;">
@@ -69,13 +82,13 @@
       </div>
       <div class="col-sm-4" id="busslot-1" ng-show="Page.busslots[1]">
           <div class="row">
-              <div class="buscomp" busslot="1" buscomp="1">
+              <div class="buscomp" busslot="1" buscomp="1" assembled="false">
                   <p class="headers" style="padding-bottom:0">{{Page.busslots[1][1].value.name}}</p>
                   <p>{{Page.busslots[1][1].value.description}}</p>
               </div>
           </div>
           <div class="row" style="padding-top:10px">
-              <div class="buscomp" busslot="1" buscomp="2">
+              <div class="buscomp" busslot="1" buscomp="2" assembled="false">
                   <p class="headers" style="padding-bottom:0">{{Page.busslots[1][2].value.name}}</p>
                   <p>{{Page.busslots[1][2].value.description}}</p>
               </div>
@@ -83,13 +96,13 @@
       </div>
       <div class="col-sm-4" id="busslot-2" ng-show="Page.busslots[2]">
           <div class="row">
-              <div class="buscomp" busslot="2" buscomp="1">
+              <div class="buscomp" busslot="2" buscomp="1" assembled="false">
                   <p class="headers" style="padding-bottom:0">{{Page.busslots[2][1].value.name}}</p>
                   <p>{{Page.busslots[2][1].value.description}}</p>
               </div>
           </div>
           <div class="row" style="padding-top:10px">
-              <div class="buscomp" busslot="2" buscomp="2">
+              <div class="buscomp" busslot="2" buscomp="2" assembled="false">
                   <p class="headers" style="padding-bottom:0">{{Page.busslots[2][2].value.name}}</p>
                   <p>{{Page.busslots[2][2].value.description}}</p>
               </div>
@@ -145,7 +158,8 @@
         color: #888;
         width: auto;
     }
-
-
-
 </style>
+
+<script type="application/javascript">
+    $('html, body').animate({scrollTop: 0}, 'easeOutQuint');
+</script>

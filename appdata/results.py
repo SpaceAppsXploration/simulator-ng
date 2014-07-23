@@ -40,6 +40,7 @@ ratings = {
     'particles': (None, 4, None),
     'probe': (None, 5, None),
     'amplifier': (None, 3, None),
+    'photopolarimeter': (None, 3, None),
 
     'therm_active': (None, 4, None),
     'therm_passive': (None, 2, None),
