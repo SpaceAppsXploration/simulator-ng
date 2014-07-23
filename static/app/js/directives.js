@@ -369,7 +369,7 @@ define(['angular', 'services'], function(angular, services) {
                                         <div class="list-group-item"> \
                                         <div class="media col-xs-3"> \
                                         <figure class="pull-left"> \
-                                        <img class="media-object img-rounded img-responsive" src="' + image + '" style="width=auto; height:50px;" > \
+                                        <img class="media-object img-rounded img-responsive" src="' + image + '" style="min-width=50px; height:50px; margin-left: -15px;" > \
                                         </figure> \
                                         </div> \
                                         <div class="col-xs-5"> \
