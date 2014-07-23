@@ -145,8 +145,8 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
             $scope.$on('destination-mission', function(event, value){
                 //console.log(value);
                 if (value.code == 1) {
-                    //console.log('Error');
-                    var error = value.message+': '+value.content;
+                    //console.log(value);
+                    var error = value.type+': '+value.content;
                     Model.setError(error);
                     Model.setMission(null);
                     $scope.simError = error;
@@ -264,7 +264,7 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 //console.log(value);
                 if (value.code == 1) {
                     //console.log('Error');
-                    var error = value.message+': '+value.content;
+                    var error = value.type+': '+value.content;
                     Model.setError(error);
                     $scope.simError = error;
                     paramsTemp = null;

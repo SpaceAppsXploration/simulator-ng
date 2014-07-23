@@ -51,14 +51,17 @@ define(['angular', 'services'], function(angular, services) {
             });
         })
         /*************************************** Directives for Start Controller **************************************/
-        .directive('target', function() {
+        .directive('target', ['$q', function($q) {
             function link(scope, obj, attrs) {
                 //console.log('directive loaded:', attrs.target);
                 var element = obj; /* html element */
-                var figure;
-                var planet;
-                planet = scope.$eval(attrs.target); /* destination object in html element */
-                figure = genColor(planet.id); /* generate destination color from seed */
+                var figure = null;
+                var planet = null;
+                var deferred = $q.defer();
+                deferred.resolve(scope.$eval(attrs.target));
+                deferred.promise.then(function(data){
+                    planet =  data;
+                    figure = genColor(data.id);});
 
                 obj.bind('mouseenter', function(event){
                     //console.log('start:hover', element.slug);
@@ -146,7 +149,7 @@ define(['angular', 'services'], function(angular, services) {
                 link: link,
                 restrict: "A"
             });
-        })
+        }])
         .directive('goal', function() {
             function link(scope, obj, attrs) {
                 //console.log('directive loaded:', attrs.target);
@@ -369,7 +372,7 @@ define(['angular', 'services'], function(angular, services) {
                                         <div class="list-group-item"> \
                                         <div class="media col-xs-3"> \
                                         <figure class="pull-left"> \
-                                        <img class="media-object img-rounded img-responsive" src="' + image + '" style="min-width=50px; height:50px; margin-left: -15px;" > \
+                                        <img class="media-object img-rounded img-responsive" src="' + image + '" style="min-width:50px; height:50px; margin-left: -15px;" > \
                                         </figure> \
                                         </div> \
                                         <div class="col-xs-5"> \
