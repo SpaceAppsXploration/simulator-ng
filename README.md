@@ -43,14 +43,21 @@ To run the server locally:
 * Install dependencies into the venv: 
 
         easy_install pip
-        pip tornado
-        pip sockjs-tornado
+        pip install -r requirements.txt
 
 * Clone repository: `git clone https://github.com/SpaceAppsXploration/simulator-ng`
 
         cd simulator-ng/static
         npm install
         bower install
+
+* Start local MongoDB instance
+ 
+        mongod
+        
+* Create a fake user by running `appdata/starter.py`
+
+        python3.3 starter.py
 
 * Start local server, in simulator-ng directory:
 
