@@ -11,13 +11,15 @@ from handling.handlers import *
 PATH = os.path.dirname(__file__)
 
 settings = {
-    'template_path': os.path.join(PATH, "templates"),
-    'static_path': os.path.join(PATH, 'static')
+    "template_path": os.path.join(PATH, "templates"),
+    "static_path": os.path.join(PATH, 'static'),
+    "cookie_secret": "4f4s68sdf7g16sdf6_a7sdf9g94dj",
+    "login_url": "/login",
+    "xsrf_cookies": True,
 }
 
 if __name__ == '__main__':
     import logging
-
     logging.getLogger().setLevel(logging.DEBUG)
 
     SocketRouter = SockJSRouter(SocketConnection, '/connect')
@@ -26,11 +28,20 @@ if __name__ == '__main__':
         [(r"/", IndexHandler),
          (r"/database", Database),
          (r"/contact", SendFeedback),
+         (r"/cloud", DataCloud),
+         (r"/login", LoginHandler),
+         (r"/logout", LogoutHandler),
+         (r"/home/docs/(?P<id_>[0-9a-fA-F]+)/", DocsHandler),
+         (r"/home/kb/(?P<id_>[0-9a-fA-F]+)/", KBHandler),
+         (r"/home/kb/$", KBHandler),
+         (r"/home", LoggedHandler),
          (r"/pointer_test", TestHandler)] + \
         SocketRouter.urls,
         (r"/static/(.*)", web.StaticFileHandler, {"path": settings['static_path']}),
         **settings
     )
-    app.listen(8080)
+    port = 3001
+    app.listen(port)
+    print("Tornado " + tornado.version + " Running at port " + str(port))
     ioloop.IOLoop.instance().start()
 

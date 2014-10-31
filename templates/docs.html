@@ -1,0 +1,27 @@
+{% extends "testarea.html" %}
+
+{% block body %}
+    <a href="/home/kb/{{back}}/?showing=keywords">< BACK</a>
+    {% if length == 0 %}
+        <pre>no documents yet</pre>
+    {% else %}
+        {% if showing == 'pedia' %}
+            {% for d in documents %}
+                {% for doc in d['skos:broadMatch'] %}
+                    <pre>{{doc['@id']}}</pre>
+                {% end %}
+                {% for doc in d['skos:relatedMatch'] %}
+                    <pre>{{doc['@id']}}</pre>
+                {% end %}
+            {% end %}
+        {% elif showing == 'urls' %}
+                {% for d in documents %}
+                    <pre>{{d['schema:url']}}</pre>
+                {% end %}
+        {% else %}
+                {% for d in documents %}
+                    <pre>{{d['@id']}} > {% if len(d['owl:sameAs']) != 0 %} {{d['owl:sameAs'][0]['@id']}} {% end %}</pre>
+                {% end %}
+        {% end %}
+    {% end %}
+{% end %}

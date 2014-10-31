@@ -63,6 +63,16 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
 
             console.log($scope.Socket);
 		}])
+        // More involved example where controller is required from an external file
+		.controller('MyCtrl2', ['$scope', '$injector', function($scope, $injector) {
+			require(['controllers/myctrl2'], function(myctrl2) {
+				// injector method takes an array of modules as the first argument
+				// if you want your controller to be able to use components from
+				// any of your other modules, make sure you include it together with 'ng'
+				// Furthermore we need to pass on the $scope as it's unique to this controller
+				$injector.invoke(myctrl2, this, {'$scope': $scope});
+			});
+		}])
 		.controller('Start', ['$scope', '$location', function ($scope, $location) {
             /**
             * ## controller for 01-Destination
@@ -506,14 +516,36 @@ define(['angular', 'services', 'utils', 'goals'], function (angular) {
                 };
 
         }])
-		// More involved example where controller is required from an external file
-		.controller('MyCtrl2', ['$scope', '$injector', function($scope, $injector) {
-			require(['controllers/myctrl2'], function(myctrl2) {
-				// injector method takes an array of modules as the first argument
-				// if you want your controller to be able to use components from
-				// any of your other modules, make sure you include it together with 'ng'
-				// Furthermore we need to pass on the $scope as it's unique to this controller
-				$injector.invoke(myctrl2, this, {'$scope': $scope});
-			});
-		}]);
+        .controller('Login', ['$scope', '$http', function ($scope, $http) {
+            /**
+            * ## controller for Login
+            * Display form
+            *
+            *
+            */
+            $scope.success = false;
+            $scope.httpError = false;
+            $scope.msg = {};
+
+            $scope.send = function() {
+                var obj = $scope.login;
+                console.log($scope.login);
+                $http({
+                    url: '/loggedin',
+                    method: "POST",
+                    data: obj,
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                })
+                    .success(function(data){
+                        $scope.success = true;
+                        $scope.login = {};
+                        console.log(data);
+                    })
+                    .error(function(data){
+                          $scope.httpError = true;
+                    });
+                };
+
+        }]);
+
 });

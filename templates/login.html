@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="business-header jumbotron" style="margin-top:0px;border-round:25px;border:2px solid #000;">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-11">
+            <h1 class="text-center" style="padding-bottom:-5px;">If you are a Tester<br/>You can Login</h1>
+
+            <div class="row" style="">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-4">
+
+        <form action="/login" method="post" name="loginForm" accept-charset="utf-8" class="form" role="form">
+            {% module xsrf_form_html() %}
+            <div class="control-group">
+                <label>Name</label>
+                {% if errors and errors=='name' %} <span class="help-inline"> <b style="color:red;">Wrong username</b> </span> {% end %}
+                <input class="col-sm-4 form-control input-lg" type="text" name="name" placeholder="Username" required>
+            </div>
+            <div class="control-group">
+                <label>Password</label>
+                {% if errors and errors=='pwd' %} <span class="help-inline" > <b style="color:red;">Wrong password </b></span> {% end %}
+                <input class="col-sm-4 form-control input-lg" type="password" name="pwd" placeholder="Password" required>
+            </div>
+
+            <div class="control-group">
+                <input class="btn btn-primary btn-large"  type="submit" value="Sign in">
+                <br/>
+                <span class="help-inline">If you want to ask to become a tester, write us a message at <u>info[_@]projectchronos.org</u></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .btn-large, label, .help-inline {
+        margin-top:20px;
+    }
+</style>
+
+{% end %}

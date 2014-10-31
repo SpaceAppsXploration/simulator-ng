@@ -1,7 +1,6 @@
-<!doctype html>
-<html lang="en" ng-app>
+<html>
 	<head>
-        <title>Chronos Project - Simulator</title>
+        <title>Project Chronos - KB</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -16,39 +15,38 @@
         <link href="/static/app/css/app.css"rel="stylesheet" type="text/css">
         <link href="/static/app/css/targets.css"rel="stylesheet" type="text/css">
 
-
-
-	</head>
-	<body ng-controller="establishSocket"> <!-- establish socket connection -->
-
+</head>
+<body>
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-7">
             <ul class="menu">
-                <li><a href="#/start">1.Plan & Define</a></li>
-                <li><a href="#/payloads">2.Design</a></li>
-                <li><a href="#/results">3.Results</a></li>
-
+                <li><a href="/#/start">Go to Simulator Demo</a></li>
+                <li><a href="//projectchronos.org">Go back to Chronos Homepage</a></li>
 		    </ul>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-4">
                 <ul class="menu" style="text-align:right;">
-                    <li><a href="#/tutorial">Tutorial</a></li>
-                    <li><a href="#/feedback">Feedback</a></li>
-                    <li><a style="cursor: pointer;font-weight: normal;" href="#/start" target="_self">Reset</a></li>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="//projectchronos.org">Project Chronos</a></li>
+                    <li><a href="/home/kb/">KB</a></li>
+                    <li><a href="/home/tasks">Tasks</a></li>
+                    <li><a href="/home/people">People</a></li>
+                    <li><a href="/home/search">Search</a></li>
+                    <li><a href="/logout">Logout</a></li>
                 </ul>
           </div>
         </div>
 
-		<div class="row" ng-view ng-cloack>
 
-                <!-- Hook for ng templates -->
+{% block body %}
 
-        </div>
-
-
-    <script data-main="/static/app/js/main" src="/static/bower_components/requirejs/require.js"></script>
+{% end %}
+    <style>
+        div.first {
+            margin-top:20px;
+        }
+        div.row > div > p {
+            font-size: 14px;
+        }
+    </style>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<script>
 
@@ -62,5 +60,4 @@
 
     </script>
 	</body>
-
 </html>

@@ -1,32 +1,56 @@
 <html>
-<head>
-    <title>Chronos Project - Simulator</title>
+	<head>
+        <title>Chronos Project - Simulator</title>
 
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <script src="/static/old/js/vendors/jquery.min.js"></script>
-        <script src="/static/old/js/vendors/sockjs-0.3.4.min.js"></script>
-        <script src="/static/old/js/designing.js"></script>
-        <script src="/static/old/js/socketing.js"></script>
-        <script src="/static/old/js/domflow.js"></script>
-        <script src="/static/old/js/vendors/crel/crel.min.js"></script>
-        <script src="/static/old/js/vendors/json.human.js/src/json.human.js"></script>
+        <script src="/static/app/js/vendors/jquery.min.js"></script>
+        <script src="/static/app/js/vendors/sockjs-0.3.4.min.js"></script>
+
+        <script src="/static/app/js/vendors/crel/crel.min.js"></script>
+        <script src="/static/app/js/vendors/json.human.js/src/json.human.js"></script>
+
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" media="screen">
-        <link href="/static/old/css/responsive.css" rel="stylesheet" type="text/css">
-        <link href="/static/old/css/targets.css"rel="stylesheet" type="text/css">
-        <link href="/static/old/css/style.css" rel="stylesheet" type="text/css">
-
-        <link rel="stylesheet" type="text/css"  href="/static/app/css/app.css" />
-
-
+        <link href="/static/app/css/style.css" rel="stylesheet" type="text/css">
+        <link href="/static/app/css/app.css"rel="stylesheet" type="text/css">
+        <link href="/static/app/css/targets.css"rel="stylesheet" type="text/css">
 
 </head>
 <body>
+        <div class="row">
+          <div class="col-sm-7">
+            <ul class="menu">
+                <li><a href="/#/start">Go to Simulator Demo</a></li>
+                <li><a href="//projectchronos.org">Go back to Chronos Homepage</a></li>
+		    </ul>
+          </div>
+          <div class="col-sm-4">
+                <ul class="menu" style="text-align:right;">
+                    <li><a href="/#/tutorial">Tutorial</a></li>
+                    <li><a href="/#/feedback">Feedback</a></li>
+                    <li><a style="cursor: pointer;font-weight: normal;" href="/#/start" target="_self">Reset</a></li>
+                    <li><a href="/login">Login</a></li>
+                </ul>
+          </div>
+        </div>
+
 
 {% block body %}
 
 {% end %}
 
 
-</body>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script>
+
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-50314218-1', 'spacexplore.it');
+	  ga('send', 'pageview');
+
+    </script>
+	</body>
 </html>

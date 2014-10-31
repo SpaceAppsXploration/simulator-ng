@@ -61,6 +61,7 @@ define(['angular', 'services'], function(angular, services) {
                 deferred.resolve(scope.$eval(attrs.target));
                 deferred.promise.then(function(data){
                     planet =  data;
+                    console.log(data);
                     figure = genColor(data.id);});
 
                 obj.bind('mouseenter', function(event){

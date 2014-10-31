@@ -1,0 +1,81 @@
+{% extends "testarea.html" %}
+
+{% block body %}
+
+<div class="row first">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-8">
+        <p>This is a representation of the NASA-STI taxonomy, that is part of the Chronos' KB.</p>
+        <p>Divisions Subjects and Terms are grouped into nodes in a hierarchical graph.</p>
+        <p>You can move on the nodes by going <u>up</u>, or selecting any term or subject to go <u>down</u> the graph</p>
+    </div>
+</div>
+
+<div class="row first">
+    <div class="col-sm-1">
+    {% if surf['broader'] == 'divisions' %}
+        <p class="arrow"><a href="/home/kb/">UP</a></p>
+    {% elif surf['broader'] == 'subjects' %}
+        <p class="arrow"><a href="/home/kb/{{back}}/?showing={{surf['broader']}}">UP</a></p>
+    {% end %}
+    </div>
+    <div class="col-sm-11">
+        <h2> {{showing}} </h2>
+        {% if showing == 'divisions' %}
+            <div class="col-sm-1"></div>
+            <div class="col-sm-4">
+                <ul>
+                    {% for d in objects %}
+                        <li><a href="/home/kb/{{d['_id']}}/?showing={{surf['narrower']}}"><pre>{{d['skos:prefLabel']}}</pre></a></li>
+                    {% end %}
+                </ul>
+            </div>
+        {% elif showing == 'subjects' %}
+            <div class="col-sm-1"></div>
+            <div class="col-sm-4">
+                <ul>
+                    {% for d in objects %}
+                    <li>
+                        <a href="/home/kb/{{d['skos:topConceptOf']['_id']}}/?showing={{surf['narrower']}}">
+                            <pre>{{ d['@id'][d['@id'].rfind('/')+1:].replace('+', ' ')}}</pre>
+                        </a>
+                    </li>
+
+                    {% end %}
+                </ul>
+            </div>
+        {% elif showing == 'keywords' %}
+            <div class="col-sm-1"></div>
+            <div class="col-sm-4">
+                <ul>
+                    {% for d in objects %}
+                        <li class="keyword"><span class="keywords"><pre>{{d['skos:prefLabel']}}</pre></span>
+                            <ul style="text-align: right;">
+                                <li> { <a href="/home/docs/{{d['_id']}}/?type=pedia&back={{showing}}">find Pedias (semantical match)</a> } </li>
+                                <li> { <a href="/home/docs/{{d['_id']}}/?type=urls&back={{showing}}">find URLs (narrower arguments)</a> } </li>
+                                <li> { <a href="/home/docs/{{d['_id']}}/?type=missions&back={{showing}}">find Mission (related)</a> } </li>
+                            </ul>
+                        </li>
+                    {% end %}
+                </ul>
+            </div>
+
+        {% end %}
+
+    </div>
+ </div>
+
+    <style>
+        li > span.keywords {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        li.keyword {
+            margin-top:15px;
+        }
+        p.arrow {
+            text-align: center;
+        }
+    </style>
+
+{% end %}
