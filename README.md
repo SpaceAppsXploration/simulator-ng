@@ -3,7 +3,7 @@ simulator-ng
 
 ## What's that?
 
-This a POC app for Chronos Project Platform.
+This a POC app for Project Chronos Platform.
 
 This is a Python3 [Tornado](https://github.com/tornadoweb/tornado) Web-server to run [sockjs](https://github.com/sockjs/sockjs-client) with [sockjs-tornado](https://github.com/mrjoes/sockjs-tornado).<br/>
 The data is fetched from [Chronos cloudService](https://github.com/SpaceAppsXploration/cloudService) at [http://spacexplore.it](http://www.spacexplore.it).<br/>
