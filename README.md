@@ -36,6 +36,8 @@ You need `npm` and `bower` to install client-side libraries and tests, and `angu
 
 To run the server locally:
 
+* Install MongoDB by following the installation instructions at [official website](http://docs.mongodb.org/manual/installation/)
+
 * Create a virtual environment: `pyvenv-3.3 {/path/to/your/venv}`
 
 * Activate your venv: `source {/path/to/your/venv}/bin/activate`
