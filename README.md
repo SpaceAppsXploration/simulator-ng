@@ -33,6 +33,7 @@ Use $scope.bind('<mouseevent>') in directives to trigger events
 
 
 You need `npm` and `bower` to install client-side libraries and tests, and `angularjs` itself.
+`python3-devel` libray needs to be installed in your system 
 
 To run the server locally:
 

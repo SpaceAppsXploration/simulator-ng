@@ -16,12 +16,14 @@ from appdata.missions import missions
 def get_hashed_password(plain_text_password):
     # Hash a password for the first time
     #   (Using bcrypt, the salt is saved into the hash itself)
-    return bcrypt.hashpw(plain_text_password, bcrypt.gensalt(12))
+    return bcrypt.hashpw(str.encode(plain_text_password), bcrypt.gensalt(12))
 
 
 def check_password(plain_text_password, hashed_password):
     # Check hased password. Useing bcrypt, the salt is saved into the hash itself
-    return bcrypt.checkpw(plain_text_password, hashed_password)
+    if bcrypt.hashpw(str.encode(plain_text_password), hashed_password) == hashed_password:
+        return True
+    return False
 
 client = MongoClient('localhost', 27017)
 USERS = client.users
