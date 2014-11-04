@@ -185,13 +185,20 @@ class MissionsHandler(BaseHandler):
             obj = KB['base'].find_one(query, projection)
             pref_label = obj["skos:prefLabel"]
             obj = pformat(obj)
-            return self.render("missions.html", document=obj, pref_label=pref_label, id_=id_)
+            self.render("missions.html", document=obj, pref_label=pref_label, id_=id_, page=None)
+            return
+
+        page = self.get_argument('page', default=None)
+        if page is None:
+            self.redirect("/home/missions/?page=0")
+            return
 
         objects = dict()
         query = {"chronos:group": "missions"}
-        objects = KB['base'].find(query).sort("skos:prefLabel")
+        sk = int(page) * 25
+        objects = KB['base'].find(query).sort("skos:prefLabel").limit(25).skip(sk)
 
-        self.render("missions.html", documents=objects, id_=None, typed='mission')
+        self.render("missions.html", documents=objects, id_=None, typed='mission', page=page)
 
 
 class WebDocsHandler(BaseHandler):
@@ -203,13 +210,19 @@ class WebDocsHandler(BaseHandler):
             obj = KB['base'].find_one(query, projection)
             pref_label = obj["schema:headline"]["@value"]
             obj = pformat(obj)
-            return self.render("web.html", document=obj, pref_label=pref_label, id_=id_)
+            return self.render("web.html", document=obj, pref_label=pref_label, id_=id, page=None)
+
+        page = self.get_argument('page', default=None)
+        if page is None:
+            self.redirect("/home/web/?page=0")
+            return
 
         objects = dict()
         query = {"chronos:group": "urls"}
-        objects = KB['base'].find(query).sort("schema:provider._id").limit(25)
+        sk = int(page) * 25
+        objects = KB['base'].find(query).sort("schema:provider._id").limit(25).skip(sk)
 
-        self.render("web.html", documents=objects, id_=None, typed='urls')
+        self.render("web.html", documents=objects, id_=None, typed='urls', page=page)
 
 
 class LoginHandler(BaseHandler):

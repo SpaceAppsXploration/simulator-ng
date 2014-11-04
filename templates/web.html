@@ -34,5 +34,19 @@
 
 </div>
 
-        <br/><br/><br/>
+                <br/><br/><br/>
+    {% if page is not None %}
+    <div class="row first" style="border:1px solid;">
+           <div class="col-sm-4"></div>
+           <div class="col-sm-4">
+               <p>
+                   <a href="/home/web/?page=0">&nbsp;&nbsp;&nbsp;&nbsp;First </a>
+                   <a href="/home/web/?page={{ int(page) - 1 }}">&nbsp;&nbsp;&nbsp;&nbsp;<< </a>
+                   <a href="/home/web/?page={{ int(page) + 1 }}">&nbsp;&nbsp;&nbsp;&nbsp;>> </a>
+               </p>
+           </div>
+    </div>
+
+            <br/><br/><br/>
+    {% end %}
 {% end %}
