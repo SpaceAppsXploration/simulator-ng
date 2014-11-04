@@ -225,7 +225,7 @@ class LoginHandler(BaseHandler):
         if user is not None:
             if check_password(self.get_argument("pwd"), user['password']):
                 self.set_secure_cookie("chronos", self.get_argument("name"))
-                self.redirect("/home")
+                self.redirect("/home/")
                 return
             self.redirect('/login?err=pwd')
             return
