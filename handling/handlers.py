@@ -8,7 +8,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 import bcrypt
 from datetime import datetime
-from pprint import pprint
+from pprint import pprint, pformat
 
 from appdata.missions import missions
 
@@ -78,7 +78,7 @@ class LoggedHandler(BaseHandler):
         return
 
 
-class KBHandler(BaseHandler):
+class TaxonomyHandler(BaseHandler):
     """
     Authenticated Users
     """
@@ -114,7 +114,7 @@ class KBHandler(BaseHandler):
 
 
         surf = hierarchy[showing]
-        self.render("kb.html",
+        self.render("taxonomy.html",
                     objects=objects,
                     showing=showing,
                     surf=surf,
@@ -136,7 +136,7 @@ class DocsHandler(BaseHandler):
         back = None
         kwd = None
         if self.get_argument('type', default=None) is None:
-            self.redirect("/home/kb/")
+            self.redirect("/home/taxonomy/")
             return
         else:
             if self.get_argument('type') == 'pedia':
@@ -174,6 +174,42 @@ class DocsHandler(BaseHandler):
                     length=length,
                     showing=showing,
                     back=back)
+
+
+class MissionsHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, id_=None):
+        if id_ is not None:
+            query = {"_id": ObjectId(id_)}
+            projection = {"_id": False}
+            obj = KB['base'].find_one(query, projection)
+            pref_label = obj["skos:prefLabel"]
+            obj = pformat(obj)
+            return self.render("missions.html", document=obj, pref_label=pref_label, id_=id_)
+
+        objects = dict()
+        query = {"chronos:group": "missions"}
+        objects = KB['base'].find(query).sort("skos:prefLabel")
+
+        self.render("missions.html", documents=objects, id_=None, typed='mission')
+
+
+class WebDocsHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, id_=None):
+        if id_ is not None:
+            query = {"_id": ObjectId(id_)}
+            projection = {"_id": False}
+            obj = KB['base'].find_one(query, projection)
+            pref_label = obj["schema:headline"]["@value"]
+            obj = pformat(obj)
+            return self.render("web.html", document=obj, pref_label=pref_label, id_=id_)
+
+        objects = dict()
+        query = {"chronos:group": "urls"}
+        objects = KB['base'].find(query).sort("schema:provider._id").limit(25)
+
+        self.render("web.html", documents=objects, id_=None, typed='urls')
 
 
 class LoginHandler(BaseHandler):

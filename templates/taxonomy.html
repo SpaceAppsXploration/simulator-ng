@@ -14,9 +14,9 @@
 <div class="row first">
     <div class="col-sm-1">
     {% if surf['broader'] == 'divisions' %}
-        <p class="arrow"><a href="/home/kb/">UP</a></p>
+        <p class="arrow"><a href="/home/taxonomy/">UP</a></p>
     {% elif surf['broader'] == 'subjects' %}
-        <p class="arrow"><a href="/home/kb/{{back}}/?showing={{surf['broader']}}">UP</a></p>
+        <p class="arrow"><a href="/home/taxonomy/{{back}}/?showing={{surf['broader']}}">UP</a></p>
     {% end %}
     </div>
     <div class="col-sm-11">
@@ -26,7 +26,7 @@
             <div class="col-sm-4">
                 <ul>
                     {% for d in objects %}
-                        <li><a href="/home/kb/{{d['_id']}}/?showing={{surf['narrower']}}"><pre>{{d['skos:prefLabel']}}</pre></a></li>
+                        <li><a href="/home/taxonomy/{{d['_id']}}/?showing={{surf['narrower']}}"><pre>{{d['skos:prefLabel']}}</pre></a></li>
                     {% end %}
                 </ul>
             </div>
@@ -36,7 +36,7 @@
                 <ul>
                     {% for d in objects %}
                     <li>
-                        <a href="/home/kb/{{d['skos:topConceptOf']['_id']}}/?showing={{surf['narrower']}}">
+                        <a href="/home/taxonomy/{{d['skos:topConceptOf']['_id']}}/?showing={{surf['narrower']}}">
                             <pre>{{ d['@id'][d['@id'].rfind('/')+1:].replace('+', ' ')}}</pre>
                         </a>
                     </li>

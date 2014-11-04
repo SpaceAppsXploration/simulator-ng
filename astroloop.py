@@ -25,16 +25,20 @@ if __name__ == '__main__':
     SocketRouter = SockJSRouter(SocketConnection, '/connect')
 
     app = web.Application(
-        [(r"/", IndexHandler),
-         (r"/database", Database),
+        [(r"/database", Database),
          (r"/contact", SendFeedback),
          (r"/cloud", DataCloud),
          (r"/login", LoginHandler),
-         (r"/logout", LogoutHandler),
+         (r"/logout/", LogoutHandler),
+         (r'/home/missions/data/(?P<id_>[0-9a-fA-F]+)/', MissionsHandler),
+         (r"/home/missions/", MissionsHandler),
+         (r'/home/web/data/(?P<id_>[0-9a-fA-F]+)/', WebDocsHandler),
+         (r"/home/web/", WebDocsHandler),
          (r"/home/docs/(?P<id_>[0-9a-fA-F]+)/", DocsHandler),
-         (r"/home/kb/(?P<id_>[0-9a-fA-F]+)/", KBHandler),
-         (r"/home/kb/$", KBHandler),
-         (r"/home", LoggedHandler),
+         (r"/home/taxonomy/(?P<id_>[0-9a-fA-F]+)/", TaxonomyHandler),
+         (r"/home/taxonomy/$", TaxonomyHandler),
+         (r"/home/", LoggedHandler),
+         (r"/", IndexHandler),
          (r"/pointer_test", TestHandler)] + \
         SocketRouter.urls,
         (r"/static/(.*)", web.StaticFileHandler, {"path": settings['static_path']}),

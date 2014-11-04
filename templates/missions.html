@@ -1,0 +1,32 @@
+{% extends "testarea.html" %}
+
+{% block body %}
+
+<div class="row first">
+    <div class="col-sm-1"></div>
+
+    {% if id_ is None %}
+    <div class="col-sm-10">
+        <div class="row first">
+        {% for i, d in enumerate(documents) %}
+            {% if i % 12 == 0 %}</div> <div class="row first">{% end %}
+            <div class="col-sm-1"><a href="/home/missions/data/{{ d['_id'] }}/" target="_blank">{{ d['skos:prefLabel'] }}</a></div>
+        {% end %}
+        </div>
+    </div>
+    {% else %}
+    <div class="col-sm-10">
+        <div class="row">
+            <h3>This is the document for mission {{pref_label}}:</h3> <br/><br/><br/>
+            <pre>{{document}}</pre>
+        </div>
+        <div class="row">
+            <p>Explenations of this output can be found at the <a href="https://osf.io/hx3d5/wiki/home/" target="_blank">Project Open Science Framework</a>.</p>
+        </div>
+    </div>
+    {% end %}
+
+</div>
+
+        <br/><br/><br/>
+{% end %}
