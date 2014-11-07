@@ -1,7 +1,7 @@
-{% extends "testarea.html" %}
+{% extends "../testarea.html" %}
 
 {% block body %}
-    <a href="/home/kb/{{back}}/?showing=keywords">< BACK</a>
+    <a href="/home/taxonomy/{{back}}/?showing=keywords">< BACK</a>
     {% if length == 0 %}
         <pre>no documents yet</pre>
     {% else %}

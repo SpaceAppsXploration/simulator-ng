@@ -4,6 +4,8 @@ import tornado.gen
 from tornado import escape
 import json
 
+from handling.paths_to_gates import *
+
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import bcrypt
@@ -74,8 +76,28 @@ class LoggedHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         name = tornado.escape.xhtml_escape(self.current_user)
-        self.render("home.html", username=name)
+        index = None
+
+        sort = get_keywords_in_KB(KB)
+        index = sort[0:28]
+
+        self.render("home/home.html", username=name, index=index)
         return
+
+
+class AccessFromKeywords(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, id_):
+        cache = KB["memcached"].find_one({"object": "homepageKeys"}, {"_id": False})
+        obj = json.loads(cache["value"])
+        id_list = obj[id_]["linked"]
+
+        ids = list(map(lambda x: ObjectId(x), id_list))
+        pprint(ids)
+        documents = KB["base"].find({"_id": {"$in": ids}})
+
+        self.render("gates/most_used_keywords.html", obj=obj, documents=documents)
+        pass
 
 
 class TaxonomyHandler(BaseHandler):
@@ -114,7 +136,7 @@ class TaxonomyHandler(BaseHandler):
 
 
         surf = hierarchy[showing]
-        self.render("taxonomy.html",
+        self.render("taxonomy/taxonomy.html",
                     objects=objects,
                     showing=showing,
                     surf=surf,
@@ -170,7 +192,7 @@ class DocsHandler(BaseHandler):
             else:
                 back = back["skos:inScheme"]["_id"]
 
-        self.render("docs.html", documents=objects,
+        self.render("taxonomy/docs.html", documents=objects,
                     length=length,
                     showing=showing,
                     back=back)
@@ -185,7 +207,7 @@ class MissionsHandler(BaseHandler):
             obj = KB['base'].find_one(query, projection)
             pref_label = obj["skos:prefLabel"]
             obj = pformat(obj)
-            self.render("missions.html", document=obj, pref_label=pref_label, id_=id_, page=None)
+            self.render("missions/missions.html", document=obj, pref_label=pref_label, id_=id_, page=None)
             return
 
         page = self.get_argument('page', default=None)
@@ -195,10 +217,10 @@ class MissionsHandler(BaseHandler):
 
         objects = dict()
         query = {"chronos:group": "missions"}
-        sk = int(page) * 25
-        objects = KB['base'].find(query).sort("skos:prefLabel").limit(25).skip(sk)
+        sk = int(page) * 36
+        objects = KB['base'].find(query).sort("skos:prefLabel").limit(36).skip(sk)
 
-        self.render("missions.html", documents=objects, id_=None, typed='mission', page=page)
+        self.render("missions/missions.html", documents=objects, id_=None, typed='mission', page=page)
 
 
 class WebDocsHandler(BaseHandler):
@@ -210,7 +232,7 @@ class WebDocsHandler(BaseHandler):
             obj = KB['base'].find_one(query, projection)
             pref_label = obj["schema:headline"]["@value"]
             obj = pformat(obj)
-            return self.render("web.html", document=obj, pref_label=pref_label, id_=id, page=None)
+            return self.render("webpages/web.html", document=obj, pref_label=pref_label, id_=id_, page=None)
 
         page = self.get_argument('page', default=None)
         if page is None:
@@ -219,18 +241,18 @@ class WebDocsHandler(BaseHandler):
 
         objects = dict()
         query = {"chronos:group": "urls"}
-        sk = int(page) * 25
-        objects = KB['base'].find(query).sort("schema:provider._id").limit(25).skip(sk)
+        sk = int(page) * 36
+        objects = KB['base'].find(query).sort("schema:provider._id").limit(36).skip(sk)
 
-        self.render("web.html", documents=objects, id_=None, typed='urls', page=page)
+        self.render("webpages/web.html", documents=objects, id_=None, typed='urls', page=page)
 
 
 class LoginHandler(BaseHandler):
     def get(self):
         if self.get_argument("err", default=None):
-            self.render('login.html', errors=self.get_argument("err"))
+            self.render('login/login.html', errors=self.get_argument("err"))
             return
-        self.render('login.html', errors=None)
+        self.render('login/login.html', errors=None)
 
     def post(self):
         user = USERS.users.find_one({"name": self.get_argument("name")})
@@ -243,6 +265,17 @@ class LoginHandler(BaseHandler):
             self.redirect('/login?err=pwd')
             return
         self.redirect('/login?err=name')
+
+
+class CrowdSourced(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, id_):
+        query = {"_id": ObjectId(id_)}
+        obj = KB['base'].find_one(query)
+        return self.render("crowdsourced/addkeyword.html", obj=obj, id_=str(id_))
+
+    def post(self):
+        pass
 
 
 class LogoutHandler(BaseHandler):

@@ -28,6 +28,7 @@ if __name__ == '__main__':
         [(r"/database", Database),
          (r"/contact", SendFeedback),
          (r"/cloud", DataCloud),
+         (r"/get/keyword/in/kb/(?P<id_>[0-9a-fA-F]+)/", AccessFromKeywords),
          (r"/login", LoginHandler),
          (r"/logout/", LogoutHandler),
          (r'/home/missions/data/(?P<id_>[0-9a-fA-F]+)/', MissionsHandler),
@@ -37,6 +38,7 @@ if __name__ == '__main__':
          (r"/home/docs/(?P<id_>[0-9a-fA-F]+)/", DocsHandler),
          (r"/home/taxonomy/(?P<id_>[0-9a-fA-F]+)/", TaxonomyHandler),
          (r"/home/taxonomy/$", TaxonomyHandler),
+         (r"/home/crowdsourced/(?P<id_>[0-9a-fA-F]+)/", CrowdSourced),
          (r"/home/", LoggedHandler),
          (r"/", IndexHandler),
          (r"/pointer_test", TestHandler)] + \

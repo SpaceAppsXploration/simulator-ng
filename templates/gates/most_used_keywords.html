@@ -1,0 +1,30 @@
+{% extends "../testarea.html" %}
+
+{% block body %}
+
+<a href="/home/">< BACK</a><br/><br/>
+
+<div class="col-sm-12">
+    <div class="row">
+    {% for idx, d in enumerate(documents) %}
+        {% if idx != 0 and idx % 6 == 0 %}</div> <div class="row">{% end %}
+        {% if "skos:prefLabel" in d %}
+            <div class="col-sm-2">
+                <a href="/home/missions/data/{{d["_id"]}}/" target="_blank">{{d["skos:prefLabel"]}}</a>
+            </div>
+        {% else %}
+            {% if len(d["schema:description"]["@value"]) > 3 %}
+                {% set abs = d["schema:description"]["@value"] %}
+            {% else %}
+                {% set abs = d["schema:headline"]["@value"] %}
+            {% end %}
+            <div class="col-sm-2">
+                <a href="/home/web/data/{{d["_id"]}}/" target="_blank">{{abs}}</a>
+            </div>
+        {% end %}
+
+    {% end %}
+    </div>
+</div>
+
+{% end %}

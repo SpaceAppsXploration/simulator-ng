@@ -3487,7 +3487,7 @@ ul.footer-nav li a:hover {
  * Free to use and abuse under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
  */
- 
+
 .nivo-lightbox-overlay {
 	position: fixed;
 	top: 0;
@@ -3576,7 +3576,7 @@ ul.footer-nav li a:hover {
 	display: table-cell;
 	vertical-align: middle;
 }
-/* Effects 
+/* Effects
  **********************************************/
 .nivo-lightbox-effect-fade, .nivo-lightbox-effect-fadeScale, .nivo-lightbox-effect-slideLeft, .nivo-lightbox-effect-slideRight, .nivo-lightbox-effect-slideUp, .nivo-lightbox-effect-slideDown, .nivo-lightbox-effect-fall {
 	-webkit-transition: all 0.2s ease-in-out;
@@ -3674,7 +3674,7 @@ ul.footer-nav li a:hover {
  * Nivo Lightbox Default Theme v1.0
  * http://dev7studios.com/nivo-lightbox
  */
- 
+
 .nivo-lightbox-theme-default.nivo-lightbox-overlay {
 	background: #666;
 	background: rgba(0,0,0,0.8);
@@ -3774,7 +3774,7 @@ ul.footer-nav li a:hover {
 	background-size: 16px 16px;
 }
 }
-/* 
+/*
  * 	Core Owl Carousel CSS
  *	v1.24
  */
@@ -4114,7 +4114,7 @@ transform: scale(1.5);
 }
 }
 /*
-* 	Owl Carousel Owl Theme 
+* 	Owl Carousel Owl Theme
 */
 
 .owl-theme .owl-controls {
@@ -4178,7 +4178,7 @@ transition: all 0.4s ease-in-out;
 	-o-transition: height 500ms ease-in-out;
 	transition: height 500ms ease-in-out;
 }
-	
+
 .owl-carousel .owl-item{
 	float: left;
 }
@@ -4322,7 +4322,7 @@ transition: all 0.4s ease-in-out;
 	-moz-border-radius: 2px;
 	-o-border-radius: 2px;
 	border-radius: 2px;
-	
+
 	margin-left: 4px;
 	transition: all 0.4s ease-in-out;
 	-moz-transition: all 0.4s ease-in-out;

@@ -1,0 +1,322 @@
+@import url(//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
+@import url(//fonts.googleapis.com/css?family=Inconsolata:400,700);
+
+/* BASE STYLINGS */
+
+html,body{
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
+	line-height: 1.3;
+	font-family: Inconsolata, monospace;
+	color: #DDDDDD;
+}
+	body{
+		background: #10162F;
+	}
+
+	h1{
+		font-size: 1.3em;
+		font-weight: 600;
+		letter-spacing: 3px;
+	}
+	h2{
+		font-size: 1.2em;
+		font-weight: 700;
+		letter-spacing: 1px;
+	}
+	h3{
+		font-size: 1em;
+		font-weight: 700;
+		letter-spacing: 1px;
+	}
+
+	a{
+		color: #6C91C6;
+		text-decoration: none;
+	}
+
+	.small-text{
+		font-size: 0.7em;
+	}
+
+	/*
+		.wysiwyg is a class to be added to the container of any major amount of copy text
+		to ensure consistent type styling across sections.
+	*/
+	.wysiwyg h1,
+	.wysiwyg h2,
+	.wysiwyg h3{
+		padding-bottom: .1em;
+		margin-bottom: .3em;
+		display: block;
+		display: inline-block;
+		border-bottom: 2px solid;
+		white-space: pre-line;
+	}
+		.wysiwyg h1:after,
+		.wysiwyg h2:after,
+		.wysiwyg h3:after{
+			content: ' ';
+
+		}
+
+	.wysiwyg p,
+	.wysiwyg ul,
+	.wysiwyg ol,
+	.wysiwyg img{
+		margin-bottom: 1em;
+	}
+	.wysiwyg a{
+		border-bottom: 2px solid transparent;
+	}
+		.wysiwyg a:hover{
+			border-bottom: 2px solid #6C91C6;
+		}
+
+	.wysiwyg b,
+	.wysiwyg strong,
+	.wysiwyg em{
+		font-weight: 700;
+	}
+
+	/* Site Wide */
+	#container{
+		height: 100%;
+	}
+		.site--header{
+			width: 100%;
+			position: relative;
+			padding: 1em 0 0;
+			margin: 0 auto;
+			background: transparent;
+			color: #DDDDDD;
+			height: 5em;
+			z-index: 99;
+		}
+			/*
+				the pictograms are a long sprite sheet, animated in the
+				javascript file: assets/javascript/header.js
+				any changes here should ensure that incrementing the background
+				position by 100% at a time keeps the animation consistent
+			*/
+			.site--header .logo{
+				background-size: auto 100%;
+				background-position: 0;
+				background-image: url( '../images/pictograms.png' );
+				width: 5em;
+				height: 5em;
+				margin: 0 auto;
+			}
+
+		/*
+			Javascript / JQuery plugin Scrolltofixed causes this to become a
+			fixed position element once it's been scrolled down to
+		*/
+		.site--navigation{
+			position: relative;
+			width: 100%;
+			text-align: center;
+			padding: 1em 0;
+			background-color: transparent;
+			color: #DDDDDD;
+			z-index: 99;
+			margin-bottom: 6em;
+
+		}
+			.site--navigation li{
+				display: inline-block;
+				margin: 0 0.7em;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+
+			}
+				.site--navigation li:after{
+					color: #DDDDDD;
+					content: '•';
+					margin-left: 1.4em;
+				}
+					.site--navigation li:last-child:after{
+						display: none;
+					}
+				.site--navigation li a{
+					text-decoration: none;
+					padding: .2em 0 .1em;
+					color: #DDDDDD;
+					border-bottom: 2px solid transparent;
+					-webkit-transition: border-color .3s linear;
+					   -moz-transition: border-color .3s linear;
+						-ms-transition: border-color .3s linear;
+						 -o-transition: border-color .3s linear;
+							transition: border-color .3s linear;
+				}
+					.site--navigation li a:hover,
+					.site--navigation li a.current{
+						border-bottom: 2px solid #DDDDDD;
+					}
+
+		.site--content{
+			width: 100%;
+			max-width: 40em;
+			box-sizing: border-box;
+			padding: 0 1em;
+			margin: 0 auto;
+		}
+			.site--content:last-of-type{
+				margin-bottom: 10em;
+			}
+			.site--content img{
+				width: 100%;
+				height: auto;
+			}
+			.site--content iframe{
+				width: 100%;
+				/*height: auto;*/
+                margin-left: 0%;
+			}
+
+		.site--footer{
+			height: 3em;
+			padding: 0 1em 1em;
+			box-sizing: border-box;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+		}
+			.site--footer .site--supporters{
+				float: left;
+				height: 2em;
+			}
+				.site--footer .site--supporters li{
+					display: inline-block;
+					height: 2em
+				}
+						.site--footer .site--supporters li img{
+							max-height: 100%;
+							width: auto;
+							display: block;
+						}
+			.site--footer .site--credits{
+				float: right;
+				line-height: 3em;
+			}
+
+		/* page specific */
+
+		/* Home specific */
+		body.home{
+			background: #000000;
+		}
+		.home--introduction{
+			position: absolute;
+			top: -16em;
+			height: 32em;
+			padding-top: 12em;
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-image: url( '../images/upside-down-earth.jpg' );
+			position: relative;
+			margin-bottom: 2em;
+		}
+			.home--introduction .introduction--content{
+				margin-top: 2em;
+				font-size: 1.4em;
+				line-height: 1.2;
+				color: #DDDDDD;
+				text-align: center;
+			}
+				.home--introduction .introduction--content h1{
+					text-transform: uppercase;
+				}
+		.home--about{
+			position: relative;
+			margin-bottom: 2em;
+			top: -6em;
+		}
+
+		/* blog specific */
+		body.blog{
+			background: #686774;
+		}
+		.blog--post{
+			margin-bottom: 3em;
+		}
+			.post--header{
+				position: relative;
+				margin-bottom:1em;
+			}
+				.post--header-text{
+					padding: .4em .8em .6em 0em;
+					position: absolute;
+					bottom: 14%;
+					margin-top: -1.9em;
+					background-color: #686774;
+				}
+				.post--date,
+				.post--author{
+					font-size: .8em;
+					margin-right: .3em;
+				}
+					.post--date:after{
+						content: '//';
+						margin-left: .9em;
+					}
+				.post--title{
+					font-size: 2em;
+					letter-spacing: 2px;
+				}
+			.post--content{
+				margin-bottom: 1em;
+			}
+			.post--meta{
+				border-top: 2px solid #DDDDDD;
+				padding-top: .1em;
+				//text-align: center;
+			}
+
+/*
+	Mobile adaptations
+	kicking in at 640px or less of width, these should make the type a more
+	suitable size and fix any inconsistencies. Tablet sizes and up should be
+	fine with the standard CSS.
+*/
+
+@media screen and (max-width: 640px){
+	.site--navigation{
+		-webkit-transition: background-color .5s linear;
+		   -moz-transition: background-color .5s linear;
+			-ms-transition: background-color .5s linear;
+			 -o-transition: background-color .5s linear;
+				transition: background-color .5s linear;
+	}
+		.site--navigation.scroll-to-fixed-fixed{
+				background-color: rgba( 0, 0, 0, 0.7 );
+			}
+		.site--navigation li{
+			margin: 0 0.3em;
+		}
+			.site--navigation li:after{
+				margin-left: 0.6em;
+			}
+	.site--footer{
+		border-top: 1px solid #EEEEEE;
+		padding-top: 1em;
+		text-align: center;
+		height: 5em;
+		padding-bottom: 2em;
+	}
+	.site--footer .site--supporters,
+	.site--footer .site--credits{
+		float: none;
+	}
+	.site--footer .site--credits{
+		line-height: 1.5em;
+	}
+	.home--introduction .introduction--content{
+		font-size: 1em;
+	}
+		.home--introduction .introduction--content h1{
+			font-size: 1.3em;
+		}
+}
