@@ -3,6 +3,9 @@ from bson.objectid import ObjectId
 
 from pprint import pprint, pformat
 import json
+import time
+
+from urllib.parse import quote, unquote
 
 
 def get_keywords_in_KB(KB):
@@ -54,9 +57,8 @@ def get_keywords_in_KB(KB):
                         "pref_label": doc["skos:prefLabel"],
                         "linked": [str(o["_id"])]
                     }
-        pprint(indexing)
+
         index = indexing
-        import time
         indexing = json.dumps(indexing)
         KB["memcached"].insert({"object": "homepageKeys", "time": time.time(), "value": indexing})
     else:  # retrieve from cache
@@ -68,13 +70,40 @@ def get_keywords_in_KB(KB):
 
     return sort
 
+
 def get_instruments_in_KB(KB):
     query = KB["memcached"].find_one({"object": "homepageInstruments"})
+    if query is None:
+        indexing = dict()
+        query = {"$and":
+                    [
+                        {"chronos:group": "missions"},
+                        {"chronos:hasPayload": {"$exists": True, "$ne": []}}
+                    ]
+                }
 
-    query = KB["base"].find({"$and":
-                [
-                    {"chronos:group": "missions"},
-                    {"chronos:hasPayload": {"$exists": True, "$ne": []}}
-                ]
-            })
-    # db.base.find({$and: [{"chronos:hasKeyword": {"$ne": []}},{"chronos:group": "urls"}]}).pretty()
+        objects = KB['base'].find(query)
+
+        for o in objects:
+            for k in o["chronos:hasPayload"]:
+                #k = quote(k)
+                if k in indexing.keys():
+                    # append
+                    indexing[k]["missions"].append(str(o["_id"]))
+                else:
+                    # create key > value
+                    indexing[k] = {
+                        "missions": [str(o["_id"])]
+                    }
+        index = indexing
+
+        indexing = json.dumps(indexing)
+        KB["memcached"].insert({"object": "homepageInstruments", "time": time.time(), "value": indexing})
+    else:  # retrieve from cache
+        index = json.loads(query["value"])
+
+    sort = []
+    for k, v in sorted(index.items(), key=lambda x: len(x[1]["missions"]), reverse=True):
+        sort.append([quote(k), len(index[k]["missions"]), k])
+
+    return sort

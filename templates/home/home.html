@@ -17,7 +17,7 @@
 <div class="row first">
     <div class="col-sm-2"></div>
     <div class="col-sm-10">
-        <h2>This is the Chronos Knowledge Base's Development Area.</h2>
+        <h2><a class="norel" name="top">This is the Chronos Knowledge Base's Development Area.</a></h2>
         <h2>Thanks for your collaboration in making Chronos a good open and accessible tool.</h2>
     </div>
 </div>
@@ -37,12 +37,33 @@
 <div class="row first">
     <div class="col-sm-1"></div>
     <div class="col-sm-10">
-        <h4><u>Most used Keywords:</u></h4>
+        <h4><a class="norel" name="kwds"><u>Most used Keywords:</u></a></h4>
             <div class="row kwd">
                 {% for idx, obj in enumerate(index) %}
                     {% if idx != 0 and idx % 4 == 0 %}</div><div class="row kwd">{% end %}
                     <div class="col-sm-3">
-                        <p>[{{obj[3]}}]: <b><a href="/get/keyword/in/kb/{{obj[0]}}/">{{obj[2]}}</a></b>({{obj[1]}})</p>
+                        <p>[<i>{{obj[3]}}]</i>:
+                            <b><a href="/get/keyword/in/kb/{{obj[0]}}/">{{obj[2]}}</a></b>({{obj[1]}})
+                        </p>
+                    </div>
+                {% end %}
+            </div>
+
+   </div>
+</div>
+
+<div class="row first">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-9">
+        <h4><a class="norel" name="insts"><u>Most used Instrumetation Names (from DBPedia):</u></a></h4>
+            <div class="row inst">
+                <div class="col-sm-2"></div>
+                {% for idx, obj in enumerate(instruments) %}
+                    {% if idx != 0 and idx % 3 == 0 %}</div><div class="row inst"><div class="col-sm-2"></div>{% end %}
+                    <div class="col-sm-3">
+                        <p>
+                            <b><a href="/get/instrument/in/kb/{% raw obj[0] %}/">{{obj[2]}}</a></b>({{obj[1]}})
+                        </p>
                     </div>
                 {% end %}
             </div>
@@ -55,6 +76,17 @@
     .row.kwd {
         border-bottom: 1px solid;
         margin-top: 15px;
+    }
+    .row.inst {
+        margin-top: 15px;
+    }
+    .norel {
+        color:inherit;
+        text-decoration: none;
+    }
+    .norel:hover {
+        color:inherit;
+        text-decoration: none;
     }
 </style>
 

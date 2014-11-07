@@ -79,9 +79,12 @@ class LoggedHandler(BaseHandler):
         index = None
 
         sort = get_keywords_in_KB(KB)
-        index = sort[0:28]
+        keywords = sort[0:28]
 
-        self.render("home/home.html", username=name, index=index)
+        sort = get_instruments_in_KB(KB)
+        instrum = sort[0:21]
+        print(instrum)
+        self.render("home/home.html", username=name, index=keywords, instruments=instrum)
         return
 
 
@@ -93,11 +96,27 @@ class AccessFromKeywords(BaseHandler):
         id_list = obj[id_]["linked"]
 
         ids = list(map(lambda x: ObjectId(x), id_list))
+        #pprint(ids)
+        documents = KB["base"].find({"_id": {"$in": ids}})
+
+        self.render("gates/most_used_keywords.html", obj=obj, documents=documents, type="kwds")
+        return
+
+
+class AccessFromInstrument(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, slug):
+        slug = unquote(slug)
+        cache = KB["memcached"].find_one({"object": "homepageInstruments"}, {"_id": False})
+        obj = json.loads(cache["value"])
+        id_list = obj[slug]["missions"]
+
+        ids = list(map(lambda x: ObjectId(x), id_list))
         pprint(ids)
         documents = KB["base"].find({"_id": {"$in": ids}})
 
-        self.render("gates/most_used_keywords.html", obj=obj, documents=documents)
-        pass
+        self.render("gates/most_used_keywords.html", obj=obj, documents=documents, type="insts")
+        return
 
 
 class TaxonomyHandler(BaseHandler):
