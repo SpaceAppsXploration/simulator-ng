@@ -41,7 +41,7 @@
             <div class="col-sm-3">
                 {% for idx, obj in enumerate(index) %}
                     {% if idx != 0 and idx % 7 == 0 %}</div> <div class="col-sm-3">{% end %}
-                    <p><a href="/get/keyword/in/kb/{{obj[0]}}/">{{obj[2]}}</a>({{obj[1]}})</p>
+                    <p>[{{obj[3]}}]: <b><a href="/get/keyword/in/kb/{{obj[0]}}/">{{obj[2]}}</a></b>({{obj[1]}})</p>
                 {% end %}
             </div>
 

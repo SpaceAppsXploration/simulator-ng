@@ -48,7 +48,9 @@ def get_keywords_in_KB(KB):
                     indexing[str(doc["_id"])]["linked"].append(str(o["_id"]))
                 else:
                     # create key > value
+                    q = KB["base"].find_one({"_id": ObjectId(doc["skos:exactMatch"][0]["_id"])})
                     indexing[str(doc["_id"])] = {
+                        "broader": q["skos:prefLabel"],
                         "pref_label": doc["skos:prefLabel"],
                         "linked": [str(o["_id"])]
                     }
@@ -62,7 +64,7 @@ def get_keywords_in_KB(KB):
 
     sort = []
     for k, v in sorted(index.items(), key=lambda x: len(x[1]["linked"]), reverse=True):
-        sort.append([k, len(index[k]["linked"]), index[k]["pref_label"]])
+        sort.append([k, len(index[k]["linked"]), index[k]["pref_label"], index[k]["broader"]])
 
     return sort
 
