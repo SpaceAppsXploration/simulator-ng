@@ -40,8 +40,9 @@ if __name__ == '__main__':
          (r"/home/taxonomy/(?P<id_>[0-9a-fA-F]+)/", TaxonomyHandler),
          (r"/home/taxonomy/$", TaxonomyHandler),
          (r"/home/crowdsourced/(?P<id_>[0-9a-fA-F]+)/", CrowdSourced),
+         (r"/home/graphviz/", GraphViz),
          (r"/home/", LoggedHandler),
-         (r"/", IndexHandler),
+         (r"/$", IndexHandler),
          (r"/pointer_test", TestHandler)] + \
         SocketRouter.urls,
         (r"/static/(.*)", web.StaticFileHandler, {"path": settings['static_path']}),

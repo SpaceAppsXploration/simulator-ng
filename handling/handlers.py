@@ -76,14 +76,14 @@ class LoggedHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         name = tornado.escape.xhtml_escape(self.current_user)
-        index = None
 
         sort = get_keywords_in_KB(KB)
-        keywords = sort[0:28]
+        keywords = sort[0:]
 
         sort = get_instruments_in_KB(KB)
         instrum = sort[0:21]
-        print(instrum)
+        #print(instrum)
+        #pprint(keywords)
         self.render("home/home.html", username=name, index=keywords, instruments=instrum)
         return
 
@@ -92,15 +92,15 @@ class AccessFromKeywords(BaseHandler):
     @tornado.web.authenticated
     def get(self, id_):
         cache = KB["memcached"].find_one({"object": "homepageKeys"}, {"_id": False})
-        obj = json.loads(cache["value"])
-        id_list = obj[id_]["linked"]
+        if cache is not None:
+            obj = json.loads(cache["value"])
+            id_list = obj[id_]["linked"]
 
-        ids = list(map(lambda x: ObjectId(x), id_list))
-        #pprint(ids)
-        documents = KB["base"].find({"_id": {"$in": ids}})
-
-        self.render("gates/most_used_keywords.html", obj=obj, documents=documents, type="kwds")
-        return
+            ids = list(map(lambda x: ObjectId(x), id_list))
+            #pprint(ids)
+            documents = KB["webpages"].find({"_id": {"$in": ids}})
+            self.render("gates/most_used_keywords.html", obj=obj, documents=documents, type="kwds")
+            return
 
 
 class AccessFromInstrument(BaseHandler):
@@ -108,15 +108,16 @@ class AccessFromInstrument(BaseHandler):
     def get(self, slug):
         slug = unquote(slug)
         cache = KB["memcached"].find_one({"object": "homepageInstruments"}, {"_id": False})
-        obj = json.loads(cache["value"])
-        id_list = obj[slug]["missions"]
+        if cache is not None:
+            obj = json.loads(cache["value"])
+            id_list = obj[slug]["missions"]
 
-        ids = list(map(lambda x: ObjectId(x), id_list))
-        pprint(ids)
-        documents = KB["base"].find({"_id": {"$in": ids}})
+            ids = list(map(lambda x: ObjectId(x), id_list))
+            pprint(ids)
+            documents = KB["base"].find({"_id": {"$in": ids}})
 
-        self.render("gates/most_used_keywords.html", obj=obj, documents=documents, type="insts")
-        return
+            self.render("gates/most_used_keywords.html", obj=obj, documents=documents, type="insts")
+            return
 
 
 class TaxonomyHandler(BaseHandler):
@@ -144,7 +145,7 @@ class TaxonomyHandler(BaseHandler):
             objects = KB['base'].find_one(query, projection)  # find the division object to find narrower subjects
             objects = objects['skos:narrower']
         elif self.get_argument("showing", default=None) == 'keywords':
-            showing = "keywords" # show keywords of subject id_
+            showing = "keywords"  # show keywords of subject id_
             obj = KB['base'].find_one({"_id": ObjectId(id_)})  # find the single subject's document
             query = {"skos:inScheme._id": obj["_id"]}
             objects = KB['base'].find(query).sort("skos:prefLabel")  # find all the keywords in the subject's scheme
@@ -190,7 +191,6 @@ class DocsHandler(BaseHandler):
                 }
                 projection = {}
                 objects = KB['base'].find(query, projection).sort("@id")
-                objects = objects
                 length = objects.count()
             elif self.get_argument('type') == 'urls':
                 showing = "urls"
@@ -248,7 +248,7 @@ class WebDocsHandler(BaseHandler):
         if id_ is not None:
             query = {"_id": ObjectId(id_)}
             projection = {"_id": False}
-            obj = KB['base'].find_one(query, projection)
+            obj = KB['webpages'].find_one(query, projection)
             pref_label = obj["schema:headline"]["@value"]
             obj = pformat(obj)
             return self.render("webpages/web.html", document=obj, pref_label=pref_label, id_=id_, page=None)
@@ -261,7 +261,7 @@ class WebDocsHandler(BaseHandler):
         objects = dict()
         query = {"chronos:group": "urls"}
         sk = int(page) * 36
-        objects = KB['base'].find(query).sort("schema:provider._id").limit(36).skip(sk)
+        objects = KB['webpages'].find(query).sort("schema:provider._id").limit(36).skip(sk)
 
         self.render("webpages/web.html", documents=objects, id_=None, typed='urls', page=page)
 
@@ -297,6 +297,12 @@ class CrowdSourced(BaseHandler):
         pass
 
 
+class GraphViz(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        return self.render("dataviz/testsonly.html")
+
+
 class LogoutHandler(BaseHandler):
     def get(self):
         self.clear_cookie("chronos")
@@ -308,7 +314,6 @@ class DataCloud(tornado.web.RequestHandler):
     @tornado.gen.coroutine
     def get(self):
         pass
-
 
 
 class Database(tornado.web.RequestHandler):
@@ -373,8 +378,6 @@ class SendFeedback(tornado.web.RequestHandler):
     def post(self):
         req = self.request.body.decode('utf-8')
         print(json.loads(req))
-
-        import pickle
 
         with open('handling/feedback.save', 'a') as f:
             f.write(req+' \n')
