@@ -9,6 +9,18 @@
     <div class="col-md-8">
         <h4 align="left"><b>This is the network for one mission (Clementine) and one subject (19: "Spacecraft Instrumentation and Astrionics") on a total of fifty-tree in the taxonomy:</b></h4>
     </div>
+    <div class="col-md-4">
+        <p>
+            Legend:
+            <ul>
+                <li>blue: dbpedia document</li>
+                <li>red: keyword</li>
+                <li>orange: event</li>
+                <li>lilac: web pages</li>
+                <li>pale-blue: missions</li>
+            </ul>
+        </p>
+    </div>
 </div>
 
 <div class="row">
@@ -18,10 +30,13 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-4">
-        <p>zoom with mouse-wheel</p>
-        <p>on over for node title</p>
-        <p>click on node for first level relations</p>
-        <p id="infos" style="display:none;"></p>
+        <p>Instructions:</p>
+        <ul>
+            <li>zoom with mouse-wheel</li>
+            <li>on hover for node title</li>
+            <li>click on node for first level relations</li>
+        </ul>
+        <p id="infos"></p>
     </div>
 </div>
 
@@ -48,8 +63,11 @@
         padding: 0 0;
     }
     #infos {
-        padding-top:15px;
+        margin-top:30px;
+        padding-top:5px;
         color: #999;
+        display:none;
+        border-top: 1px dotted;
     }
 
 
