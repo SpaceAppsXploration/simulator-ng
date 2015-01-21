@@ -30,6 +30,7 @@ if __name__ == '__main__':
          (r"/cloud", DataCloud),
          (r"/get/instrument/in/kb/(?P<slug>[0-9a-zA-z\+\-\,\:\%\/]+)/", AccessFromInstrument),
          (r"/get/keyword/in/kb/(?P<id_>[0-9a-fA-F]+)/", AccessFromKeywords),
+         (r"/get/(?P<id_>[0-9a-fA-F]+)/", GetTest),
          (r"/login", LoginHandler),
          (r"/logout/", LogoutHandler),
          (r'/home/missions/data/(?P<id_>[0-9a-fA-F]+)/', MissionsHandler),

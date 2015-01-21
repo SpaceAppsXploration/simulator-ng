@@ -30,6 +30,7 @@ def check_password(plain_text_password, hashed_password):
 client = MongoClient('localhost', 27017)
 USERS = client.users
 KB = client.KB
+TESTSONLY = client.TESTSONLY
 
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -291,11 +292,26 @@ class CrowdSourced(BaseHandler):
     def get(self, id_):
         query = {"_id": ObjectId(id_)}
         obj = KB['base'].find_one(query)
+        if obj is None:
+            obj = KB['webpages'].find_one(query)
         return self.render("crowdsourced/addkeyword.html", obj=obj, id_=str(id_))
 
     def post(self):
         pass
 
+
+class GetTest(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, id_):
+        query = {"_id": ObjectId(id_)}
+        obj = TESTSONLY['base'].find_one(query)
+        if obj is None:
+            obj = TESTSONLY['webpages'].find_one(query)
+        obj = pformat(obj)
+        return self.render("getID/getid.html", document=obj, pref_label=str(id_), id_=str(id_), page=None)
+
+    def post(self):
+        pass
 
 class GraphViz(BaseHandler):
     @tornado.web.authenticated

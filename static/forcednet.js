@@ -3,7 +3,7 @@
  */
 //Constants for the SVG
 //Constants for the SVG
-var width = 750,
+var width = 700,
     height = 500;
 
 //Set up the colour scale
@@ -28,22 +28,8 @@ var svg = d3.select("#diagram-1").append("svg")
     .attr("height", height)
     //.append("g")
     .call(d3.behavior.zoom().on("zoom", zoom))
-    .append("g");
-
-svg.append("defs").selectAll("marker")
-    .data(["suit", "licensing", "resolved"])
-  .enter().append("marker")
-    .attr("id", function(d) { return d; })
-    .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 25)
-    .attr("refY", 0)
-    .attr("markerWidth", 6)
-    .attr("markerHeight", 6)
-    .attr("orient", "auto")
-  .append("path")
-    .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
-    .style("stroke", "#4679BD")
-    .style("opacity", "0.6");
+        .on("dblclick.zoom", null)
+        .append("g");
 
 
 //Creates the graph data structure out of the json data
@@ -56,7 +42,7 @@ var link = svg.selectAll(".link")
     .data(graph.links)
     .enter().append("line")
     .attr("class", "link")
-    .style("marker-end",  "url(#suit)") // Modified line
+    .style("opacity", 0)
     .style("stroke-width", function (d) {
         return Math.sqrt(1);
     });
@@ -73,6 +59,7 @@ var node = svg.selectAll(".node")
     })
     .call(force.drag)
     .style("fill", function(d) { return color(d.type); })
+    //.on('click', connectedNodes) //Added code
     .on('click', connectedNodes); //Added code
 
 
@@ -146,15 +133,24 @@ function connectedNodes() {
 
         //Reduce the op
 
+        var a = '<a>go to link</a>';
+        var elem = $('#infos')
+        var infos = '<ul><li>On the Graph you can see all the nodes linked to the clicked node</li>' +
+            '<li>Click to visit the selected node >>> <a href="/get/'+ d._id +'/" target="_blank">"'+ d.name +'" </a></li>'+
+            '<li>or click the graph again to select another node</li></ul>'
+        elem.append(infos);
+        elem.fadeIn( "slow");
         toggle = 1;
     } else {
         //Put them back to opacity=1
         node.style("opacity", 1);
-        link.style("opacity", 1);
+        link.style("opacity", 0);
+
+        $('#infos').text('');
         toggle = 0;
     }
 
-}
+};
 
 
 
