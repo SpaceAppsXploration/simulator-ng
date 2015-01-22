@@ -96,7 +96,9 @@ force.on("tick", function () {
     })
         .attr("cy", function (d) {
         return d.y;
-    });
+    })
+        .each(collide(.5));
+
 });
 
 //---Insert-------
@@ -108,14 +110,20 @@ var toggle = 0;
 var linkedByIndex = {};
 for (i = 0; i < graph.nodes.length; i++) {
     linkedByIndex[i + "," + i] = 1;
-};
+}
+
 graph.links.forEach(function (d) {
     linkedByIndex[d.source.index + "," + d.target.index] = 1;
 });
 
+console.log(linkedByIndex)
+
+var mapped = null;
 //This function looks up whether a pair are neighbours
 function neighboring(a, b) {
-    return linkedByIndex[a.index + "," + b.index];
+        return linkedByIndex[a.index + "," + b.index];
+
+
 }
 
 function connectedNodes() {
@@ -152,5 +160,31 @@ function connectedNodes() {
 
 };
 
-
+// Resolves collisions between d and all other circles.
+function collide(alpha) {
+  var quadtree = d3.geom.quadtree(node);
+  return function(d) {
+    var r = d.radius + maxRadius + Math.max(padding, clusterPadding),
+        nx1 = d.x - r,
+        nx2 = d.x + r,
+        ny1 = d.y - r,
+        ny2 = d.y + r;
+    quadtree.visit(function(quad, x1, y1, x2, y2) {
+      if (quad.point && (quad.point !== d)) {
+        var x = d.x - quad.point.x,
+            y = d.y - quad.point.y,
+            l = Math.sqrt(x * x + y * y),
+            r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? padding : clusterPadding);
+        if (l < r) {
+          l = (l - r) / l * alpha;
+          d.x -= x *= l;
+          d.y -= y *= l;
+          quad.point.x += x;
+          quad.point.y += y;
+        }
+      }
+      return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+    });
+  };
+}
 

@@ -301,7 +301,6 @@ class CrowdSourced(BaseHandler):
 
 
 class GetTest(BaseHandler):
-    @tornado.web.authenticated
     def get(self, id_):
         query = {"_id": ObjectId(id_)}
         obj = TESTSONLY['base'].find_one(query)
@@ -312,6 +311,7 @@ class GetTest(BaseHandler):
 
     def post(self):
         pass
+
 
 class GraphViz(BaseHandler):
     @tornado.web.authenticated
